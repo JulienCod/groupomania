@@ -1,5 +1,7 @@
 import express from 'express';
 import Bd from './config/connexionBd.js';
+import userRoutes from './routes/userRoutes.js';
+
 
 const app = express();
 
@@ -16,17 +18,10 @@ app.use((req, res, next) => {
 
 Bd.sync()
 .then(console.log("Connexion à la base de données"))
-.catch(error => console.log(error))
+.catch(error => console.log(error));
+
 // configuration des routes
 
-/************************************************ */
-//route test
-app.use((req, res, next) => {
-    res.status(200).json({message: 'serveur ok !'})
-})
-/************************************************ */
-
-// app.use('/api/auth', userRoutes);
-
+app.use('/api/auth', userRoutes);
 
 export default app;
