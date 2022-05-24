@@ -1,9 +1,11 @@
 import express from 'express';
+import helmet from 'helmet';
 import Bd from './config/connexionBd.js';
 import userRoutes from './routes/userRoutes.js';
 
-
 const app = express();
+
+app.use(helmet());
 
 // Permet d'analyser le corps de la requête.
 app.use(express.json()); 
