@@ -1,4 +1,5 @@
 import express from 'express';
+import Bd from './config/connexionBd.js';
 
 const app = express();
 
@@ -13,6 +14,9 @@ app.use((req, res, next) => {
     next();
 })
 
+Bd.sync()
+.then(console.log("Connexion à la base de données"))
+.catch(error => console.log(error))
 // configuration des routes
 
 /************************************************ */
