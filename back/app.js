@@ -2,6 +2,7 @@ import express from 'express';
 import helmet from 'helmet';
 import Bd from './config/connexionBd.js';
 import userRoutes from './routes/userRoutes.js';
+import postRoutes from './routes/postRoutes.js';
 
 const app = express();
 
@@ -25,5 +26,6 @@ Bd.sync()
 // configuration des routes
 
 app.use('/api/auth', userRoutes);
+app.use('/api/post', postRoutes);
 
 export default app;
