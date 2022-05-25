@@ -2,7 +2,7 @@ import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
 import Post from './post.js';
 import Commentaire from './commentaire.js';
-
+//schema User
 const {DataTypes} = sequelize;
 const User = Bd.define('user', {
     id: {
@@ -37,12 +37,10 @@ const User = Bd.define('user', {
     }
 })
 
+// association des tables
 User.hasMany(Post, {foreignKey: 'userId', onDelete: "Cascade"});
 Post.belongsTo(User, {foreignKey: 'userId'});
 User.hasMany(Commentaire, {foreignKey: 'userId', onDelete: "Cascade"});
 Commentaire.belongsTo(User, {foreignKey: 'userId'});
-
-
-
 
 export default User;

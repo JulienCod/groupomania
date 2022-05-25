@@ -1,7 +1,7 @@
 import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
 import Commentaire from './commentaire.js';
-
+// schema post
 const {DataTypes} = sequelize;
 const Post = Bd.define('post', {
     id: {
@@ -23,9 +23,8 @@ const Post = Bd.define('post', {
         allowNull: true,
     }
 })
-
+// association des tables
 Post.hasMany(Commentaire, {foreignKey : 'postId', onDelete : 'CASCADE'})
 Commentaire.belongsTo(Post, {foreignKey : 'postId'})
-
 
 export default Post;
