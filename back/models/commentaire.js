@@ -1,6 +1,6 @@
 import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
-
+//schema commentaire
 const {DataTypes} = sequelize;
 const Commentaire = Bd.define('commentaire', {
     id: {
@@ -26,7 +26,5 @@ const Commentaire = Bd.define('commentaire', {
         allowNull: true,
     }
 })
-
-
 
 export default Commentaire;
