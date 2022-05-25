@@ -1,9 +1,8 @@
 import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
-import Commentaire from './commentaire.js';
 
 const {DataTypes} = sequelize;
-const Post = Bd.define('post', {
+const Commentaire = Bd.define('commentaire', {
     id: {
         type: DataTypes.INTEGER(10),
         primaryKey: true,
@@ -11,6 +10,10 @@ const Post = Bd.define('post', {
         allowNull: false,
     },
     userId:{
+        type: DataTypes.INTEGER(10),
+        allowNull: false,
+    },
+    postId:{
         type: DataTypes.INTEGER(10),
         allowNull: false,
     },
@@ -24,8 +27,6 @@ const Post = Bd.define('post', {
     }
 })
 
-Post.hasMany(Commentaire, {foreignKey : 'postId', onDelete : 'CASCADE'})
-Commentaire.belongsTo(Post, {foreignKey : 'postId'})
 
 
-export default Post;
+export default Commentaire;

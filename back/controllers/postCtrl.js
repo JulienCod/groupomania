@@ -1,7 +1,7 @@
 import Post from '../models/post.js';
 
-// affichage de tout les posts
-const getAll = async (req, res, next) => {
+// affichage de tous les posts
+const getAll = (req, res, next) => {
     Post.findAll()
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(500).json({msg: ""+error}))
