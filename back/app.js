@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import Bd from './config/connexionBd.js';
 import userRoutes from './routes/userRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import commentaireRoutes from './routes/commentaireRoutes.js';
 
 const app = express();
 
@@ -27,5 +28,6 @@ Bd.sync()
 
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
+app.use('/api/commentaire', commentaireRoutes);
 
 export default app;
