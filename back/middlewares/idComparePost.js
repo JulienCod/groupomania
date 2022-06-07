@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import Post from '../models/post.js';
-import Commentaire from '../models/commentaire.js';
 
 //  compare l'identifiant à l'origine du post à l'identifiant de l'utilisateur connecté présent dans le token 
 const idComparePost = async (req, res, next) => {

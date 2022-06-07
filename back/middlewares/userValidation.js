@@ -8,7 +8,7 @@ const userValidation = (body) =>{
         password: Joi.string()
             .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
             .required(),
-        name: Joi.string()
+        lastname: Joi.string()
             .pattern(new RegExp('^[a-zA-Z0-9]{2,30}$'))
             .required(),
         firstname: Joi.string()
@@ -16,7 +16,7 @@ const userValidation = (body) =>{
             .min(2)
             .max(30)
             .required(),
-        picture: Joi.string()
+        avatar: Joi.string()
             .min(5)
             .max(255)
     })

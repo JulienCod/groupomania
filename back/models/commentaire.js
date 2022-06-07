@@ -17,7 +17,7 @@ const Commentaire = Bd.define('commentaire', {
         type: DataTypes.INTEGER(10),
         allowNull: false,
     },
-    content:{
+    image:{
         type: DataTypes.STRING(255),
         allowNull: true,
     },
