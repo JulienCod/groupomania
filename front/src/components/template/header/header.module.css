@@ -1,12 +1,15 @@
-.container{
+.header{
+    background-color:   #FD2D01;
+    border-bottom: 0.5rem solid #4E5166;
+    width: 100%;
+}
+.header__container{
     height:5rem;
     display: flex;
     justify-content: space-around;
-    background-color:   #FD2D01;
     align-items:center;
-    border-bottom: 0.5rem solid #4E5166
-}
-.container__img{
+    max-width: 1440px;
+    margin: auto;
 }
 .img{
     width:15rem;
