@@ -1,4 +1,6 @@
 import express from 'express';
+import path from 'path';
+import {fileURLToPath} from 'url';
 import helmet from 'helmet';
 import Bd from './config/connexionBd.js';
 import userRoutes from './routes/userRoutes.js';
@@ -23,6 +25,12 @@ app.use((req, res, next) => {
 Bd.sync()
 .then(console.log("Connexion à la base de données"))
 .catch(error => console.log(error));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use('/images', express.static(path.join(__dirname, 'images')))
+
 
 // configuration des routes
 

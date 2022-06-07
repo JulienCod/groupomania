@@ -6,17 +6,23 @@ import jwt from 'jsonwebtoken';
 // fonction d'enregistrement d'un utilisateur
 
 const signup = async (req, res) => {
-    const {body} = req;
-    const {error} = userValidation(body);
+    let user = JSON.parse(req.body.user);
+    let image = req.file.filename;
+    if(image){
+        user = {
+            ...user,
+            avatar: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        }
+    }
+    const {error} = userValidation(user);
     if (error) return res.status(401).json(error.details[0].message);
 
     try {
        // hash du mot de passe
-        let hash = await bcrypt.hash(body.password,10);
-        body.password = hash;
-
-        // création d'un utilisateur
-        await User.create({...body});
+       let hash = await bcrypt.hash(user.password,10);
+       user.password = hash;
+       // création d'un utilisateur
+       await User.create({...user});
         return res.status(201).json({msg: "Create User"});
     } catch (error) {
         return res.status(500).json({msg : "Database Error", error: error});
