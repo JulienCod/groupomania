@@ -1,0 +1,22 @@
+.container{
+    height:5rem;
+    display: flex;
+    justify-content: space-around;
+    background-color:   #FD2D01;
+    align-items:center;
+    border-bottom: 0.5rem solid #4E5166
+}
+.container__img{
+}
+.img{
+    width:15rem;
+}
+.nac__ul{
+    display: flex;
+}
+.nav__ul__li{
+    color:white;
+    list-style: none;
+    padding: 1rem;
+    text-decoration: none;
+}
