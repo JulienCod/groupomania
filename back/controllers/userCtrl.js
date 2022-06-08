@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 
 const signup = async (req, res) => {
     let user = JSON.parse(req.body.user);
-    let image = req.file.filename;
+    let image = req.file;
     if(image){
         user = {
             ...user,

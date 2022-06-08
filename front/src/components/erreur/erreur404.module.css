@@ -1,0 +1,19 @@
+.container__p{
+    font-size:9rem
+}
+.container__img{
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    animation: container__img 2s linear infinite;
+
+}
+@keyframes container__img {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }

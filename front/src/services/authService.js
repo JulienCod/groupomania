@@ -12,7 +12,7 @@ class AuthService {
             const response = await axios.post(API_URL + "login", user);
             if (response.data.token) {
                 localStorage.setItem("user", JSON.stringify(response.data));
-                document.location.href = "sauces";
+                document.location.href = "groupomania";
             }
         } catch (error) {
             console.log(error.message)
@@ -20,16 +20,18 @@ class AuthService {
     }
 
     //fonction de deconnexion
-    // logout(){
-    //     localStorage.removeItem("user");
-    //     document.location.href = "/";
-    // }
+    logout(){
+        localStorage.removeItem("user");
+        document.location.href = "/";
+    }
 
     // fonction d'inscription
     async signup(user, image) {
         try {
-            if(image === undefined){                
-                await axios.post(API_URL + "signup", user)
+            if(image === undefined){   
+                const formData = new FormData();
+                 formData.append('user', JSON.stringify(user));             
+                await axios.post(API_URL + "signup", formData)
                 document.location.href = "login";
              }else{
                  const formData = new FormData();
@@ -48,9 +50,9 @@ class AuthService {
     }
 
     // // fonction de contrôle d'utilisateur
-    // getCurrentUser(){
-    //     return JSON.parse(localStorage.getItem("user"))
-    // }
+    getCurrentUser(){
+        return JSON.parse(localStorage.getItem("user"))
+    }
 
   
 }

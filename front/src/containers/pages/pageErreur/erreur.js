@@ -1,9 +1,10 @@
 import React from "react";
+import classes from "./erreur.module.css";
 
 const Erreur = (props) => (
-    <article>
-        Page d'erreur
-    </article>
+        <article className={classes.container}>
+            {props.children}
+        </article>
 );
 
 export default Erreur;
