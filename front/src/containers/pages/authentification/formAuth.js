@@ -53,6 +53,7 @@ class FormAuth extends Component {
     }
     
     render(){
+        let title ="";
         let image = "";
         if(this.state.imagePreview){
             image = (
@@ -70,6 +71,7 @@ class FormAuth extends Component {
         const mode = this.props.mode;
         let form = "";
         if (mode === 'signup'){
+            title = "Créer un compte"
             form = (
                 <>
                     <div className={classes.field}>
@@ -109,14 +111,15 @@ class FormAuth extends Component {
 
                     </div>
                     <div>
-                        <Button clic={this.handleValidationFormSignup}>S'inscrire</Button>
+                        <Button clic={this.handleValidationFormSignup}>Créez un compte</Button>
                     </div>      
                 </>
             )
         }else if (mode ==='login'){
+            title = "Identifiez-vous"
             form=(
                 <div>
-                    <Button clic={this.handleValidationFormLogin}>S'identifier</Button>
+                    <Button clic={this.handleValidationFormLogin}>Se connecter</Button>
                 </div>
             )
         }
@@ -124,6 +127,7 @@ class FormAuth extends Component {
         return (
             <article className={classes.article}>
                 <form className={classes.form}>
+                    <h1>{title}</h1>
                     <div className={classes.field}>
                         <label htmlFor='email'>Email : </label>
                         <input 

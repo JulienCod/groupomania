@@ -1,7 +1,9 @@
 .header{
     background-color:   #FD2D01;
-    border-bottom: 0.5rem solid #4E5166;
+    box-shadow: 0px 4px 10px 6px rgba(78,81,102,0.7);
     width: 100%;
+    position:absolute;
+    top:0;
 }
 .header__container{
     height:5rem;
@@ -14,12 +16,16 @@
 .img{
     width:15rem;
 }
-.nac__ul{
-    display: flex;
-}
 .nav__ul__li{
     color:white;
     list-style: none;
     padding: 1rem;
     text-decoration: none;
+    font-size: 1.5rem;
+}
+.logout{
+    font-size:3.1rem;
+    color:#4E5166;
+    cursor:pointer;
+    margin:0 2rem;
 }
