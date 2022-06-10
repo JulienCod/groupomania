@@ -7,9 +7,9 @@ import multer from '../middlewares/multer-config.js';
 
 const router = Router();
 
-router.get('/:id', getById);
+router.get('/:id', auth, getById);
 router.post('/', limiter, auth, multer, createCommentaire);
-router.put('/:id', limiter, auth,idCompareCommentaire, updateCommentaire);
-router.delete('/:id',auth,idCompareCommentaire, deleteCommentaire);
+router.put('/:id', limiter, auth, idCompareCommentaire, updateCommentaire);
+router.delete('/:id', auth, idCompareCommentaire, deleteCommentaire);
 
 export default router;
