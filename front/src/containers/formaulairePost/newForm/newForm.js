@@ -33,14 +33,12 @@ class NewForm extends Component {
             [name] : event.target.value,
         })
     }
-
     //gestion du changement de l'image
     handleImageChange = (event) => {
         event.preventDefault();
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
-
-    //envoie du formulaire
+    //envoi du formulaire post
     submitPost = (event) => {
         event.preventDefault();
         let description = this.state.description;
@@ -60,6 +58,7 @@ class NewForm extends Component {
             this.componentDidMount();
         }
     }
+    //envoi du formulaire commentaire
     submitCommentaire = (event) =>{
         event.preventDefault();
         let description = this.state.description;
@@ -162,9 +161,6 @@ class NewForm extends Component {
                 </section>
             )
         }
-
-        
-
         return (
            <>
                {content}

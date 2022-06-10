@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
-import classes from "./postManager.module.css";
-import {FiPenTool} from 'react-icons/fi';
-import {RiDeleteBin6Line} from 'react-icons/ri';
 import PostService from '../../../services/postService';
-import InfoUSer from "../../infoUser/infoUser";
-import Post from './post/post';
-import CommentManager from '../comment/commentManager';
 import NewForm from '../newForm/newForm';
 import AuthService from '../../../services/authService';
+import Post from "./post/post";
 
 class PostManager extends Component {
     constructor(props) {
@@ -15,21 +10,7 @@ class PostManager extends Component {
         this.state = {
             listPost:[],
             currentUserId:0,
-            post:{
-                user:{
-                    userId:"1",
-                    firstname : "Julien",
-                    lastname : "Crutain",
-                    avatar : "images/profils/profils.png",
-                },
-                postId : "",
-                description : "contenu textuel d'un post",
-                image : "images/profils/profils.png",
-                datePublication:"08/06/2022",
-            },
-            like: 10,
             loading:false,
-            displayComment:false,
         }
     }
     componentDidMount(){
@@ -68,23 +49,7 @@ class PostManager extends Component {
            
     }
 
-    modifyPost = () => {
-        console.log("modify");
-    }
-
-    deletePost = () => {
-        console.log("delete");
-    }
-    like = () => {
-        console.log("like")
-    }
-    displayComment = () =>{
-        this.setState({
-            displayComment:true
-        })
-    }
-
-     handleCallback = () => {
+    handleCallback = () => {
         console.log("callback Post");
         this.setState  ({
             loading: true,
@@ -97,23 +62,7 @@ class PostManager extends Component {
         let listPost ="";
         listPost = this.state.listPost.map(post => {
             return(
-                <article className={classes.post__container} key={post.post.postId}>
-                    <section className={classes.post} >
-                        <div className={classes.post__info}>   
-                            <InfoUSer mode="post" avatar={post.user.avatar} firstname={post.user.firstname} lastname={post.user.lastname} dataTime={post.post.datePublication} />
-                            {
-                               post.post.userId === this.state.currentUserId
-                               ?<div className={classes.post__option}>
-                                    <FiPenTool title="Modify" onClick={this.modifyPost} className={classes.iconModify} />
-                                    <RiDeleteBin6Line title="Delete" onClick={this.deletePost} className={classes.iconDelete} />
-                                </div>
-                                :<></>
-                            }
-                        </div>
-                        <Post image={post.post.image} description={post.post.description}/>
-                    </section>
-                    <CommentManager display={this.state.displayComment} idPost={post.post.postId} />
-                </article>
+                <Post {...post} key={post.post.postId} currentUserId={this.state.currentUserId}/>
             )
         })
 
