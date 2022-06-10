@@ -21,7 +21,7 @@ const Commentaire = Bd.define('commentaire', {
         type: DataTypes.STRING(255),
         allowNull: true,
     },
-    commentaire:{
+    description:{
         type: DataTypes.STRING(1000),
         allowNull: true,
     }

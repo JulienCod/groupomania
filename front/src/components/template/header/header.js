@@ -25,8 +25,8 @@ const Header = (props) => {
                 <div>
                     <nav>
                         <ul>
-                            <NavAuth title="login" to="Connexion" cssLi={classes.nav__ul__li}>S'identifier</NavAuth>
-                            <NavAuth title="signup" to="S'enregistrer" cssLi={classes.nav__ul__li}>S'enregistrer</NavAuth> 
+                            <NavAuth title="Connexion" to="login" cssLi={classes.nav__ul__li}>S'identifier</NavAuth>
+                            <NavAuth title="S'enregistrer" to="signup" cssLi={classes.nav__ul__li}>S'enregistrer</NavAuth> 
                         </ul>
                     </nav>
                 </div>                

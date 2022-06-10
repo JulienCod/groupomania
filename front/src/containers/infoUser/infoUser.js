@@ -4,12 +4,12 @@ import classes from "./infoUser.module.css"
 const infoUser = (props) => {
     if (props.mode === "comment") {
         return (
-            <div className={classes.post__info__user}>
+            <div >
                 <img src={props.avatar} width={"50px"} height={"50px"} alt={props.firstname} />
-                <div>
+                {/* <div>
                     <p>{props.firstname} {props.lastname}</p>
                     <p>Publié le {props.dataTime}</p>
-                </div>
+                </div> */}
             </div>
         )
     }else if (props.mode === "post"){

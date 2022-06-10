@@ -14,3 +14,9 @@
 .heart:hover{
     font-size:2.8rem;
 }
+.comment{
+    width:100%;
+    background-color:rgb(204, 199, 199);
+    margin:0.5rem;
+    border-radius: 1rem;
+}

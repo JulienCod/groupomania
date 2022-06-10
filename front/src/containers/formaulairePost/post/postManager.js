@@ -1,19 +1,20 @@
 import React, {Component} from 'react';
 import classes from "./postManager.module.css";
-import {FiHeart, FiPenTool} from 'react-icons/fi';
+import {FiPenTool} from 'react-icons/fi';
 import {RiDeleteBin6Line} from 'react-icons/ri';
 import PostService from '../../../services/postService';
 import InfoUSer from "../../infoUser/infoUser";
 import Post from './post/post';
 import CommentManager from '../comment/commentManager';
 import NewForm from '../newForm/newForm';
+import AuthService from '../../../services/authService';
 
 class PostManager extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listPost:[],
-            currentUserId:"1",
+            currentUserId:0,
             post:{
                 user:{
                     userId:"1",
@@ -28,16 +29,20 @@ class PostManager extends Component {
             },
             like: 10,
             loading:false,
+            displayComment:false,
         }
     }
-    componentDidMount = () => {
+    componentDidMount(){
+        let currentUserId = AuthService.getCurrentUser().userId;
         this.setState  ({
             loading: true,
+            currentUserId: currentUserId,
         })
+
         PostService.getAll()
-        .then(response => {
+        .then(async response => {
             if (response) {
-                const listPost = response.data.map(post => {
+                const listPost = await response.data.map(post => {
                     return {
                         post: {
                             postId: post.id,
@@ -54,7 +59,7 @@ class PostManager extends Component {
                         },
                     }
                 })
-                this.setState({
+                 this.setState({
                     listPost,
                     loading:false,
                 })
@@ -73,25 +78,22 @@ class PostManager extends Component {
     like = () => {
         console.log("like")
     }
+    displayComment = () =>{
+        this.setState({
+            displayComment:true
+        })
+    }
 
      handleCallback = () => {
-        console.log("callback");
+        console.log("callback Post");
+        this.setState  ({
+            loading: true,
+        })
         this.componentDidMount();
         this.componentDidMount();
     }
 
     render(){
-        let currentUserId = this.state.currentUserId;
-        let userId = this.state.post.user.userId;
-        let options = "";
-        if(currentUserId === userId){
-            options = (
-                <div className={classes.post__option}>
-                    <FiPenTool title="Modify" onClick={this.modifyPost} className={classes.iconModify} />
-                    <RiDeleteBin6Line title="Delete" onClick={this.deletePost} className={classes.iconDelete} />
-                </div>
-            )
-        }
         let listPost ="";
         listPost = this.state.listPost.map(post => {
             return(
@@ -99,20 +101,21 @@ class PostManager extends Component {
                     <section className={classes.post} >
                         <div className={classes.post__info}>   
                             <InfoUSer mode="post" avatar={post.user.avatar} firstname={post.user.firstname} lastname={post.user.lastname} dataTime={post.post.datePublication} />
-                            {options}
+                            {
+                               post.post.userId === this.state.currentUserId
+                               ?<div className={classes.post__option}>
+                                    <FiPenTool title="Modify" onClick={this.modifyPost} className={classes.iconModify} />
+                                    <RiDeleteBin6Line title="Delete" onClick={this.deletePost} className={classes.iconDelete} />
+                                </div>
+                                :<></>
+                            }
                         </div>
                         <Post image={post.post.image} description={post.post.description}/>
-                        <div>
-                            <FiHeart onClick={this.like} className={classes.heart}/>
-                            <span>{this.state.like}</span>
-                        </div>
                     </section>
-                    <CommentManager idPost={post.post.postId} />
+                    <CommentManager display={this.state.displayComment} idPost={post.post.postId} />
                 </article>
             )
         })
-
-      
 
         return(
             <>

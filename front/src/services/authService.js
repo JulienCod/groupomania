@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AuthHeader from './authHeader';
 // import dotenv from 'dotenv';
 
 // dotenv.config();
@@ -50,6 +51,13 @@ class AuthService {
         return JSON.parse(localStorage.getItem("user"))
     }
 
+    async getById(userId){
+        try {
+            return await axios.get(API_URL+userId, {headers: AuthHeader()})
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
   
 }
 
