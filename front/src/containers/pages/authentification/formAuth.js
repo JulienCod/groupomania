@@ -75,29 +75,29 @@ class FormAuth extends Component {
             form = (
                 <>
                     <div className={classes.field}>
-                        <label htmlFor='lastname'>Lastname : </label>
+                        <label htmlFor='lastname'></label>
                         <input 
                             type="text" 
                             name="lastname" 
-                            placeholder="lastname" 
+                            placeholder="Prénom" 
                             id='lastname'
                             value={this.state.lastname} 
                             onChange={(event)=> this.setState({lastname:event.target.value}) }
                         />                        
                     </div>
                     <div className={classes.field}>
-                        <label htmlFor='firstname'>Firstname : </label>
+                        <label htmlFor='firstname'></label>
                         <input 
                             type="text" 
                             name="firstname" 
-                            placeholder="firstname" 
+                            placeholder="Nom" 
                             id='firstname'
                             value={this.state.firstname} 
                             onChange={(event)=> this.setState({firstname:event.target.value}) }
                         />                        
                     </div>
                     <div className={classes.field}>
-                        <label htmlFor='avatar'>Avatar : </label>
+                        <label htmlFor='avatar'></label>
                         <input 
                             type="file" 
                             accept="image/*"
@@ -129,22 +129,22 @@ class FormAuth extends Component {
                 <form className={classes.form}>
                     <h1>{title}</h1>
                     <div className={classes.field}>
-                        <label htmlFor='email'>Email : </label>
+                        <label htmlFor='email'></label>
                         <input 
                             type="email"
                             name="email" 
-                            placeholder="Email" 
+                            placeholder="Adresse Email" 
                             id='email'
                             value={this.state.email}
                             onChange={(event)=> this.setState({email:event.target.value}) }
                         />
                     </div>
                     <div className={classes.field}>
-                        <label htmlFor='password'>Password : </label>
+                        <label htmlFor='password'></label>
                         <input 
                             type="password" 
                             name="password" 
-                            placeholder="Password" 
+                            placeholder="Mot de passe" 
                             id='password'
                             value={this.state.password} 
                             onChange={(event)=> this.setState({password:event.target.value}) }

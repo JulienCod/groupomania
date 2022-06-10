@@ -30,7 +30,7 @@ class AuthService {
         try {
             if(image === undefined){   
                 const formData = new FormData();
-                 formData.append('user', JSON.stringify(user));     
+                formData.append('user', JSON.stringify(user));     
                 await axios.post(API_URL + "signup", formData)
                 document.location.href = "login";
              }else{

@@ -27,3 +27,13 @@
 .newPost__send:hover{
     font-size: 2.8rem;
 }
+
+.commentaire__form{
+    display: flex;
+    justify-content:space-around;
+}
+.newCommentaire__textarea{
+    width: 75%;
+    min-height: 40px;
+    resize: none;
+}

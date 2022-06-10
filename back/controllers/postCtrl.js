@@ -1,16 +1,24 @@
 import Post from '../models/post.js';
+import User from '../models/user.js';
 
 // affichage de tous les posts
 const getAll = (req, res, next) => {
-    Post.findAll()
+    Post.findAll({include:[User]})
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(500).json({msg: ""+error}))
 }
 
 // création d'un post
 const createPost = (req, res, next) => {
-    const {body} = req;
-    Post.create({...body})
+    let post =JSON.parse(req.body.post);
+    let image = req.file;
+    if(image){
+        post = {
+            ...post,
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        }
+    }
+    Post.create({...post})
     .then(() => {res.status(201).json({msg: "Create post"})})
     .catch(error => res.status(500).json({msg : ""+error}))
 }

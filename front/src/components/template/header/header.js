@@ -15,7 +15,7 @@ const Header = (props) => {
                 <div>
                 <Link title="Profils" to="profils"><img src="images/profils/profils.png" width={"50px"} alt="" /></Link>
                     
-                    <GrLogout title="logout" className={classes.logout} onClick={AuthService.logout}/>
+                    <GrLogout title="Déconnexion" className={classes.logout} onClick={AuthService.logout}/>
                 </div>
             </>
         )
@@ -25,8 +25,8 @@ const Header = (props) => {
                 <div>
                     <nav>
                         <ul>
-                            <NavAuth title="login" to="login" cssLi={classes.nav__ul__li}>S'identifier</NavAuth>
-                            <NavAuth title="signup" to="signup" cssLi={classes.nav__ul__li}>S'enregistrer</NavAuth> 
+                            <NavAuth title="login" to="Connexion" cssLi={classes.nav__ul__li}>S'identifier</NavAuth>
+                            <NavAuth title="signup" to="S'enregistrer" cssLi={classes.nav__ul__li}>S'enregistrer</NavAuth> 
                         </ul>
                     </nav>
                 </div>                

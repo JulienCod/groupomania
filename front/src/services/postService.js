@@ -13,7 +13,7 @@ class PostService {
     // fonction d'affichage de tous les posts
     async getAll(){
         try {
-            await axios.get(API_URL, {headers: AuthHeader()});            
+            return await axios.get(API_URL, {headers: AuthHeader()})
         } catch (error) {
             console.log(error.message)
         }
@@ -21,15 +21,15 @@ class PostService {
     // fonction de création d'un post 
     async createPost(post, image){
         try {
-            if(image === 'undefined'){
-                await axios.post(API_URL, post,{headers: AuthHeader()});           
-            }else if ( post === 'undefined'){
-                await axios.post(API_URL, image,{headers: AuthHeader()});           
-            }else{
+            if(!image){    
                 const formData = new FormData();
-                formData.append('post', JSON.stringify(post));
-                formData.append('image', image); 
-                await axios.post(API_URL, formData,{headers: AuthHeader()});           
+                formData.append("post", JSON.stringify(post));
+                await axios.post(API_URL, formData, {headers: AuthHeader()});           
+            }else{                
+                const formData = new FormData();
+                formData.append("post", JSON.stringify(post));
+                formData.append('image', image);
+                await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }
         } catch (error) {
             console.log(error.message)

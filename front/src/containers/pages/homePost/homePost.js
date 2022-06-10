@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import classes from './homePost.module.css';
 import {RiCloseCircleLine} from 'react-icons/ri';
-import NewPost from '../../formaulairePost/newPost/newPost';
-import Post from '../../formaulairePost/post/post';
-import CommentManager from '../../formaulairePost/comment/commentManager';
+// import NewForm from '../../formaulairePost/newForm/newForm';
+import PostManager from '../../formaulairePost/post/postManager';
 
 class HomePost extends Component {
     constructor(props){
@@ -20,20 +19,8 @@ class HomePost extends Component {
         this.setState({
             welcome : false
         })
-    }
-
-    submitPost = () => {
-        console.log("envoi du post");
-    }
-
+    }    
     
-
-   
-
-    
-    submitCommentaire = () => {
-        console.log("commentaire");
-    }
     render(){  
         let welcome = this.state.welcome;
         let welcomeContent = "";
@@ -49,12 +36,9 @@ class HomePost extends Component {
         return (
             <>
                 {welcomeContent}
-                <NewPost />
+                {/* <NewForm status="post" /> */}
 
-                <article className={classes.post__container}>
-                   <Post />
-                   <CommentManager />
-                </article>
+                <PostManager />
             </>
         );
     }
