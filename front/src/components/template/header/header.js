@@ -2,21 +2,44 @@ import React from "react";
 import Image from "../../image/image";
 import classes from "./header.module.css"
 import NavAuth from "../../nav/auth/navAuth"
+import AuthService from "../../../services/authService";
+import {GrLogout} from "react-icons/gr"
+import { Link } from "react-router-dom";
 
 const Header = (props) => {
-    // let url = new URL(window.location.href).pathname;
-    // let id = url.split('/')[1]  
-    // console.log(id);
+    const user = AuthService.getCurrentUser();
+    let content = "";
+    if (user){
+        content = (
+            <>
+                <div>
+                <Link title="Profils" to="profils"><img src="images/profils/profils.png" width={"50px"} alt="" /></Link>
+                    
+                    <GrLogout title="Déconnexion" className={classes.logout} onClick={AuthService.logout}/>
+                </div>
+            </>
+        )
+    }else{
+        content = (
+            <>
+                <div>
+                    <nav>
+                        <ul>
+                            <NavAuth title="login" to="Connexion" cssLi={classes.nav__ul__li}>S'identifier</NavAuth>
+                            <NavAuth title="signup" to="S'enregistrer" cssLi={classes.nav__ul__li}>S'enregistrer</NavAuth> 
+                        </ul>
+                    </nav>
+                </div>                
+            </>
+        )
+    }
     return <header className={classes.header}>
                 <div className={classes.header__container}>
                     <Image src= "images/logos/icon-left-font-monochrome-white.png" alt="logo groupomania" cssContainer={classes.container__img} cssImage={classes.img} />
-                    <nav>
-                        <ul>
-                            <NavAuth to="login" cssLi={classes.nav__ul__li}>S'identifier</NavAuth>
-                            <NavAuth to="signup" cssLi={classes.nav__ul__li}>S'enregistrer</NavAuth>
-                        </ul>
-                    </nav>
-                </div>
+                    
+                    {content}        
+                </div>       
+                
             </header>
 };
 

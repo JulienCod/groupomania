@@ -1,7 +1,6 @@
 import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
 import Commentaire from './commentaire.js';
-// schema post
 const {DataTypes} = sequelize;
 const Post = Bd.define('post', {
     id: {

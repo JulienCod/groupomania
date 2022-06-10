@@ -1,0 +1,25 @@
+/* icon modify post */
+.iconModify{
+    font-size:2.5rem;
+    color:#4E5166;
+}
+.iconModify:hover{
+    font-size:2.8rem;
+}
+
+/* icon delete */
+.iconDelete{
+    font-size:2.5rem;
+    color:#4E5166;
+}
+.iconDelete:hover{
+    font-size:2.8rem;
+}
+/* icon close welcome */
+.closeWelcome{
+    font-size:2.5rem;
+    color:#4E5166;
+}
+.closeWelcome:hover{
+    font-size:2.8rem;
+}

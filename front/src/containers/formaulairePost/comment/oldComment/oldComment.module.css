@@ -1,0 +1,16 @@
+.commentaire__old{
+    display:flex;
+    justify-content: space-around;
+}
+.commentaire__text{
+    width: 75%;
+    min-height: 40px;
+}
+/* icon heart */
+.heart{
+    font-size:2.5rem;
+    color:#4E5166;
+}
+.heart:hover{
+    font-size:2.8rem;
+}
