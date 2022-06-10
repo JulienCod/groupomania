@@ -79,7 +79,6 @@ class NewForm extends Component {
             this.props.parentCallback();
             this.componentDidMount();
         }
-        console.log("envoie d'un commentaire");
     }
     render(){
         let image = "";
@@ -108,7 +107,8 @@ class NewForm extends Component {
                             <textarea
                             type="textarea"
                             name="description"
-                            id="description"                        
+                            id="description" 
+                            placeholder="Que voulez-vous dire ?"                       
                             value={this.state.description}
                             onChange={this.handleInputChange}
                             className={classes.newPost__textArea} 
@@ -139,7 +139,8 @@ class NewForm extends Component {
                         <textarea
                         type="textarea"
                         name="description"
-                        id="description"                        
+                        id="description"
+                        placeholder='Écrivez un commentaire ...'                        
                         value={this.state.description}
                         onChange={this.handleInputChange}
                         className={classes.newCommentaire__textarea}

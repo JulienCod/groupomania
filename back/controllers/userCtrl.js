@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 const signup = async (req, res) => {
     let user = JSON.parse(req.body.user);
     let image = req.file;
+    console.log(req.file);
     if(image){
         user = {
             ...user,
@@ -55,6 +56,13 @@ const login = async (req, res) => {
     }  
 };
 
+const getById = (req, res) => {
+    let id = req.params.id;
+    User.findByPk(id)
+    .then(user => res.status(200).json(user))
+    .catch(error => res.status(500).json({msg : "" + error}))
+}
+
 const updateUser = async (req, res) => {
 
     const {id} = req.params;
@@ -97,4 +105,4 @@ const deleteUser = async (req, res) => {
     }
 }
 
-export {signup, login, updateUser, deleteUser}
+export {signup, login, updateUser, deleteUser, getById}

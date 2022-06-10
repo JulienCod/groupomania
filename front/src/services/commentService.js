@@ -6,28 +6,28 @@ import AuthHeader from './authHeader.js';
 
 // dotenv.config();
 
-const API_URL = "http://localhost:3000/api/post/";
+const API_URL = "http://localhost:3000/api/commentaire/";
 
 
 class PostService {
     // fonction d'affichage de tous les posts
-    async getAll(){
+    async getById(idPost){
         try {
-            return await axios.get(API_URL, {headers: AuthHeader()})
+            return await axios.get(API_URL+idPost, {headers: AuthHeader()})
         } catch (error) {
             console.log(error.message)
         }
     }
     // fonction de création d'un post 
-    async createPost(post, image){
+    async createComment(commentaire, image){
         try {
             if(!image){    
                 const formData = new FormData();
-                formData.append("post", JSON.stringify(post));
+                formData.append("commentaire", JSON.stringify(commentaire));
                 await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }else{                
                 const formData = new FormData();
-                formData.append("post", JSON.stringify(post));
+                formData.append("commentaire", JSON.stringify(commentaire));
                 formData.append('image', image);
                 await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }
@@ -35,8 +35,6 @@ class PostService {
             console.log(error.message)
         }
     }
-
-    
 }
 
 export default new PostService();
