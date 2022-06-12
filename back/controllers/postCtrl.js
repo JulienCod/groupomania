@@ -33,6 +33,7 @@ const createPost = (req, res, next) => {
 
 // mise à jour d'un post
 const updatePost = async (req, res, next) => {
+    console.log(req.body);
     const {id} = req.params;
     const postObject = req.file ?
     {
@@ -53,7 +54,6 @@ const updatePost = async (req, res, next) => {
         }
         post.image = postObject.image;
         post.description = postObject.description;
-        console.log(postObject.image);
         // enregistrement des modifications du post
         await post.save()
         return res.status(200).json({msg : "update post"})

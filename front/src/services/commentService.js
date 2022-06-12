@@ -9,15 +9,16 @@ import AuthHeader from './authHeader.js';
 const API_URL = "http://localhost:3000/api/commentaire/";
 
 
-class PostService {
+class CommentService {
     // fonction d'affichage de tous les posts
-    async getById(idPost){
+    async getById(idComment){
         try {
-            return await axios.get(API_URL+idPost, {headers: AuthHeader()})
+            return await axios.get(API_URL+idComment, {headers: AuthHeader()})
         } catch (error) {
             console.log(error.message)
         }
     }
+
     // fonction de création d'un post 
     async createComment(commentaire, image){
         try {
@@ -32,9 +33,36 @@ class PostService {
                 await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }
         } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    //fonction de suppression d'un commentaire
+    async deleteComment(commentId){
+        try {
+            return await axios.delete(API_URL+commentId, {headers: AuthHeader()})
+        } catch (error) {
+            console.log(error.message);            
+        }
+    }
+
+     //modification d'un post
+     async modifyComment(commentId, comment, image){
+        try {
+            if(!image){    
+                const formData = new FormData();
+                formData.append("description", JSON.stringify(comment));
+                return await axios.put(API_URL+commentId, formData, {headers: AuthHeader()});           
+            }else{      
+                const formData = new FormData();
+                formData.append("description", JSON.stringify(comment));
+                formData.append('image', image);
+                return await axios.put(API_URL+commentId, formData,{headers: AuthHeader()})
+            }
+        } catch (error) {
             console.log(error.message)
         }
     }
 }
 
-export default new PostService();
+export default new CommentService();

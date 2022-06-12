@@ -5,7 +5,6 @@ import ContainerPost from '../ContainerPost/ContainerPost';
 import CommentManager from '../../comment/commentManager';
 import classes from "./post.module.css";
 import InfoUSer from "../../../infoUser/infoUser";
-import AuthService from '../../../../services/authService';
 import PostService from '../../../../services/postService';
 import ModifyForm from '../../modifyForm/modifyForm';
 
@@ -35,12 +34,11 @@ class Post extends Component {
     }
 
     deletePost = async () => {
-        let user = AuthService.getCurrentUser()
         let postId = this.state.postId;
         this.setState({
             delete: true,
         })
-        await PostService.deletePost(postId, user);
+        await PostService.deletePost(postId);
         
     }
     like = () => {
@@ -60,7 +58,7 @@ class Post extends Component {
         let modify = "";
         if(this.state.modify){
             modify=(
-                <ModifyForm {...this.props} />
+                <ModifyForm mode="post" {...this.props} />
             )
         }else{
             modify=(

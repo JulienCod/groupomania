@@ -45,9 +45,9 @@ class PostService {
     }
 
     //suppression d'un post
-    async deletePost(postId, user){
+    async deletePost(postId){
         try {
-            return await axios.delete(API_URL+postId ,{headers: AuthHeader()} ,user);
+            return await axios.delete(API_URL+postId ,{headers: AuthHeader()} );
         } catch (error) {
             console.log(error.message);            
         }
@@ -59,7 +59,7 @@ class PostService {
             if(!image){    
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
-                await axios.put(API_URL+postId, formData, {headers: AuthHeader()});           
+                return await axios.put(API_URL+postId, formData, {headers: AuthHeader()});           
             }else{      
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
@@ -70,8 +70,6 @@ class PostService {
             console.log(error.message)
         }
     }
-
-    
 }
 
 export default new PostService();
