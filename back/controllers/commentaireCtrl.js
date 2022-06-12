@@ -30,7 +30,6 @@ const createCommentaire = (req, res) => {
 
 // mise à jour d'un commentaire
 const updateCommentaire = async (req, res, next) => {
-    console.log(req.body);
     const {id} = req.params;
     const commentObject = req.file ?
     {
@@ -38,7 +37,7 @@ const updateCommentaire = async (req, res, next) => {
         image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } :{...JSON.parse(req.body.description)}
     try {
-        //recherche de l'identifiant du post
+        //recherche de l'identifiant du commentaire
         let comment = await Commentaire.findByPk(id)
         if(!comment)return res.status(404).json({msg : "commment not found"});
         if(commentObject.image){
@@ -51,9 +50,9 @@ const updateCommentaire = async (req, res, next) => {
         }
         comment.image = commentObject.image;
         comment.description = commentObject.description;
-        // enregistrement des modifications du post
+        // enregistrement des modifications du commentaire
         await comment.save()
-        return res.status(200).json({msg : "update post"})
+        return res.status(200).json({msg : "update comment"})
     } catch (error) {
         return res.status(500).json({msg : "Database error", error : error})
     }

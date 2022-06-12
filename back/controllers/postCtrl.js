@@ -1,5 +1,7 @@
 import Post from '../models/post.js';
 import User from '../models/user.js';
+import Commentaire from '../models/commentaire.js';
+
 import fs from "fs"
 
 // affichage de tous les posts
@@ -66,8 +68,17 @@ const updatePost = async (req, res, next) => {
 const deletePost = async (req, res) => {
     const {id} =req.params;
     try {
-        let post = await Post.findByPk(id)
+        let post = await Post.findByPk(id, {include:[Commentaire]})
         if(!post) return res.status(404).json({msg : "post not found"});
+        for (const commentaire of post.commentaires) {
+            if (commentaire.dataValues.image){
+                let filename = commentaire.dataValues.image.split('/images/')[1];
+                fs.unlink(`images/${filename}`,(error) =>{
+                    if (error) throw error;
+                    console.log(filename);
+                });
+            }
+        }
         if(post.image === null){
             let ressource = Post.destroy({where : {id : id}})
             if (ressource === 0) return res.status(404).json({msg: "Not found"})
