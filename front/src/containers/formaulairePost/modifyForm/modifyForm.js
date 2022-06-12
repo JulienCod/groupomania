@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import classes from './modifyForm.module.css';
 import {FiSend} from 'react-icons/fi';
 import PostService from '../../../services/postService';
-// import commentService from '../../../services/commentService';
+import CommentService from '../../../services/commentService';
 
 
 
@@ -14,6 +14,7 @@ class ModifyForm extends Component {
             description:"",
             image: "",
             imagePreview:"",
+            mode: "",
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.fileInput = React.createRef();
@@ -31,14 +32,24 @@ class ModifyForm extends Component {
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
     componentDidMount() {
-        const postId = this.props.post.postId
-        PostService.getById(postId)
-        .then(response =>{
+        const mode = this.props.mode;
+        if (mode ==="post") {
+            const postId = this.props.post.postId
+            PostService.getById(postId)
+            .then(response =>{
+                this.setState({
+                    description: response.data.description,
+                    image: response.data.image,
+                    mode: mode,
+                })
+            })            
+        } else if(mode ==="comment"){
             this.setState({
-                description: response.data.description,
-                image: response.data.image
+                description: this.props.description,
+                image: this.props.image,
+                mode: mode
             })
-        })
+        }
     }
     submitModifyPost = async () => {
         const postId = this.props.post.postId;
@@ -47,7 +58,15 @@ class ModifyForm extends Component {
             description : this.state.description,
         }
         await PostService.modifyPost(postId, post, image);
-        // setTimeout(() => 1000, window.location.reload())
+        window.location.reload();
+    }
+    submitModifyComment = async () => {
+        const commentId = this.props.id;
+        let image =  this.fileInput.current.files[0];
+        let comment = {
+            description : this.state.description,
+        }
+        await CommentService.modifyComment(commentId, comment, image);
         window.location.reload();
     }
 
@@ -66,10 +85,41 @@ class ModifyForm extends Component {
                 </div>    
             )
         }
+        let content ="";
+        if(this.state.mode === "post"){
+            content = (
+                <div>
+                    <form className={classes.commentaire__form} method="post">
+                            <img src="images/profils/profils.png" width={"50px"} height={"50px"} alt="" />
+                            <label htmlFor="textarea"></label>
+                            <textarea
+                            type="textarea"
+                            name="description"
+                            id="description"
+                            placeholder='Écrivez un commentaire ...'                        
+                            value={this.state.description}
+                            onChange={this.handleInputChange}
+                            className={classes.newCommentaire__textarea}
+                            ></textarea>
 
-        return (
-            <div>
-                <form className={classes.commentaire__form} method="post">
+                            <label htmlFor="picture"></label>
+                            <input 
+                            type="file" 
+                            accept="image/*"
+                            name="picture" 
+                            id='picture' 
+                            ref={this.fileInput} 
+                            onChange={this.handleImageChange}
+                            />
+                            {image}
+                            <FiSend onClick={this.submitModifyPost} className={classes.newPost__send}/>
+                        </form>
+                </div>
+            )
+        }else if (this.state.mode === "comment"){
+            content = (
+                <div>
+                    <form className={classes.commentaire__form} method="post">
                         <img src="images/profils/profils.png" width={"50px"} height={"50px"} alt="" />
                         <label htmlFor="textarea"></label>
                         <textarea
@@ -92,9 +142,16 @@ class ModifyForm extends Component {
                         onChange={this.handleImageChange}
                         />
                         {image}
-                        <FiSend onClick={this.submitModifyPost} className={classes.newPost__send}/>
+                        <FiSend onClick={this.submitModifyComment} className={classes.newPost__send}/>
                     </form>
-            </div>
+                </div> 
+            )
+
+        }
+        return (
+           <>
+            {content}
+           </>
         );
     }
 }
