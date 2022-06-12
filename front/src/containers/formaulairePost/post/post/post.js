@@ -34,13 +34,13 @@ class Post extends Component {
         })
     }
 
-    deletePost = () => {
+    deletePost = async () => {
         let user = AuthService.getCurrentUser()
         let postId = this.state.postId;
         this.setState({
             delete: true,
         })
-        PostService.deletePost(postId, user);
+        await PostService.deletePost(postId, user);
         
     }
     like = () => {

@@ -11,7 +11,7 @@ const router = Router();
 router.get('/',auth, getAll);
 router.get('/:id',auth, getById);
 router.post('/',limiter, auth, multer, createPost);
-router.put('/:id', limiter, auth,idComparePost, updatePost);
+router.put('/:id', limiter, auth,multer ,idComparePost, updatePost);
 router.delete('/:id', auth, idComparePost, deletePost);
 router.post('/:id/like',auth, like)
 
