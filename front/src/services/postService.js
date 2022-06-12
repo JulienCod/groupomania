@@ -58,11 +58,11 @@ class PostService {
         try {
             if(!image){    
                 const formData = new FormData();
-                formData.append("post", JSON.stringify(post));
-                await axios.post(API_URL, formData, {headers: AuthHeader()});           
+                formData.append("description", JSON.stringify(post));
+                await axios.put(API_URL+postId, formData, {headers: AuthHeader()});           
             }else{      
                 const formData = new FormData();
-                formData.append("post", JSON.stringify(post));
+                formData.append("description", JSON.stringify(post));
                 formData.append('image', image);
                 return await axios.put(API_URL+postId, formData,{headers: AuthHeader()})
             }

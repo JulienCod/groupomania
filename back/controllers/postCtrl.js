@@ -34,22 +34,26 @@ const createPost = (req, res, next) => {
 // mise à jour d'un post
 const updatePost = async (req, res, next) => {
     const {id} = req.params;
-    const {body} = req;
-    // let post =JSON.parse(req.body.post);
-    // let image = req.file;
-    // if(image){
-    //     post = {
-    //         ...post,
-    //         image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    //     }
-    // }
-
+    const postObject = req.file ?
+    {
+        ...JSON.parse(req.body.description),
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } :{...JSON.parse(req.body.description)}
     try {
         //recherche de l'identifiant du post
         let post = await Post.findByPk(id)
         if(!post)return res.status(404).json({msg : "post not found"});
-        post.content = body.content;
-        post.commentaire = body.commentaire;
+        if(postObject.image){
+            if(post.image){
+                console.log(post.image);
+                const filename = post.image.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                })
+            }
+        }
+        post.image = postObject.image;
+        post.description = postObject.description;
+        console.log(postObject.image);
         // enregistrement des modifications du post
         await post.save()
         return res.status(200).json({msg : "update post"})

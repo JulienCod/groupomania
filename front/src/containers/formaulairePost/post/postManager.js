@@ -49,8 +49,7 @@ class PostManager extends Component {
            
     }
 
-    handleCallback = () => {
-        console.log("callback Post");
+    handleCallback =  () => {
         this.setState  ({
             loading: true,
         })

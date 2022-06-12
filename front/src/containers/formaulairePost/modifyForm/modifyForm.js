@@ -31,7 +31,7 @@ class ModifyForm extends Component {
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
     componentDidMount() {
-        let postId = this.props.post.postId
+        const postId = this.props.post.postId
         PostService.getById(postId)
         .then(response =>{
             this.setState({
@@ -40,8 +40,15 @@ class ModifyForm extends Component {
             })
         })
     }
-    submitModifyPost = () => {
-        console.log("modification des post");
+    submitModifyPost = async () => {
+        const postId = this.props.post.postId;
+        let image =  this.fileInput.current.files[0];
+        let post = {
+            description : this.state.description,
+        }
+        await PostService.modifyPost(postId, post, image);
+        // setTimeout(() => 1000, window.location.reload())
+        window.location.reload();
     }
 
     render(){

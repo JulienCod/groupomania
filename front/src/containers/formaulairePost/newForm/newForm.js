@@ -39,7 +39,7 @@ class NewForm extends Component {
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
     //envoi du formulaire post
-    submitPost = (event) => {
+    submitPost = async (event) => {
         event.preventDefault();
         let description = this.state.description;
         let image =  this.fileInput.current.files[0];
@@ -53,13 +53,13 @@ class NewForm extends Component {
                 userId : userId,
                 description : description
             }
-            PostService.createPost(post, image);
+            await PostService.createPost(post, image);
             this.props.parentCallback();
             this.componentDidMount();
         }
     }
     //envoi du formulaire commentaire
-    submitCommentaire = (event) =>{
+    submitCommentaire = async (event) =>{
         event.preventDefault();
         let description = this.state.description;
         let image =  this.fileInput.current.files[0];
@@ -74,7 +74,7 @@ class NewForm extends Component {
                 description : description,
                 postId : this.props.idPost
             }
-            commentService.createComment(comment, image);
+            await commentService.createComment(comment, image);
             this.props.parentCallback();
             this.componentDidMount();
         }
