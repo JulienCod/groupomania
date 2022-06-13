@@ -16,7 +16,7 @@ class AuthService {
                 document.location.href = "groupomania";
             }
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
     }
 
@@ -42,7 +42,7 @@ class AuthService {
                  document.location.href = "login";
              }
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
     }
 
@@ -55,7 +55,33 @@ class AuthService {
         try {
             return await axios.get(API_URL+userId, {headers: AuthHeader()})
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
+        }
+    }
+
+    async modifyProfils(userId, user, image){
+        try {
+            if(image === undefined){   
+                const formData = new FormData();
+                formData.append('user', JSON.stringify(user));     
+                await axios.put(API_URL + userId, formData, {headers: AuthHeader()})
+             }else{
+                 const formData = new FormData();
+                 formData.append('user', JSON.stringify(user));
+                 formData.append('image', image);
+                 await axios.put(API_URL + userId, formData, {headers: AuthHeader()})
+             }            
+        } catch (error) {
+            console.log(error.message);            
+        }
+    }
+
+    async deleteUser(userId) {
+        try {
+            await axios.delete(API_URL+userId, {headers: AuthHeader()})
+        } catch (error) {
+            console.log(error.message);            
+            
         }
     }
   

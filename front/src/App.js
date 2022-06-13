@@ -6,6 +6,7 @@ import FormAuth from "./containers/pages/authentification/formAuth";
 import Erreur from './containers/pages/pageErreur/erreur';
 import Erreur404 from './components/erreur/erreur404';
 import HomePost from './containers/pages/homePost/homePost';
+import PageProfils from './containers/pages/pageProfils/pageProfils';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="signup" element={<FormAuth mode="signup" />}/>
           <Route path="login" element={<FormAuth mode="login"/>}/>
           <Route path="groupomania" element={<HomePost />}/>
+          <Route path="profils" element={<PageProfils />} />
         <Route/>
         <Route path="*" element={<Erreur><Erreur404/></Erreur>}/>
 

@@ -8,12 +8,13 @@ import { Link } from "react-router-dom";
 
 const Header = (props) => {
     const user = AuthService.getCurrentUser();
+
     let content = "";
     if (user){
         content = (
             <>
                 <div>
-                <Link title="Profils" to="profils"><img src="images/profils/profils.png" width={"50px"} alt="" /></Link>
+                    <Link title="Profils" to="profils"><img src={user.avatar} width={"50px"} alt={`Image de profils de ${user.lastname}`} /></Link>
                     
                     <GrLogout title="Déconnexion" className={classes.logout} onClick={AuthService.logout}/>
                 </div>
@@ -36,10 +37,8 @@ const Header = (props) => {
     return <header className={classes.header}>
                 <div className={classes.header__container}>
                     <Image src= "images/logos/icon-left-font-monochrome-white.png" alt="logo groupomania" cssContainer={classes.container__img} cssImage={classes.img} />
-                    
                     {content}        
                 </div>       
-                
             </header>
 };
 

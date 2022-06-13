@@ -34,8 +34,7 @@ const createPost = (req, res, next) => {
 }
 
 // mise à jour d'un post
-const updatePost = async (req, res, next) => {
-    console.log(req.body);
+const updatePost = async (req, res) => {
     const {id} = req.params;
     const postObject = req.file ?
     {
@@ -50,8 +49,10 @@ const updatePost = async (req, res, next) => {
             if(post.image){
                 console.log(post.image);
                 const filename = post.image.split('/images/')[1];
-                fs.unlink(`images/${filename}`, () => {
-                })
+                fs.unlink(`images/${filename}`,(error) =>{
+                    if (error) throw error;
+                    console.log(filename);
+                });
             }
         }
         post.image = postObject.image;

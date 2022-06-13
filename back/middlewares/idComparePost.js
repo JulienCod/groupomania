@@ -10,7 +10,10 @@ const idComparePost = async (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
         const userId = decodedToken.userId;
-        if (post.dataValues.userId !== userId) res.status(403).json({ message: 'Requête non autorisée' });
+        const isAdmin = decodedToken.isAdmin;
+        if (!isAdmin && post.dataValues.userId !== userId){
+            res.status(403).json({ message: 'Requête non autorisée' });
+        }    
         else{
             next()
         }

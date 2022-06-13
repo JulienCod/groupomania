@@ -19,7 +19,7 @@ class FormAuth extends Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.fileInput = React.createRef();
     }
-
+   
     handleInputChange = (event) => {
         const name = event.target.name;
         this.setState({
@@ -55,7 +55,10 @@ class FormAuth extends Component {
     render(){
         let title ="";
         let image = "";
-        if(this.state.imagePreview){
+        let form = "";
+        let mode = this.props.mode;
+
+         if(this.state.imagePreview){
             image = (
                 <div className={classes.container__img}>
                     <img src={this.state.imagePreview} width="100px" alt="" className={classes.image} />
@@ -68,10 +71,17 @@ class FormAuth extends Component {
                 </div>                       
             )
         }
-        const mode = this.props.mode;
-        let form = "";
+        let button="";
         if (mode === 'signup'){
             title = "Créer un compte"
+            button = (
+                <>
+                    <Button clic={this.handleValidationFormSignup}>Créez un compte</Button>
+                </>   
+            )
+        }
+
+        if (mode === 'signup'){
             form = (
                 <>
                     <div className={classes.field}>
@@ -111,8 +121,8 @@ class FormAuth extends Component {
 
                     </div>
                     <div>
-                        <Button clic={this.handleValidationFormSignup}>Créez un compte</Button>
-                    </div>      
+                        {button}
+                    </div>
                 </>
             )
         }else if (mode ==='login'){
@@ -126,7 +136,7 @@ class FormAuth extends Component {
 
         return (
             <article className={classes.article}>
-                <form className={classes.form}>
+                <form className={classes.form} >
                     <h1>{title}</h1>
                     <div className={classes.field}>
                         <label htmlFor='email'></label>

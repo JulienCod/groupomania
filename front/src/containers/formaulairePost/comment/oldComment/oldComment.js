@@ -13,18 +13,20 @@ class OldComment extends Component {
         super(props)
         this.state={
             avatar: "",
-            modify: false
+            modify: false,
+            delete: false,
         }
     }
 
     componentDidMount = async() => {
-        const currentUser = AuthService.getCurrentUser().userId;
+        const user = AuthService.getCurrentUser();
         await AuthService.getById(this.props.userId)
         .then(response => {
             if(response){
                 this.setState({
                     avatar: response.data.avatar,
-                    currentUser: currentUser
+                    currentUser: user.userId,
+                    admin: user.admin
                 })
             }
         })
@@ -44,7 +46,6 @@ class OldComment extends Component {
 
     deleteComment = async() => {
         let commentId = this.props.id;
-        console.log(commentId);
         this.setState({
             delete: true,
         })
@@ -54,7 +55,7 @@ class OldComment extends Component {
 
     render(){
         let options = "";
-        if (this.props.userId === this.state.currentUser) {
+        if (this.props.userId === this.state.currentUser || this.state.admin) {
             options = (
                 <div className={classes.post__option}>
                     <FiPenTool title="Modifié" onClick={this.modifyComment} className={classes.iconModify} />
@@ -84,8 +85,10 @@ class OldComment extends Component {
                 
             )
         }
-        return (
-            <div className={classes.commentaire__old}>
+        let content ="";
+        if(!this.state.delete){
+            content =(
+                <div className={classes.commentaire__old}>
                 <InfoUser avatar={this.state.avatar} mode={"comment"}/> 
                    {modify}               
                 <div>
@@ -93,6 +96,12 @@ class OldComment extends Component {
                     <span>10</span>
                 </div>
             </div>
+            )
+        }
+        return (
+            <>
+                {content}
+            </>
         );
     }
 }
