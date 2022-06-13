@@ -35,7 +35,13 @@ const User = Bd.define('user', {
     },
     avatar: {
         type: DataTypes.STRING,
+        defaultValue:"http://localhost:3000/images/profils.png" ,
         allowNull: true
+    },
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
     }
 })
 

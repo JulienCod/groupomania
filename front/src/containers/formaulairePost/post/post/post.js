@@ -47,7 +47,7 @@ class Post extends Component {
 
     render(){
         let options = "";
-        if (this.props.post.userId === this.props.currentUserId) {
+        if (this.props.post.userId === this.props.currentUserId || this.props.admin) {
             options = (
                 <div className={classes.post__option}>
                     <FiPenTool title="Modifié" onClick={this.modifyPost} className={classes.iconModify} />

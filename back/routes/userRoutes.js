@@ -9,7 +9,7 @@ const router = Router();
 
 router.post('/signup', limiter, multer, signup);
 router.post('/login', limiter, login);
-router.put('/:id', limiter, auth, userCompare,  updateUser);
+router.put('/:id', limiter, auth, userCompare, multer, updateUser);
 router.delete('/:id', limiter, auth, userCompare,  deleteUser);
 router.get('/:id',auth, getById)
 

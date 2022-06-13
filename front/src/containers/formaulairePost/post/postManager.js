@@ -11,13 +11,15 @@ class PostManager extends Component {
             listPost:[],
             currentUserId:0,
             loading:false,
+            admin:false,
         }
     }
     componentDidMount(){
-        let currentUserId = AuthService.getCurrentUser().userId;
+        let storage = AuthService.getCurrentUser();
         this.setState  ({
             loading: true,
-            currentUserId: currentUserId,
+            currentUserId: storage.userId,
+            admin: storage.admin
         })
 
         PostService.getAll()
@@ -61,7 +63,7 @@ class PostManager extends Component {
         let listPost ="";
         listPost = this.state.listPost.map(post => {
             return(
-                <Post {...post} key={post.post.postId} currentUserId={this.state.currentUserId}/>
+                <Post {...post} key={post.post.postId} currentUserId={this.state.currentUserId} admin={this.state.admin}/>
             )
         })
 
