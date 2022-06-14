@@ -40,6 +40,7 @@ class PostManager extends Component {
                             lastname: post.user.lastname,
                             avatar: post.user.avatar,
                         },
+                        likePost: post.likePosts
                     }
                 })
                  this.setState({
@@ -47,8 +48,7 @@ class PostManager extends Component {
                     loading:false,
                 })
             }
-        })
-           
+        })    
     }
 
     handleCallback =  () => {

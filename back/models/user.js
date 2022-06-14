@@ -2,7 +2,9 @@ import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
 import Post from './post.js';
 import Commentaire from './commentaire.js';
-import Like from './like.js';
+import LikeComment from './likeComment.js';
+import LikePost from './likePost.js';
+// import Like from './like.js';
 
 //schema User
 const {DataTypes} = sequelize;
@@ -50,8 +52,9 @@ User.hasMany(Post, {foreignKey: 'userId', onDelete: "Cascade"});
 Post.belongsTo(User, {foreignKey: 'userId'});
 User.hasMany(Commentaire, {foreignKey: 'userId', onDelete: "Cascade"});
 Commentaire.belongsTo(User, {foreignKey: 'userId'});
-// ***************************************************************
-User.hasMany(Like, {foreignKey: 'userId', onDelete: "Cascade"});
-Like.belongsTo(User, {foreignKey: 'userId'});
+User.hasMany(LikeComment, {foreignKey: 'userId', onDelete: "Cascade"});
+LikeComment.belongsTo(User, {foreignKey: 'userId'});
+User.hasMany(LikePost, {foreignKey: 'userId', onDelete: "Cascade"});
+LikePost.belongsTo(User, {foreignKey: 'userId'})
 
 export default User;

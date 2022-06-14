@@ -1,9 +1,8 @@
 import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
-import LikeComment from './likeComment.js';
 //schema commentaire
 const {DataTypes} = sequelize;
-const Commentaire = Bd.define('commentaire', {
+const LikePost = Bd.define('likePost', {
     id: {
         type: DataTypes.INTEGER(10),
         primaryKey: true,
@@ -18,16 +17,12 @@ const Commentaire = Bd.define('commentaire', {
         type: DataTypes.INTEGER(10),
         allowNull: false,
     },
-    image:{
-        type: DataTypes.STRING(255),
-        allowNull: true,
-    },
-    description:{
-        type: DataTypes.STRING(1000),
-        allowNull: true,
+    liked:{
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
     }
 })
-Commentaire.hasMany(LikeComment, {foreignKey : 'commentId', onDelete : 'CASCADE'})
-LikeComment.belongsTo(Commentaire, {foreignKey : 'commentId'});
 
-export default Commentaire;
+
+export default LikePost;

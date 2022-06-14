@@ -1,6 +1,8 @@
 import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
 import Commentaire from './commentaire.js';
+import LikeComment from './likeComment.js';
+import LikePost from './likePost.js';
 const {DataTypes} = sequelize;
 const Post = Bd.define('post', {
     id: {
@@ -25,6 +27,7 @@ const Post = Bd.define('post', {
 // association des tables
 Post.hasMany(Commentaire, {foreignKey : 'postId', onDelete : 'CASCADE'})
 Commentaire.belongsTo(Post, {foreignKey : 'postId'})
-
-
+Post.hasMany(LikePost, {foreignKey : 'postId', onDelete : 'CASCADE'})
+LikePost.belongsTo(Post, {foreignKey : 'postId'})
+Post.hasMany(LikeComment, {foreignKey : 'postId', onDelete : 'CASCADE'})
 export default Post;
