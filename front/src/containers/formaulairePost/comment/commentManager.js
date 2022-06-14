@@ -54,7 +54,6 @@ class CommentManager extends Component {
         this.setState  ({
             loading: true,
         })
-        console.log("callback comment");
         this.componentDidMount();
         this.componentDidMount();
     }

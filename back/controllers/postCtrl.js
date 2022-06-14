@@ -7,7 +7,7 @@ import fs from "fs"
 
 // affichage de tous les posts
 const getAll = (req, res, next) => {
-    Post.findAll({include:[User, LikePost]})
+    Post.findAll({order: ['id'],include:[User, LikePost]})
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(500).json({msg: ""+error}))
 }

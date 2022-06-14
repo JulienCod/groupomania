@@ -54,6 +54,7 @@ class NewForm extends Component {
                 description : description
             }
             await PostService.createPost(post, image);
+            this.fileInput.current.value = null;
             this.props.parentCallback();
             this.componentDidMount();
         }
@@ -75,6 +76,7 @@ class NewForm extends Component {
                 postId : this.props.idPost
             }
             await commentService.createComment(comment, image);
+            this.fileInput.current.value = null;
             this.props.parentCallback();
             this.componentDidMount();
         }
@@ -119,6 +121,7 @@ class NewForm extends Component {
                             accept="image/*"
                             name="picture" 
                             id='picture' 
+                            
                             ref={this.fileInput} 
                             onChange={this.handleImageChange}
                             />
