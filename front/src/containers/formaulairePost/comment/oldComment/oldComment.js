@@ -15,11 +15,22 @@ class OldComment extends Component {
             avatar: "",
             modify: false,
             delete: false,
+            countLike:0,
+            liked: false,
         }
     }
 
     componentDidMount = async() => {
+        let currentUser = AuthService.getCurrentUser().userId
         const user = AuthService.getCurrentUser();
+        await CommentService.getById(this.props.id)
+        .then(comment => {
+            this.setState({
+                commentId:comment.data.id,
+                postId: comment.data.postId,
+                likeComments: comment.data.likeComments
+            })
+        })
         await AuthService.getById(this.props.userId)
         .then(response => {
             if(response){
@@ -29,6 +40,18 @@ class OldComment extends Component {
                     admin: user.admin
                 })
             }
+        })
+        let findUserLike = this.state.likeComments.find(user => user.userId === currentUser )
+        let liked = false;
+        if(findUserLike){
+            liked = findUserLike.liked;
+        }
+        let listLiked = this.state.likeComments.filter(like => like.liked)
+        this.setState({
+            loading: true,
+            currentUser: currentUser,
+            countLike : listLiked.length,
+            liked:liked,
         })
     }
 
@@ -50,6 +73,40 @@ class OldComment extends Component {
             delete: true,
         })
         await CommentService.deleteComment(commentId);
+    }
+
+    like = () => {
+        let commentId = this.state.commentId;
+        let liked = false;
+        let findUserLike = this.state.likeComments.find(user => user.userId === this.state.currentUser)
+        let likeId ="";
+        if(findUserLike){
+            likeId = findUserLike.id
+        }
+        let data ={
+            likeId:likeId,
+            userId:this.state.currentUser,
+            liked:liked,
+            postId:this.state.postId
+        }
+        if(this.state.liked){
+            likeId = findUserLike.id;
+            liked= false;
+            data={
+                ...data,
+                likeId: likeId
+            }
+            CommentService.likePost(commentId, data);
+            this.componentDidMount();
+        }else{
+            liked = true;
+            data={
+                ...data,
+                liked: liked
+            }
+            CommentService.likePost(commentId, data)
+            this.componentDidMount();
+        }
     }
 
 
@@ -76,13 +133,11 @@ class OldComment extends Component {
             )
         }else{
             modify=(
-                
                 <div className={classes.comment}>
                     {image}
                     <p  className={classes.commentaire__text} >{this.props.description}</p>
                     {options}
                 </div>   
-                
             )
         }
         let content ="";
@@ -93,7 +148,7 @@ class OldComment extends Component {
                    {modify}               
                 <div>
                     <FiHeart  onClick={this.like} className={classes.heart}/>
-                    <span>10</span>
+                    <span>{this.state.countLike}</span>
                 </div>
             </div>
             )

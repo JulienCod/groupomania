@@ -2,7 +2,7 @@ import sequelize from 'sequelize';
 import Bd from '../config/connexionBd.js';
 //schema commentaire
 const {DataTypes} = sequelize;
-const like = Bd.define('like', {
+const LikeComment = Bd.define('likeComment', {
     id: {
         type: DataTypes.INTEGER(10),
         primaryKey: true,
@@ -13,18 +13,19 @@ const like = Bd.define('like', {
         type: DataTypes.INTEGER(10),
         allowNull: false,
     },
+    commentId:{
+        type: DataTypes.INTEGER(10),
+        allowNull: false,
+    },
     postId:{
         type: DataTypes.INTEGER(10),
         allowNull: false,
     },
-    commentaireID:{
-        type: DataTypes.STRING(10),
-        allowNull: true,
-    },
-    like:{
+    liked:{
         type: DataTypes.BOOLEAN,
-        allowNull: true,
+        defaultValue: false,
+        allowNull: false,
     }
 })
 
-export default like;
+export default LikeComment;

@@ -63,6 +63,18 @@ class CommentService {
             console.log(error.message)
         }
     }
+     // fonction like commentaire
+     async likePost(postId, data) {
+        try{ 
+            if(data.likeId){
+                return await axios.put(API_URL+data.likeId+"/like", data, {headers: AuthHeader()});
+            }else{
+                return await axios.post(API_URL+postId+"/like", data, {headers: AuthHeader()});
+            }  
+        } catch (error) {
+            console.log(error.message);            
+        }
+    }
 }
 
 export default new CommentService();

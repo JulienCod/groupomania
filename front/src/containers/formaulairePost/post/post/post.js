@@ -19,7 +19,6 @@ class Post extends Component {
         }
     }
     componentDidMount(){
-       
     }
     modifyPost = () => {
         let value = Boolean
@@ -40,9 +39,6 @@ class Post extends Component {
         })
         await PostService.deletePost(postId);
         
-    }
-    like = () => {
-        console.log("like")
     }
 
     render(){
@@ -77,7 +73,7 @@ class Post extends Component {
                         </div>
                         {modify}
                     </section>
-                    <CommentManager display={this.state.displayComment} idPost={this.props.post.postId} />
+                    <CommentManager display={this.state.displayComment} idPost={this.props.post.postId} listLike={this.props.likePost}/>
                 </article>
             )
         }

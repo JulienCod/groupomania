@@ -1,19 +1,20 @@
 import Post from '../models/post.js';
 import User from '../models/user.js';
 import Commentaire from '../models/commentaire.js';
+import LikePost from '../models/likePost.js';
 
 import fs from "fs"
 
 // affichage de tous les posts
 const getAll = (req, res, next) => {
-    Post.findAll({include:[User]})
+    Post.findAll({include:[User, LikePost]})
     .then(posts => res.status(200).json(posts))
     .catch(error => res.status(500).json({msg: ""+error}))
 }
 
 const getById = (req, res) =>{
     let id = req.params.id;
-    Post.findByPk(id)
+    Post.findByPk(id,{include:[Commentaire]})
     .then(post => res.status(200).json(post))
     .catch(error => res.status(500).json({msg : "" + error}))
 }
@@ -98,4 +99,37 @@ const deletePost = async (req, res) => {
     }
 }
 
-export {getAll, createPost, updatePost, deletePost, getById};
+const like = async (req, res) => {
+    let id = req.params.id;
+    let body = req.body;
+    try {
+        let like = await LikePost.findByPk(id);
+        if(!like)return res.status(404).json({msg: 'Not Found'});
+        if(body.likeId === like.dataValues.id && body.userId === like.dataValues.userId ){
+            like.liked = body.liked;
+            await like.save();
+            return res.status(200).json({msg : "update like"})
+        } 
+    } catch (error) {
+        return res.status(500).json({msg : "Database error", error : error})    
+    }
+}
+
+const createLike = async (req, res) => {
+    let id = req.params.id;
+    try {
+        let like = {
+            userId : req.body.userId,
+            postId : id,
+            liked: true,
+        };
+        console.log(like);
+        LikePost.create({...like})
+        .then(() => {res.status(201).json({msg: "Post liked"})})
+        .catch(error => res.status(500).json({msg : ""+error}))
+    } catch (error) {
+        return res.status(500).json({msg : "Database error", error : error})
+    }
+}
+
+export {getAll, createPost, updatePost, deletePost, getById, like, createLike};

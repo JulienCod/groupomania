@@ -13,17 +13,17 @@ class PostService {
     // fonction d'affichage de tous les posts
     async getAll(){
         try {
-            return await axios.get(API_URL, {headers: AuthHeader()})
+            return await axios.get(API_URL, {headers: AuthHeader()});
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
     }
     //fonction daffichage d'un post
     async getById(postId){
         try {
-            return await axios.get(API_URL+postId, {headers: AuthHeader()})
+            return await axios.get(API_URL+postId, {headers: AuthHeader()});
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
     }
     // fonction de création d'un post 
@@ -40,7 +40,7 @@ class PostService {
                 await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
     }
 
@@ -64,10 +64,22 @@ class PostService {
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
                 formData.append('image', image);
-                return await axios.put(API_URL+postId, formData,{headers: AuthHeader()})
+                return await axios.put(API_URL+postId, formData,{headers: AuthHeader()});
             }
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
+        }
+    }
+    // fonction like post
+    async likePost(postId, data) {
+        try{ 
+            if(data.likeId){
+                return await axios.put(API_URL+data.likeId+"/like", data, {headers: AuthHeader()});
+            }else{
+                return await axios.post(API_URL+postId+"/like", data, {headers: AuthHeader()});
+            }
+        } catch (error) {
+            console.log(error.message);            
         }
     }
 }
