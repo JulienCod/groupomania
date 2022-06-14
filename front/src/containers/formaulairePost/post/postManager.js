@@ -27,11 +27,12 @@ class PostManager extends Component {
             if (response) {
                 const listPost = await response.data.map(post => {
                     return {
+                        index:post.id,
                         post: {
                             postId: post.id,
                             description: post.description,
                             image: post.image,
-                            datePublication : post.createdAt,
+                            datePublication : post.createdAt.split('T')[0],
                             userId: post.userId,
                         },
                         user:{
@@ -43,6 +44,7 @@ class PostManager extends Component {
                         likePost: post.likePosts
                     }
                 })
+                listPost.reverse()
                  this.setState({
                     listPost,
                     loading:false,
@@ -62,6 +64,7 @@ class PostManager extends Component {
     render(){
         let listPost ="";
         listPost = this.state.listPost.map(post => {
+
             return(
                 <Post {...post} key={post.post.postId} currentUserId={this.state.currentUserId} admin={this.state.admin}/>
             )
