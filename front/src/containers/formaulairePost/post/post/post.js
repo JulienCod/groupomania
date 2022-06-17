@@ -18,8 +18,7 @@ class Post extends Component {
             modify: false,
         }
     }
-    componentDidMount(){
-    }
+    
     modifyPost = () => {
         let value = Boolean
         if(this.state.modify){
@@ -38,7 +37,13 @@ class Post extends Component {
             delete: true,
         })
         await PostService.deletePost(postId);
-        
+    }
+    handleCallback = async () =>{
+        this.setState  ({
+            modify: false,
+            loading: true,
+        })
+        await this.props.parentCallback();
     }
 
     render(){
@@ -54,7 +59,7 @@ class Post extends Component {
         let modify = "";
         if(this.state.modify){
             modify=(
-                <ModifyForm mode="post" {...this.props} />
+                <ModifyForm mode="post" {...this.props} parentCallback={this.handleCallback} />
             )
         }else{
             modify=(

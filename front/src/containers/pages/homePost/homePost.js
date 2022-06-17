@@ -36,7 +36,7 @@ class HomePost extends Component {
         let welcomeContent = "";
         if (welcome) {
             welcomeContent = (
-                <div>
+                <div className={classes.welcome}>
                     <span>Bienvenue {this.state.firstname} {this.state.lastname}</span>
                     <RiCloseCircleLine onClick={this.closeWelcome} className={classes.closeWelcome}/>
                 </div>

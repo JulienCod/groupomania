@@ -13,9 +13,11 @@ const Header = (props) => {
     if (user){
         content = (
             <>
-                <div>
+                <Link to="groupomania" title="fil d'actualité">
+                        <Image src= "images/logos/icon-left-font-monochrome-white.png" alt="logo groupomania" cssContainer={classes.container__img} cssImage={classes.img} />
+                </Link>
+                <div className={classes.nav__container__login}>
                     <Link title="Profils" to="profils"><img src={user.avatar} width={"50px"} alt={`Image de profils de ${user.lastname}`} /></Link>
-                    
                     <GrLogout title="Déconnexion" className={classes.logout} onClick={AuthService.logout}/>
                 </div>
             </>
@@ -23,9 +25,11 @@ const Header = (props) => {
     }else{
         content = (
             <>
-                <div>
+                <Image src= "images/logos/icon-left-font-monochrome-white.png" alt="logo groupomania" cssContainer={classes.container__img} cssImage={classes.img} />
+
+                <div className={classes.nav__container}>
                     <nav>
-                        <ul>
+                        <ul className={classes.nav__ul}>
                             <NavAuth title="Connexion" to="login" cssLi={classes.nav__ul__li}>S'identifier</NavAuth>
                             <NavAuth title="S'enregistrer" to="signup" cssLi={classes.nav__ul__li}>S'enregistrer</NavAuth> 
                         </ul>
@@ -36,7 +40,6 @@ const Header = (props) => {
     }
     return <header className={classes.header}>
                 <div className={classes.header__container}>
-                    <Image src= "images/logos/icon-left-font-monochrome-white.png" alt="logo groupomania" cssContainer={classes.container__img} cssImage={classes.img} />
                     {content}        
                 </div>       
             </header>
