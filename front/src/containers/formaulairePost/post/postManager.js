@@ -14,7 +14,7 @@ class PostManager extends Component {
             admin:false,
         }
     }
-    componentDidMount(){
+    componentDidMount = async () => {
         let storage = AuthService.getCurrentUser();
         this.setState  ({
             loading: true,
@@ -22,7 +22,7 @@ class PostManager extends Component {
             admin: storage.admin
         })
 
-        PostService.getAll()
+        await PostService.getAll()
         .then(async response => {
             if (response) {
                 const listPost = await response.data.map(post => {
@@ -53,11 +53,10 @@ class PostManager extends Component {
         })    
     }
 
-    handleCallback =  () => {
+    handleCallback = () => {
         this.setState  ({
             loading: true,
         })
-        this.componentDidMount();
         this.componentDidMount();
     }
 
@@ -66,7 +65,7 @@ class PostManager extends Component {
         listPost = this.state.listPost.map(post => {
 
             return(
-                <Post {...post} key={post.post.postId} currentUserId={this.state.currentUserId} admin={this.state.admin}/>
+                <Post {...post} key={post.post.postId} parentCallback={this.handleCallback} currentUserId={this.state.currentUserId} admin={this.state.admin}/>
             )
         })
 

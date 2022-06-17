@@ -60,6 +60,7 @@ class AuthService {
     }
 
     async modifyProfils(userId, user, image){
+        console.log('modify');
         try {
             if(image === undefined){   
                 const formData = new FormData();
@@ -77,6 +78,7 @@ class AuthService {
     }
 
     async deleteUser(userId) {
+        console.log('delete profils');
         try {
             await axios.delete(API_URL+userId, {headers: AuthHeader()})
         } catch (error) {

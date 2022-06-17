@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import AuthService from '../../../services/authService';
 import classes from "./pageProfils.module.css";
-import {FiPenTool} from 'react-icons/fi';
-import {RiDeleteBin6Line} from 'react-icons/ri';
 
 class PageProfils extends Component {
 
@@ -34,7 +32,18 @@ class PageProfils extends Component {
                 firstname: response.data.firstname,
                 avatar :response.data.avatar,
             })
+            let user = JSON.parse(localStorage.getItem("user"))
+            
+            user = {
+                ...user,
+                lastname: response.data.lastname,
+                firstname: response.data.firstname,
+                avatar :response.data.avatar,
+            }
+            localStorage.setItem("user", JSON.stringify(user));
+
         })        
+
     }
     handleInputChange = (event) => {
         const name = event.target.name;
@@ -47,7 +56,8 @@ class PageProfils extends Component {
         event.preventDefault();
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
-    handleValidationModify = (event) => {
+    handleValidationModify = async (event) => {
+        console.log("ici");
         event.preventDefault();    
         let userId = this.state.userId
         let image =  this.fileInput.current.files[0];
@@ -59,9 +69,25 @@ class PageProfils extends Component {
                 password: this.state.password,
                 newPassword: this.state.newPassword,
         }
-        AuthService.modifyProfils(userId, user, image)
+        await AuthService.modifyProfils(userId, user, image)
+        await AuthService.getById(userId)
+        .then((response) => {
+            this.setState({
+                avatar :response.data.avatar,
+            })
+            let user = JSON.parse(localStorage.getItem("user"))
+            
+            user = {
+                ...user,
+                avatar :response.data.avatar,
+            }
+            localStorage.setItem("user", JSON.stringify(user));
+
+        })        
+        window.location.reload()
     }
     deleteProfiles = async () =>{
+        console.log("delete");
         let userId = this.state.userId;
         await AuthService.deleteUser(userId);
         localStorage.removeItem("user");
@@ -75,45 +101,35 @@ class PageProfils extends Component {
         if(this.state.imagePreview){
             image = (
                 <div className={classes.container__img}>
-                    <img src={this.state.imagePreview} width="100px" alt="" className={classes.image} />
+                    <img src={this.state.imagePreview}  alt="" className={classes.image} />
                 </div>    
             )
         }else{
             image = ( 
                 <div className={classes.container__img}>
-                    <img src={this.state.avatar}  width="100px" alt="" className={classes.image}/>
+                    <img src={this.state.avatar} alt="" className={classes.image}/>
                 </div>                       
             )
         }
 
         return (
-            <article>
-                 <form className={classes.form} >
-                    <h1>Profils utilisateur</h1>
-                    <div className={classes.field}>
-                        <label htmlFor='email'></label>
-                        <input 
-                            type="email"
-                            name="email" 
-                            placeholder="Adresse Email" 
-                            id='email'
-                            value={this.state.email}
-                            onChange={(event)=> this.setState({email:event.target.value}) }
-                        />
+            <article className={classes.profils}>
+                <form method="post" className={classes.form}>
+
+                    <div className={classes.title}>
+                        <h1>Profils utilisateur</h1>    
                     </div>
-                    <div className={classes.field}>
-                        <label htmlFor='password'></label>
+
+                    <div className={classes.password}>
+                        <h2>Modifier le mot de passe</h2>
                         <input 
                             type="password" 
                             name="password" 
-                            placeholder="Ancien mot de passe" 
+                            placeholder="Mot de passe actuel" 
                             id='password'
                             value={this.state.password} 
                             onChange={(event)=> this.setState({password:event.target.value}) }
-                        />                        
-                    </div>
-                    <div className={classes.field}>
-                        <label htmlFor='newPassword'></label>
+                        />
                         <input 
                             type="password" 
                             name="newPassword" 
@@ -123,9 +139,14 @@ class PageProfils extends Component {
                             onChange={(event)=> this.setState({newPassword:event.target.value}) }
                         />        
                     </div>
-                    <div className={classes.field}>
-                        <label htmlFor='lastname'></label>
+
+                    <div className={classes.firstname_lastname}>
+                        <h2>E-mail</h2>
+                        <p>{this.state.email}</p>
+
+                        <h3>Nom et prénom</h3>
                         <input 
+                            title='Prénom'
                             type="text" 
                             name="lastname" 
                             placeholder="Prénom" 
@@ -133,10 +154,8 @@ class PageProfils extends Component {
                             value={this.state.lastname} 
                             onChange={(event)=> this.setState({lastname:event.target.value}) }
                         />                        
-                    </div>
-                    <div className={classes.field}>
-                        <label htmlFor='firstname'></label>
                         <input 
+                            title='Nom'
                             type="text" 
                             name="firstname" 
                             placeholder="Nom" 
@@ -145,8 +164,10 @@ class PageProfils extends Component {
                             onChange={(event)=> this.setState({firstname:event.target.value}) }
                         />                        
                     </div>
-                    <div className={classes.field}>
-                        <label htmlFor='avatar'></label>
+
+                    <div className={classes.avatar}>
+                        <h2>Photo de profil</h2>
+                        {image}
                         <input 
                             type="file" 
                             accept="image/*"
@@ -155,12 +176,14 @@ class PageProfils extends Component {
                             id='avatar'
                             ref={this.fileInput} 
                             onChange={this.handleImageChange}
+                            className={classes.inputfile}
                         />
-                        {image}
+                        <label htmlFor='avatar'>Sélectionner une image</label>
                     </div>
-                    <div>
-                        <FiPenTool title="Modifié" onClick={this.handleValidationModify} className={classes.iconModify} />
-                        <RiDeleteBin6Line title="Supprimé" onClick={this.deleteProfiles} className={classes.iconDelete} />
+
+                    <div className={classes.validation_delete}>
+                        <span title="Modifié" onClick={this.handleValidationModify} className={classes.btn}>Modifier mon compte</span>
+                        <span title="Supprimé" onClick={this.deleteProfiles} className={classes.btn}>Supprimer mon compte</span>
                     </div>
                 </form>
             </article>

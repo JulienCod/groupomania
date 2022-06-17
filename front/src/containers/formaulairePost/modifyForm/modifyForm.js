@@ -58,7 +58,7 @@ class ModifyForm extends Component {
             description : this.state.description,
         }
         await PostService.modifyPost(postId, post, image);
-        window.location.reload();
+        await this.props.parentCallback();
     }
     submitModifyComment = async () => {
         const commentId = this.props.id;
@@ -67,7 +67,7 @@ class ModifyForm extends Component {
             description : this.state.description,
         }
         await CommentService.modifyComment(commentId, comment, image);
-        window.location.reload();
+        await this.props.parentCallback();
     }
 
     render(){
@@ -75,7 +75,7 @@ class ModifyForm extends Component {
         if(this.state.imagePreview){
             image = (
                 <div className={classes.container__img}>
-                    <img src={this.state.imagePreview} width="100px" alt="" className={classes.image} />
+                    <img src={this.state.imagePreview} width="100px" alt={this.state.imagePreview} className={classes.image} />
                 </div>    
             )
         }else if(this.state.image){
@@ -88,10 +88,8 @@ class ModifyForm extends Component {
         let content ="";
         if(this.state.mode === "post"){
             content = (
-                <div>
-                    <form className={classes.commentaire__form} method="post">
-                            <img src="images/profils/profils.png" width={"50px"} height={"50px"} alt="" />
-                            <label htmlFor="textarea"></label>
+                <div className={classes.form__container}>
+                    <form className={classes.form} method="post">
                             <textarea
                             type="textarea"
                             name="description"
@@ -99,28 +97,31 @@ class ModifyForm extends Component {
                             placeholder='Écrivez un commentaire ...'                        
                             value={this.state.description}
                             onChange={this.handleInputChange}
-                            className={classes.newCommentaire__textarea}
+                            className={classes.modifyPost__textarea}
                             ></textarea>
-
-                            <label htmlFor="picture"></label>
-                            <input 
-                            type="file" 
-                            accept="image/*"
-                            name="picture" 
-                            id='picture' 
-                            ref={this.fileInput} 
-                            onChange={this.handleImageChange}
-                            />
-                            {image}
-                            <FiSend onClick={this.submitModifyPost} className={classes.newPost__send}/>
+                            <div className={classes.input_img_send}>
+                                <input 
+                                type="file" 
+                                accept="image/*"
+                                name="pictureModifyPost" 
+                                id='pictureModifyPost' 
+                                ref={this.fileInput} 
+                                className={classes.inputfile}
+                                onChange={this.handleImageChange}
+                                />
+                                <label htmlFor="pictureModifyPost">Sélectionner une image</label>
+                                    {image}
+                                <div className={classes.send}>
+                                    <FiSend title="Envoyer" onClick={this.submitModifyPost} className={classes.modify__send}/>
+                                </div>
+                            </div>
                         </form>
                 </div>
             )
         }else if (this.state.mode === "comment"){
             content = (
-                <div>
-                    <form className={classes.commentaire__form} method="post">
-                        <img src="images/profils/profils.png" width={"50px"} height={"50px"} alt="" />
+                <div className={classes.form__container}>
+                    <form className={classes.form} method="post">
                         <label htmlFor="textarea"></label>
                         <textarea
                         type="textarea"
@@ -129,20 +130,24 @@ class ModifyForm extends Component {
                         placeholder='Écrivez un commentaire ...'                        
                         value={this.state.description}
                         onChange={this.handleInputChange}
-                        className={classes.newCommentaire__textarea}
+                        className={classes.modifyCommentaire__textarea}
                         ></textarea>
 
-                        <label htmlFor="picture"></label>
                         <input 
                         type="file" 
                         accept="image/*"
-                        name="picture" 
-                        id='picture' 
+                        name="pictureModifyComment" 
+                        id='pictureModifyComment' 
+                        className={classes.inputfile}
                         ref={this.fileInput} 
                         onChange={this.handleImageChange}
                         />
-                        {image}
-                        <FiSend onClick={this.submitModifyComment} className={classes.newPost__send}/>
+                        <label htmlFor="pictureModifyComment">Sélectionner une image</label>
+                        <div className={classes.modify__img__send}>
+                            {image}
+                            <FiSend onClick={this.submitModifyComment} className={classes.modify__send}/>
+                        </div>
+
                     </form>
                 </div> 
             )

@@ -4,6 +4,7 @@ import {FiSend} from 'react-icons/fi';
 import PostService from '../../../services/postService';
 import Authservice from '../../../services/authService';
 import commentService from '../../../services/commentService';
+import AuthService from '../../../services/authService';
 
 
 class NewForm extends Component {
@@ -11,18 +12,23 @@ class NewForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            description : "",
+            descriptionPost : "",
+            descriptionComment : "",
             imagePreview : "",
             messageError: "",
+            avatarCurrentUser:"",
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.fileInput = React.createRef();
     }
     componentDidMount = () => {
+        let avatarCurrentUser = AuthService.getCurrentUser().avatar
         this.setState  ({
-            description : "",
+            descriptionPost : "",
+            descriptionComment : "",
             imagePreview : "",
             messageError: "",
+            avatarCurrentUser: avatarCurrentUser
         })
     }
 
@@ -41,9 +47,9 @@ class NewForm extends Component {
     //envoi du formulaire post
     submitPost = async (event) => {
         event.preventDefault();
-        let description = this.state.description;
+        let description = this.state.descriptionPost;
         let image =  this.fileInput.current.files[0];
-        let userId = Authservice.getCurrentUser().userId
+        let userId = Authservice.getCurrentUser().userId;
         if(!image && !description){
            this.setState({ 
                 messageError: "veuillez saisir un texte ou ajouter une image"
@@ -55,14 +61,14 @@ class NewForm extends Component {
             }
             await PostService.createPost(post, image);
             this.fileInput.current.value = null;
-            this.props.parentCallback();
+            await this.props.parentCallback();
             this.componentDidMount();
         }
     }
     //envoi du formulaire commentaire
     submitCommentaire = async (event) =>{
         event.preventDefault();
-        let description = this.state.description;
+        let description = this.state.descriptionComment;
         let image =  this.fileInput.current.files[0];
         let userId = Authservice.getCurrentUser().userId
         if(!image && !description){
@@ -77,7 +83,7 @@ class NewForm extends Component {
             }
             await commentService.createComment(comment, image);
             this.fileInput.current.value = null;
-            this.props.parentCallback();
+            await this.props.parentCallback();
             this.componentDidMount();
         }
     }
@@ -104,29 +110,30 @@ class NewForm extends Component {
                     <section className={classes.newPost}>
                         <h2>Exprimez-vous ...</h2>
                         <form className={classes.newPost__form} method="post">
-                            <label htmlFor="textarea"></label>
                             <textarea
                             type="textarea"
-                            name="description"
-                            id="description" 
+                            name="descriptionPost"
+                            id="descriptionPost" 
                             placeholder="Que voulez-vous dire ?"                       
-                            value={this.state.description}
+                            value={this.state.descriptionPost}
                             onChange={this.handleInputChange}
                             className={classes.newPost__textArea} 
                             ></textarea>
 
-                            <label htmlFor="picture"></label>
                             <input 
                             type="file" 
                             accept="image/*"
-                            name="picture" 
-                            id='picture' 
-                            
+                            name="picturePost" 
+                            id='picturePost' 
+                            className={classes.inputfile}
                             ref={this.fileInput} 
                             onChange={this.handleImageChange}
                             />
-                            {image}
-                            <FiSend type="submit" onClick={this.submitPost} className={classes.newPost__send}/>
+                            <label htmlFor="picturePost">Sélectionner une image</label>
+                            <div className={classes.img__send}>
+                                {image}
+                                <FiSend title="envoyé" type="submit" onClick={this.submitPost} className={classes.newPost__send}/>
+                            </div>
                         </form>
                         {error}
                     </section>
@@ -134,31 +141,33 @@ class NewForm extends Component {
             )
         }else if(status === "comment"){
             content = (
-                <section>
+                <section className={classes.newCommentaire}>
                     <form className={classes.commentaire__form} method="post">
-                        <img src="images/profils/profils.png" width={"50px"} height={"50px"} alt="" />
-                        <label htmlFor="textarea"></label>
+                        <img src={this.state.avatarCurrentUser} width={"50px"} height={"50px"} alt="" />
                         <textarea
                         type="textarea"
-                        name="description"
-                        id="description"
+                        name="descriptionComment"
+                        id="descriptionComment"
                         placeholder='Écrivez un commentaire ...'                        
-                        value={this.state.description}
+                        value={this.state.descriptionComment}
                         onChange={this.handleInputChange}
                         className={classes.newCommentaire__textarea}
                         ></textarea>
 
-                        <label htmlFor="picture"></label>
                         <input 
                         type="file" 
                         accept="image/*"
-                        name="picture" 
-                        id='picture' 
+                        name="pictureComment" 
+                        id='pictureComment' 
+                        className={classes.inputfile}
                         ref={this.fileInput} 
                         onChange={this.handleImageChange}
                         />
-                        {image}
-                        <FiSend onClick={this.submitCommentaire} className={classes.newPost__send}/>
+                        <label htmlFor="pictureComment">Sélectionner une image</label>
+                        <div className={classes.comment__img__send}>
+                            {image}
+                            <FiSend title="envoyé" type="submit" onClick={this.submitCommentaire} className={classes.newPost__send}/>
+                        </div>
                     </form>
                     {error}
                 </section>

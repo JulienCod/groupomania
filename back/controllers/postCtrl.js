@@ -14,7 +14,7 @@ const getAll = (req, res, next) => {
 
 const getById = (req, res) =>{
     let id = req.params.id;
-    Post.findByPk(id,{include:[Commentaire]})
+    Post.findByPk(id,{include:[Commentaire, LikePost]})
     .then(post => res.status(200).json(post))
     .catch(error => res.status(500).json({msg : "" + error}))
 }
@@ -123,7 +123,6 @@ const createLike = async (req, res) => {
             postId : id,
             liked: true,
         };
-        console.log(like);
         LikePost.create({...like})
         .then(() => {res.status(201).json({msg: "Post liked"})})
         .catch(error => res.status(500).json({msg : ""+error}))

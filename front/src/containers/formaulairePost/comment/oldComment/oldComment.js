@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {FiHeart, FiPenTool} from 'react-icons/fi';
+import {FaHeart} from 'react-icons/fa';
 import {RiDeleteBin6Line} from 'react-icons/ri';
 import InfoUser from '../../../infoUser/infoUser';
 import classes from "./oldComment.module.css";
@@ -55,7 +56,7 @@ class OldComment extends Component {
         })
     }
 
-    modifyComment = async() => {
+    modifyComment = () => {
         let value = Boolean
         if(this.state.modify){
             value = false;
@@ -75,7 +76,7 @@ class OldComment extends Component {
         await CommentService.deleteComment(commentId);
     }
 
-    like = () => {
+    like = async () => {
         let commentId = this.state.commentId;
         let liked = false;
         let findUserLike = this.state.likeComments.find(user => user.userId === this.state.currentUser)
@@ -96,25 +97,31 @@ class OldComment extends Component {
                 ...data,
                 likeId: likeId
             }
-            CommentService.likePost(commentId, data);
-            this.componentDidMount();
+            await CommentService.likePost(commentId, data);
+            await this.componentDidMount();
         }else{
             liked = true;
             data={
                 ...data,
                 liked: liked
             }
-            CommentService.likePost(commentId, data)
-            this.componentDidMount();
+            await CommentService.likePost(commentId, data)
+            await this.componentDidMount();
         }
     }
-
+    handleCallback = async () =>{
+        this.setState  ({
+            loading: true,
+            modify: false,
+        })
+        await this.props.parentCallback();
+    }
 
     render(){
         let options = "";
         if (this.props.userId === this.state.currentUser || this.state.admin) {
             options = (
-                <div className={classes.post__option}>
+                <div className={classes.comment__option}>
                     <FiPenTool title="Modifié" onClick={this.modifyComment} className={classes.iconModify} />
                     <RiDeleteBin6Line title="Supprimé" onClick={this.deleteComment} className={classes.iconDelete} />
                 </div>
@@ -123,33 +130,62 @@ class OldComment extends Component {
         let image = "";
         if (this.props.image){
             image = (
-                        <img src={this.props.image} width={"50px"} height={"50px"} alt="" />
+                        <img src={this.props.image} className={classes.img} alt=""  />
                     )
         }
         let modify = "";
         if(this.state.modify){
             modify=(
-                <ModifyForm mode="comment" {...this.props} />
+                <ModifyForm mode="comment" {...this.props} parentCallback={this.handleCallback} />
             )
         }else{
             modify=(
-                <div className={classes.comment}>
-                    {image}
-                    <p  className={classes.commentaire__text} >{this.props.description}</p>
-                    {options}
-                </div>   
+                <div className={classes.container__comment}>
+                    <div className={classes.comment}>
+                        <p  className={classes.commentaire__text} >{this.props.description}</p>
+                        {options}
+                    </div>   
+                    <div className={classes.container__img}>
+                        {image}
+                    </div>
+                </div>
             )
         }
+        let heart ="";
+         if(this.state.liked){
+                  heart =(
+                <div className={classes.heart_and_count}>
+                  <FaHeart  onClick={this.like} className={classes.heartLiked}/>
+                </div>
+                )  
+                }else{
+                   heart =(
+                <div className={classes.heart_and_count}>
+                    <FiHeart  onClick={this.like} className={classes.heart}/>
+                </div>  
+                  ) 
+                }
+        let like = "";
+        if(this.state.modify){
+            like = (<></>)
+        }else{
+            like = (
+                <>
+                    {heart}            
+                    <span className={classes.countLike}>{this.state.countLike}</span>
+                </>
+            ) 
+            
+        }
+        
         let content ="";
         if(!this.state.delete){
             content =(
-                <div className={classes.commentaire__old}>
-                <InfoUser avatar={this.state.avatar} mode={"comment"}/> 
+            <div className={classes.commentaire__old}>
+                <InfoUser avatar={this.state.avatar} mode={"comment"} cssInfoUser={classes.infoUser}/> 
                    {modify}               
-                <div>
-                    <FiHeart  onClick={this.like} className={classes.heart}/>
-                    <span>{this.state.countLike}</span>
-                </div>
+                
+                {like}
             </div>
             )
         }

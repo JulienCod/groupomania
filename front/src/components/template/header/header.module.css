@@ -22,10 +22,51 @@
     padding: 1rem;
     text-decoration: none;
     font-size: 1.5rem;
+    cursor: pointer;
+}
+.nav__ul__li:hover{
+    color:#4E5166;
+    background-color: #FFD7D7;
+    border-radius: 1rem;
+
 }
 .logout{
     font-size:3.1rem;
     color:#4E5166;
     cursor:pointer;
     margin:0 2rem;
+}
+
+@media screen and (max-width:700px){
+    .header{
+       margin-bottom: 0;
+    }
+    .header__container{
+        height:auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 1rem auto;
+    }
+
+    .nav__container{
+        width: 100%;
+    }
+    .nav__container__login{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+    .nav__ul{
+        display: flex;
+        justify-content: space-around;
+        padding:0;
+        margin:0;
+    }
+    .logout{
+        font-size:3.2rem;
+        color:#4E5166;
+        cursor:pointer;
+        margin:0 2rem;
+    }
 }

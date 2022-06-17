@@ -61,13 +61,13 @@ class FormAuth extends Component {
          if(this.state.imagePreview){
             image = (
                 <div className={classes.container__img}>
-                    <img src={this.state.imagePreview} width="100px" alt="" className={classes.image} />
+                    <img src={this.state.imagePreview}  alt="" className={classes.image} />
                 </div>    
             )
         }else{
             image = ( 
                 <div className={classes.container__img}>
-                    <img src="images/profils/profils.png"  width="100px" alt="" className={classes.image}/>
+                    <img src="images/profils/profils.png"  alt="image de profils par défault" className={classes.image}/>
                 </div>                       
             )
         }
@@ -107,16 +107,19 @@ class FormAuth extends Component {
                         />                        
                     </div>
                     <div className={classes.field}>
-                        <label htmlFor='avatar'></label>
-                        <input 
-                            type="file" 
-                            accept="image/*"
-                            name="avatar" 
-                            placeholder="avatar" 
-                            id='avatar'
-                            ref={this.fileInput} 
-                            onChange={this.handleImageChange}
-                        />
+                        <div className={classes.container__inputfile}>
+                            <input 
+                                type="file" 
+                                accept="image/*"
+                                name="avatar" 
+                                placeholder="avatar" 
+                                id='avatar'
+                                ref={this.fileInput} 
+                                onChange={this.handleImageChange}
+                                className={classes.inputfile}
+                            />
+                            <label htmlFor='avatar'>Sélectionner une image</label>
+                        </div>
                         {image}
 
                     </div>

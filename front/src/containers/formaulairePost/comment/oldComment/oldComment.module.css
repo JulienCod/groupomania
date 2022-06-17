@@ -1,22 +1,126 @@
 .commentaire__old{
     display:flex;
-    justify-content: space-around;
+    padding: 0.5rem 1rem;
+    position: relative;
+    align-items: center;
+    box-shadow: 1px 1px 1px #4E5166;
+
+    /* border: 2px solid green; */
+}
+.container__comment{
+    width:100%;
+
 }
 .commentaire__text{
-    width: 75%;
+    width: 100%;
     min-height: 40px;
+}
+.infoUser{
+    position:relative;
+    width:32px;
 }
 /* icon heart */
 .heart{
     font-size:2.5rem;
     color:#4E5166;
+    position:absolute;
+    right:0.8rem;
+    cursor: pointer;
 }
 .heart:hover{
-    font-size:2.8rem;
+    color:#FD2D01;
+}
+.heartLiked{
+    font-size:2.5rem;
+    color:#FD2D01;
+    position:absolute;
+    right:0.8rem;
+    cursor: pointer;
+}
+.heartLiked:hover{
+    color:#4E5166;
+}
+.heart_and_count{
+    position:relative;
+    height: 53.5px;
+    width: 50px;
+}
+.countLike{
+    position:relative;
+    top:1.5rem;
+    right:2.3rem;
 }
 .comment{
-    width:100%;
+    display: flex;
+    flex:1 1 ;
     background-color:rgb(204, 199, 199);
-    margin:0.5rem;
     border-radius: 1rem;
+    margin:auto 2rem auto 2.1rem;
+    box-shadow: 0px 0px 10px 2px #4E5166;
+}
+.comment__option{
+    display: flex;
+    font-size:2.8rem;
+}
+.container__img{
+    width:20%;
+    margin:0.5rem 0 0 2.5rem; 
+}
+
+.img{
+    width:100%;
+}
+/* icon modify post */
+.iconModify{
+    font-size:2.5rem;
+    color:#4E5166;
+    cursor: pointer;
+    margin:1rem;
+
+}
+.iconModify:hover{
+    color: blue;
+}
+
+/* icon delete */
+.iconDelete{
+    font-size:2.5rem;
+    color:#4E5166;
+    cursor: pointer;
+    margin:1rem;
+
+}
+.iconDelete:hover{
+    color:red;
+}
+
+@media screen and (max-width:700px){
+    .comment__option{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    /* icon modify post */
+    .iconModify{
+        font-size:1.5rem;
+        margin:0.5rem;
+    }
+    /* icon delete */
+    .iconDelete{
+        font-size:1.5rem;
+        margin:0.5rem;
+
+    }
+    /* icon heart */
+    .heart{
+        font-size:1.5rem;
+        top:1rem;
+        right:1.3rem;
+    }
+    .heartLiked{
+        font-size:1.5rem;
+        top:1rem;
+        position:absolute;
+        right:1.3rem;
+    }
 }
