@@ -1,32 +1,45 @@
 import Commentaire from '../models/commentaire.js';
-import Post from '../models/post.js';
 import fs from "fs"
 import LikeComment from '../models/likeComment.js';
+import { CommentError, LikeError } from '../error/customError.js';
+import { formCommentValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 
-//affichage de tous les commentaires qui inclus un post
-const getById = (req, res) => {
+//display comment
+const getById = (req, res, next) => {
     let id = req.params.id;
     Commentaire.findByPk(id, {include:[LikeComment]})
     .then(commentaires => res.status(200).json(commentaires))
-    .catch(error => res.status(500).json({msg : "" + error}))
+    .catch(error => next(error));
 }
 
 // création d'un post
-const createCommentaire = (req, res) => {
-    let commentaire = JSON.parse(req.body.commentaire);
-    let image = req.file;
-    if (image){
-        commentaire= {
-            ...commentaire,
-            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+const createCommentaire = async (req, res, next) => {
+    try {
+        let commentaire = JSON.parse(req.body.commentaire);
+        let image = req.file;
+        if (image){
+            commentaire= {
+                ...commentaire,
+                image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+            }
         }
+        if (commentaire.description) {
+            const {error} = formCommentValidation(commentaire);
+            if (error)throw new CommentError(401, error.details[0].message)            
+        }
+        if (!commentaire.description && !image) {
+            throw new CommentError(400,"Le commentaire doit contenir au minimum une image ou du texte")
+        }
+        let createComment = await Commentaire.create({...commentaire})
+        if (createComment) {
+            res.status(201).json({msg: "Create commentaire"})
+        }        
+    } catch (error) {
+        next(error);
     }
-    Commentaire.create({...commentaire})
-    .then(() => {res.status(201).json({msg: "Create commentaire"})})
-    .catch(error => res.status(500).json({msg : ""+error}))
 }
 
-// mise à jour d'un commentaire
+// update comment
 const updateCommentaire = async (req, res, next) => {
     const {id} = req.params;
     const commentObject = req.file ?
@@ -35,9 +48,12 @@ const updateCommentaire = async (req, res, next) => {
         image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } :{...JSON.parse(req.body.description)}
     try {
-        //recherche de l'identifiant du commentaire
+        if (commentObject.description) {
+            const {error} = formModifyValidation(commentObject);
+            if(error) throw new CommentError(401, error.details[0].message);            
+        }
         let comment = await Commentaire.findByPk(id)
-        if(!comment)return res.status(404).json({msg : "commment not found"});
+        if(!comment)throw new CommentError(404, "Le commentaire n'existe pas");
         if(commentObject.image){
             if(comment.image){
                 const filename = comment.image.split('/images/')[1];
@@ -47,54 +63,53 @@ const updateCommentaire = async (req, res, next) => {
         }
         comment.image = commentObject.image;
         comment.description = commentObject.description;
-        // enregistrement des modifications du commentaire
         await comment.save()
         return res.status(200).json({msg : "update comment"})
     } catch (error) {
-        return res.status(500).json({msg : "Database error", error : error})
+        next(error);
     }
 }
 
-// supression d'un commentaire
-const deleteCommentaire = async (req, res) => {
+// delete comment
+const deleteCommentaire = async (req, res, next) => {
     const {id} =req.params;
     try {
         let comment = await Commentaire.findByPk(id)
-        if(!comment)return res.status(404).json({msg : "comment not found"});
+        if(!comment)throw new CommentError(404, "Le commentaire n'existe pas");
         if (comment.image === null){
             let ressource = await Commentaire.destroy({where : {id : id}})
-            if (ressource === 0) return res.status(404).json({msg: "Not found"})
+            if (ressource === 0) throw new CommentError(404, "Le commentaire n'existe pas");
             res.status(200).json({msg: "Deleted comment"})
         }else{
             const filename = comment.image.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {
                 let ressource = Commentaire.destroy({where : {id : id}})
-                if (ressource === 0) return res.status(404).json({msg: "Not found"})
+                if (ressource === 0) throw new CommentError(404, "Le commentaire n'existe pas");
                 res.status(200).json({msg: "Deleted comment"})
             })
         }
     } catch (error) {
-        return res.status(500).json({msg : "Database Error", error : error})
+        next(error);
     }
 }
-// modifications des likes
-const like = async (req, res) => {
+// update like comment
+const like = async (req, res, next) => {
     let id = req.params.id;
     let body = req.body;
     try {
         let like = await LikeComment.findByPk(id);
-        if(!like)return res.status(404).json({msg: 'Not Found'});
+        if(!like)throw new LikeError(404,"Le like n'existe pas")
         if(body.likeId === like.dataValues.id && body.userId === like.dataValues.userId ){
             like.liked = body.liked;
             await like.save();
             return res.status(200).json({msg : "update Comment"})
         } 
     } catch (error) {
-        return res.status(500).json({msg : "Database error", error : error})    
+        next(error);   
     }
 }
-// creation de like
-const createLike = async (req, res) => {
+// create like
+const createLike = async (req, res, next) => {
     let id = req.params.id;
     try {
         console.log(req.body);
@@ -106,9 +121,8 @@ const createLike = async (req, res) => {
         };
         LikeComment.create({...like})
         .then(() => {res.status(201).json({msg: "Comment liked"})})
-        .catch(error => res.status(500).json({msg : ""+error}))
     } catch (error) {
-        return res.status(500).json({msg : "Database error", error : error})
+        next(error);
     }
 }
 

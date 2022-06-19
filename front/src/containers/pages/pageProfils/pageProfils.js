@@ -14,6 +14,7 @@ class PageProfils extends Component {
             imagePreview:"",
             avatar:"",
             newPassword:"",
+            errorMessage:"",
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.fileInput = React.createRef();
@@ -23,6 +24,7 @@ class PageProfils extends Component {
         let userId = AuthService.getCurrentUser().userId;
         this.setState({
             userId: userId,
+            errorMessage:"",
         })
         AuthService.getById(userId)
         .then((response) => {
@@ -57,34 +59,47 @@ class PageProfils extends Component {
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
     handleValidationModify = async (event) => {
-        console.log("ici");
         event.preventDefault();    
         let userId = this.state.userId
         let image =  this.fileInput.current.files[0];
-        let user = {
-                email: this.state.email,
-                password: this.state.password,
-                lastname: this.state.lastname,
-                firstname: this.state.firstname,
-                password: this.state.password,
-                newPassword: this.state.newPassword,
-        }
-        await AuthService.modifyProfils(userId, user, image)
-        await AuthService.getById(userId)
-        .then((response) => {
-            this.setState({
-                avatar :response.data.avatar,
-            })
-            let user = JSON.parse(localStorage.getItem("user"))
-            
-            user = {
-                ...user,
-                avatar :response.data.avatar,
+        let user ={}
+        if(this.state.password || this.state.newPassword){
+             user = {
+                    email: this.state.email,
+                    lastname: this.state.lastname,
+                    firstname: this.state.firstname,
+                    password: this.state.password,
+                    newPassword: this.state.newPassword,
             }
-            localStorage.setItem("user", JSON.stringify(user));
-
-        })        
-        window.location.reload()
+        }else{
+             user = {
+                    email: this.state.email,
+                    lastname: this.state.lastname,
+                    firstname: this.state.firstname,
+            }
+        }
+        let error = await AuthService.modifyProfils(userId, user, image);
+        if(error){
+            this.setState({
+                errorMessage: error
+            })
+        }else{
+            await AuthService.getById(userId)
+            .then((response) => {
+                this.setState({
+                    avatar :response.data.avatar,
+                })
+                let user = JSON.parse(localStorage.getItem("user"))
+                
+                user = {
+                    ...user,
+                    avatar :response.data.avatar,
+                }
+                localStorage.setItem("user", JSON.stringify(user));
+    
+            })        
+            window.location.reload();
+        }
     }
     deleteProfiles = async () =>{
         console.log("delete");
@@ -111,7 +126,12 @@ class PageProfils extends Component {
                 </div>                       
             )
         }
-
+        let error="";
+        if(this.state.errorMessage){
+            error=(
+                <span className={classes.error}>{this.state.errorMessage}</span>
+            )
+        }
         return (
             <article className={classes.profils}>
                 <form method="post" className={classes.form}>
@@ -182,6 +202,7 @@ class PageProfils extends Component {
                     </div>
 
                     <div className={classes.validation_delete}>
+                        {error}
                         <span title="Modifié" onClick={this.handleValidationModify} className={classes.btn}>Modifier mon compte</span>
                         <span title="Supprimé" onClick={this.deleteProfiles} className={classes.btn}>Supprimer mon compte</span>
                     </div>

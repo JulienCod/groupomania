@@ -15,6 +15,10 @@ class FormAuth extends Component {
             firstname: "",
             avatar :"",
             imagePreview:"",
+            error:{
+                status:false,
+                message:"",
+            },
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.fileInput = React.createRef();
@@ -27,12 +31,12 @@ class FormAuth extends Component {
         })
     }
 
-    handleImageChange = (event) => {
+    handleImageChange =  (event) => {
         event.preventDefault();
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
    
-    handleValidationFormSignup = (event) => {
+    handleValidationFormSignup = async (event) => {
         event.preventDefault();    
         let image =  this.fileInput.current.files[0];
         let signup = {
@@ -41,15 +45,31 @@ class FormAuth extends Component {
                 lastname: this.state.lastname,
                 firstname: this.state.firstname,
         }
-        AuthService.signup(signup, image);
+        let log = await AuthService.signup(signup, image)
+        if (log) {
+            this.setState({
+                error:{
+                    status:true,
+                    message: log
+                }
+            })
+        }
     }
-    handleValidationFormLogin = (event) => {
+    handleValidationFormLogin = async (event) => {
         event.preventDefault();
         let login = {
             email: this.state.email,
             password: this.state.password,
         }
-        AuthService.login(login);       
+        let log = await AuthService.login(login)
+        if (log) {
+            this.setState({
+                error:{
+                    status:true,
+                    message: log
+                }
+            })
+        }
     }
     
     render(){
@@ -57,6 +77,14 @@ class FormAuth extends Component {
         let image = "";
         let form = "";
         let mode = this.props.mode;
+        let error ="";
+        if(this.state.error.status){
+            error=(
+                <div className={classes.error}>
+                    <bold>{this.state.error.message}</bold>
+                </div>
+            )
+        }
 
          if(this.state.imagePreview){
             image = (
@@ -85,7 +113,6 @@ class FormAuth extends Component {
             form = (
                 <>
                     <div className={classes.field}>
-                        <label htmlFor='lastname'></label>
                         <input 
                             type="text" 
                             name="lastname" 
@@ -93,10 +120,10 @@ class FormAuth extends Component {
                             id='lastname'
                             value={this.state.lastname} 
                             onChange={(event)=> this.setState({lastname:event.target.value}) }
+                            required={true}
                         />                        
                     </div>
                     <div className={classes.field}>
-                        <label htmlFor='firstname'></label>
                         <input 
                             type="text" 
                             name="firstname" 
@@ -104,6 +131,7 @@ class FormAuth extends Component {
                             id='firstname'
                             value={this.state.firstname} 
                             onChange={(event)=> this.setState({firstname:event.target.value}) }
+                            required={true}
                         />                        
                     </div>
                     <div className={classes.field}>
@@ -117,23 +145,30 @@ class FormAuth extends Component {
                                 ref={this.fileInput} 
                                 onChange={this.handleImageChange}
                                 className={classes.inputfile}
+                                required={true}
+
                             />
                             <label htmlFor='avatar'>Sélectionner une image</label>
                         </div>
                         {image}
 
                     </div>
+                    {error}
                     <div>
                         {button}
                     </div>
+
                 </>
             )
         }else if (mode ==='login'){
             title = "Identifiez-vous"
             form=(
-                <div>
-                    <Button clic={this.handleValidationFormLogin}>Se connecter</Button>
-                </div>
+                <>
+                    {error}
+                    <div>
+                        <Button clic={this.handleValidationFormLogin}>Se connecter</Button>
+                    </div>
+                </>
             )
         }
 
@@ -142,7 +177,6 @@ class FormAuth extends Component {
                 <form className={classes.form} >
                     <h1>{title}</h1>
                     <div className={classes.field}>
-                        <label htmlFor='email'></label>
                         <input 
                             type="email"
                             name="email" 
@@ -150,10 +184,11 @@ class FormAuth extends Component {
                             id='email'
                             value={this.state.email}
                             onChange={(event)=> this.setState({email:event.target.value}) }
+                            required="required"
+
                         />
                     </div>
                     <div className={classes.field}>
-                        <label htmlFor='password'></label>
                         <input 
                             type="password" 
                             name="password" 
@@ -161,6 +196,7 @@ class FormAuth extends Component {
                             id='password'
                             value={this.state.password} 
                             onChange={(event)=> this.setState({password:event.target.value}) }
+                            required="required"
                         />                        
                     </div>
                         {form}

@@ -10,23 +10,23 @@ const API_URL = "http://localhost:3000/api/post/";
 
 
 class PostService {
-    // fonction d'affichage de tous les posts
+    //display all posts
     async getAll(){
         try {
             return await axios.get(API_URL, {headers: AuthHeader()});
         } catch (error) {
-            console.log(error.message);
+            console.log(error.response.data.message);
         }
     }
-    //fonction daffichage d'un post
+    //display one Post
     async getById(postId){
         try {
             return await axios.get(API_URL+postId, {headers: AuthHeader()});
         } catch (error) {
-            console.log(error.message);
+            console.log(error.response.data.message);
         }
     }
-    // fonction de création d'un post 
+    // create post
     async createPost(post, image){
         try {
             if(!image){    
@@ -40,37 +40,37 @@ class PostService {
                 await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }
         } catch (error) {
-            console.log(error.message);
+            return error.response.data.message;
         }
     }
 
-    //suppression d'un post
+    //delete post
     async deletePost(postId){
         try {
             return await axios.delete(API_URL+postId ,{headers: AuthHeader()} );
         } catch (error) {
-            console.log(error.message);            
+            console.log(error.response.data.message);            
         }
     }
 
-    //modification d'un post
+    //update post
     async modifyPost(postId, post, image){
         try {
             if(!image){    
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
-                return await axios.put(API_URL+postId, formData, {headers: AuthHeader()});           
+                await axios.put(API_URL+postId, formData, {headers: AuthHeader()});           
             }else{      
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
                 formData.append('image', image);
-                return await axios.put(API_URL+postId, formData,{headers: AuthHeader()});
+                await axios.put(API_URL+postId, formData,{headers: AuthHeader()});
             }
         } catch (error) {
-            console.log(error.message);
+            return error.response.data.message;
         }
     }
-    // fonction like post
+    // like post
     async likePost(postId, data) {
         try{ 
             if(data.likeId){
@@ -79,7 +79,7 @@ class PostService {
                 return await axios.post(API_URL+postId+"/like", data, {headers: AuthHeader()});
             }
         } catch (error) {
-            console.log(error.message);            
+            console.log(error.response.data.message);            
         }
     }
 }

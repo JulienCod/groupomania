@@ -32,56 +32,57 @@ class NewForm extends Component {
         })
     }
 
-    // gestion des changement sur le champ input
+    // management field
     handleInputChange = (event) => {
         const name = event.target.name;
         this.setState({
             [name] : event.target.value,
         })
     }
-    //gestion du changement de l'image
+    //management picture
     handleImageChange = (event) => {
         event.preventDefault();
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
-    //envoi du formulaire post
+    //send form post
     submitPost = async (event) => {
         event.preventDefault();
         let description = this.state.descriptionPost;
         let image =  this.fileInput.current.files[0];
         let userId = Authservice.getCurrentUser().userId;
-        if(!image && !description){
-           this.setState({ 
-                messageError: "veuillez saisir un texte ou ajouter une image"
+        let post = {
+            userId : userId,
+            description : description
+        }
+        let error = await PostService.createPost(post, image);
+        if(error){
+            this.setState({
+                messageError: error
             })
         }else{
-            let post = {
-                userId : userId,
-                description : description
-            }
-            await PostService.createPost(post, image);
             this.fileInput.current.value = null;
             await this.props.parentCallback();
             this.componentDidMount();
         }
+        
     }
-    //envoi du formulaire commentaire
+    //send form comment
     submitCommentaire = async (event) =>{
         event.preventDefault();
         let description = this.state.descriptionComment;
         let image =  this.fileInput.current.files[0];
         let userId = Authservice.getCurrentUser().userId
-        if(!image && !description){
-           this.setState({ 
-                messageError: "veuillez saisir un texte ou ajouter une image"
+        let comment = {
+            userId : userId,
+            description : description,
+            postId : this.props.idPost
+        }
+        let error = await commentService.createComment(comment, image);
+        if (error){
+            this.setState({
+                messageError: error
             })
         }else{
-            let comment = {
-                userId : userId,
-                description : description,
-                postId : this.props.idPost
-            }
-            await commentService.createComment(comment, image);
             this.fileInput.current.value = null;
             await this.props.parentCallback();
             this.componentDidMount();
@@ -99,7 +100,7 @@ class NewForm extends Component {
         let error = "";
         if(this.state.messageError){
             error = (
-                <span>{this.state.messageError}</span>
+                <span className={classes.error}>{this.state.messageError}</span>
             )
         }
         let status = this.props.status;
@@ -119,7 +120,7 @@ class NewForm extends Component {
                             onChange={this.handleInputChange}
                             className={classes.newPost__textArea} 
                             ></textarea>
-
+                            {error}
                             <input 
                             type="file" 
                             accept="image/*"
@@ -135,7 +136,6 @@ class NewForm extends Component {
                                 <FiSend title="envoyé" type="submit" onClick={this.submitPost} className={classes.newPost__send}/>
                             </div>
                         </form>
-                        {error}
                     </section>
                 </article>
             )
@@ -153,7 +153,7 @@ class NewForm extends Component {
                         onChange={this.handleInputChange}
                         className={classes.newCommentaire__textarea}
                         ></textarea>
-
+                        {error}
                         <input 
                         type="file" 
                         accept="image/*"
@@ -169,7 +169,6 @@ class NewForm extends Component {
                             <FiSend title="envoyé" type="submit" onClick={this.submitCommentaire} className={classes.newPost__send}/>
                         </div>
                     </form>
-                    {error}
                 </section>
             )
         }

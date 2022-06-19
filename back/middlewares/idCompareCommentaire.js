@@ -1,22 +1,23 @@
 import jwt from 'jsonwebtoken';
 import Commentaire from '../models/commentaire.js';
+import { CommentError, UserError } from '../error/customError.js';
 
-//  compare l'identifiant à l'origine du commentaire à l'identifiant de l'utilisateur connecté présent dans le token 
+// compare user ID
 const idCompareCommentaire= async (req, res, next) => {
     const {id} = req.params;
     try {
         let commentaire = await Commentaire.findByPk(id);
-        if(!commentaire)return res.status(404).json({msg : "commentaire not found"});
+        if(!commentaire)throw new CommentError(404, "Le commentaire n'existe pas");
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
         const userId = decodedToken.userId;
         const isAdmin = decodedToken.isAdmin;
-        if (commentaire.dataValues.userId !== userId && !isAdmin) res.status(403).json({ message: 'Requête non autorisée' });
+        if (commentaire.dataValues.userId !== userId && !isAdmin) throw new UserError(403,"Requête non autorisée");
         else{
             next()
         }
     } catch (error) {
-        return res.status(500).json({msg: "error compare user", error : error})
+        next(error);
     }
 }
 
