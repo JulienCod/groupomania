@@ -1,50 +1,46 @@
 import User from '../models/user.js';
 import bcrypt from 'bcrypt';
-import userValidation from '../middlewares/userValidation.js';
+import {userSignupValidation, userLoginValidation, userModifyValidation, userModifyMinValidation} from '../middlewares/userValidation.js';
 import jwt from 'jsonwebtoken';
 import Post from '../models/post.js';
 import Commentaire from '../models/commentaire.js';
 import fs from 'fs'
+import  {AuthentificationError ,UserError} from '../error/customError.js';
 
-// fonction d'enregistrement d'un utilisateur
-
-const signup = async (req, res) => {
+//signup
+const signup = async (req, res, next) => {
     let user = JSON.parse(req.body.user);
     let image = req.file;
-    console.log(req.file);
     if(image){
         user = {
             ...user,
             avatar: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         }
     }
-    const {error} = userValidation(user);
-    if (error) return res.status(401).json(error.details[0].message);
-
     try {
-       // hash du mot de passe
+    const {error} = userSignupValidation(user);
+    if (error)throw new AuthentificationError(401,error.details[0].message);
        let hash = await bcrypt.hash(user.password,10);
        user.password = hash;
-       // création d'un utilisateur
        await User.create({...user});
         return res.status(201).json({msg: "Create User"});
     } catch (error) {
-        return res.status(500).json({msg : "Database Error", error: error});
+        next(error)
     }
 };
-
-//fonction de connexion
-
-const login = async (req, res) => {
-
+// login
+const login = async (req, res, next) => {
     try {
-       // recherche de la présence de l'adresse mail dans la base de données
-        let user = await User.findOne({where : {email : req.body.email}})
-        if(!user) return res.status(404).json({msg: "User not found"});
-
-        // contrôle de la validité du mot de passe
-        let valid = await bcrypt.compare(req.body.password, user.dataValues.password);
-        if(!valid) return res.status(401).json({msg: "Invalid password"});
+        let body = {
+            email: req.body.email,
+            password: req.body.password,
+        }
+        const {error} = userLoginValidation(body)
+        if (error)throw new AuthentificationError(401,error.details[0].message);
+        let user = await User.findOne({where : {email : body.email}})
+        if(!user) throw new AuthentificationError(404,"L'utilisateur n'existe pas");
+        let valid = await bcrypt.compare(body.password, user.dataValues.password);
+        if(!valid) throw new AuthentificationError(401,"Le mot de passe saisie est incorrect")
         if ( user.dataValues.isAdmin) {
             return res.status(200).json({
                 userId: user.dataValues.id,
@@ -76,19 +72,18 @@ const login = async (req, res) => {
             })
         }
     } catch (error) {
-        return res.status(500).json({msg: 'Database Error', error: error})
+        next(error)
     }  
 };
-
-const getById = (req, res) => {
+// display user
+const getById = (req, res, next) => {
     let id = req.params.id;
     User.findByPk(id)
     .then(user => res.status(200).json(user))
-    .catch(error => res.status(500).json({msg : "" + error}))
+    .catch(error => next(error))
 }
-
-const updateUser = async (req, res) => {
-
+// update user
+const updateUser = async (req, res, next) => {
     const {id} = req.params;
     const userObject = req.file ?
     {
@@ -96,9 +91,15 @@ const updateUser = async (req, res) => {
         avatar: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     }:{...JSON.parse(req.body.user)}
     try {
-        // recherche de l'identifiant de l'utilisateur
+        if(userObject.password || userObject.newPassword){
+            const {error} = userModifyValidation(userObject);
+            if(error) throw new UserError(401, error.details[0].message);
+        }else if (!userObject.password && !userObject.newPassword) {
+            const {error} = userModifyMinValidation(userObject);
+            if(error) throw new UserError(401, error.details[0].message);
+        }
         let user = await User.findByPk(id);
-        if(!user)return res.status(404).json({msg : "user not found"});
+        if(!user) throw new AuthentificationError(404,"L'utilisateur n'existe pas");
         if(userObject.avatar){
             const filename = user.avatar.split('/images/')[1];
             if (filename != "profils.png") {
@@ -111,30 +112,25 @@ const updateUser = async (req, res) => {
         } 
         if(userObject.lastname) user.lastname = userObject.lastname;
         if(userObject.firstname) user.firstname = userObject.firstname;
-
-        // si demande de modification du mot de passe
         if(userObject.password && userObject.newPassword){
             let valid = await bcrypt.compare(userObject.password, user.dataValues.password)
-            if(!valid) return res.status(401).json({msg: "Invalid password"});
-
-            // cryptage du nouveau mot de passe
+            if(!valid) throw new AuthentificationError(401,"Le mot de passe saisie est incorrect");
             let hash = await bcrypt.hash(userObject.newPassword,10)
             user.password = hash;
         } 
-        // enregistrement des modification dans la base de données
         await user.save()
         return res.status(200).json({msg : "update user"})    
     } catch (error) {
-        return res.status(500).json({msg : "Database Error", error : error})
-        
+        next(error);
     }
 }
-const deleteUser = async (req, res) => {
 
+// delete user
+const deleteUser = async (req, res, next) => {
     const {id} =req.params;
     try {
         let user = await User.findByPk(id, {include:[Post, Commentaire]});
-        if(!user) return res.status(404).json({msg: 'User not found'});
+        if(!user) throw new UserError(404,"L'utilisateur n'existe pas");
         let filename ="";
         for (const commentaire of user.commentaires) {
             if (commentaire.dataValues.image){
@@ -162,10 +158,10 @@ const deleteUser = async (req, res) => {
             });
         }
         let ressource = await User.destroy({where : {id : id}})
-        if (ressource === 0) return res.status(404).json({msg: "Not found"})
+        if (ressource === 0) throw new UserError(404,"L'utilisateur n'existe pas");
         return res.status(200).json({msg: "Delete user"}) 
     } catch (error) {
-        return res.status(500).json({msg : "Database Error", error: error})
+        next(error)
     }
 }
 

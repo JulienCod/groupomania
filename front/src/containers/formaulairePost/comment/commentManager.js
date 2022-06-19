@@ -28,7 +28,6 @@ class CommentManager extends Component {
         let currentUser = AuthService.getCurrentUser().userId
         await PostService.getById(idPost)
         .then( response => {
-            console.log(response);
             if(response) {    
                 let listPost =response.data.likePosts   
                 let findUserLike = listPost.find(user => user.userId === currentUser )

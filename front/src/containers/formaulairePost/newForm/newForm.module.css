@@ -96,6 +96,10 @@ box-shadow: 1px 1px 3px #4E5166;
     font-size: 1rem;
     border-radius: 1rem;
 }
+.error{
+    color:#FD2D01;
+    font-size: 1rem;
+}
 @media screen and (max-width:900px){
     .commentaire__form{
         display: flex;

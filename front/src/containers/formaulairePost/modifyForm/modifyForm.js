@@ -15,6 +15,7 @@ class ModifyForm extends Component {
             image: "",
             imagePreview:"",
             mode: "",
+            messageError: "",
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.fileInput = React.createRef();
@@ -41,33 +42,54 @@ class ModifyForm extends Component {
                     description: response.data.description,
                     image: response.data.image,
                     mode: mode,
+                    messageError: "",
                 })
             })            
         } else if(mode ==="comment"){
             this.setState({
                 description: this.props.description,
                 image: this.props.image,
-                mode: mode
+                mode: mode,
+                messageError: "",
             })
         }
     }
-    submitModifyPost = async () => {
+    submitModifyPost = async (event) => {
+        event.preventDefault();
         const postId = this.props.post.postId;
         let image =  this.fileInput.current.files[0];
         let post = {
             description : this.state.description,
         }
-        await PostService.modifyPost(postId, post, image);
-        await this.props.parentCallback();
+
+        let error = await PostService.modifyPost(postId, post, image);
+        if(error){
+            this.setState({
+                messageError:error
+            })
+        }else{
+            await this.props.parentCallback();
+            this.componentDidMount();
+        }
     }
-    submitModifyComment = async () => {
+    submitModifyComment = async (event) => {
+        event.preventDefault();
         const commentId = this.props.id;
         let image =  this.fileInput.current.files[0];
         let comment = {
             description : this.state.description,
         }
         await CommentService.modifyComment(commentId, comment, image);
-        await this.props.parentCallback();
+        
+        let error = await CommentService.modifyComment(commentId, comment, image);
+        if(error){
+            this.setState({
+                messageError:error
+            })
+        }else{
+            await this.props.parentCallback();
+            this.componentDidMount();
+        }
     }
 
     render(){
@@ -85,6 +107,12 @@ class ModifyForm extends Component {
                 </div>    
             )
         }
+        let error ="";
+        if (this.state.messageError) {
+            error = (
+                <span className={classes.error}>{this.state.messageError}</span>
+            )
+        }
         let content ="";
         if(this.state.mode === "post"){
             content = (
@@ -99,6 +127,7 @@ class ModifyForm extends Component {
                             onChange={this.handleInputChange}
                             className={classes.modifyPost__textarea}
                             ></textarea>
+                            {error}
                             <div className={classes.input_img_send}>
                                 <input 
                                 type="file" 
@@ -132,7 +161,7 @@ class ModifyForm extends Component {
                         onChange={this.handleInputChange}
                         className={classes.modifyCommentaire__textarea}
                         ></textarea>
-
+                        {error}
                         <input 
                         type="file" 
                         accept="image/*"
@@ -156,6 +185,7 @@ class ModifyForm extends Component {
         return (
            <>
             {content}
+
            </>
         );
     }

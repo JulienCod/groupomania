@@ -10,16 +10,16 @@ const API_URL = "http://localhost:3000/api/commentaire/";
 
 
 class CommentService {
-    // fonction d'affichage de tous les posts
+    // display commentId
     async getById(idComment){
         try {
             return await axios.get(API_URL+idComment, {headers: AuthHeader()})
         } catch (error) {
-            console.log(error.message)
+            console.log(error.response.data.message);  
         }
     }
 
-    // fonction de création d'un post 
+    // create comment
     async createComment(commentaire, image){
         try {
             if(!image){    
@@ -33,37 +33,37 @@ class CommentService {
                 await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }
         } catch (error) {
-            console.log(error.message);
+            return error.response.data.message;  
         }
     }
 
-    //fonction de suppression d'un commentaire
+    //delete comment
     async deleteComment(commentId){
         try {
             return await axios.delete(API_URL+commentId, {headers: AuthHeader()})
         } catch (error) {
-            console.log(error.message);            
+            console.log(error.response.data.message);           
         }
     }
 
-     //modification d'un post
+     //update comment
      async modifyComment(commentId, comment, image){
         try {
             if(!image){    
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(comment));
-                return await axios.put(API_URL+commentId, formData, {headers: AuthHeader()});           
+                await axios.put(API_URL+commentId, formData, {headers: AuthHeader()});           
             }else{      
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(comment));
                 formData.append('image', image);
-                return await axios.put(API_URL+commentId, formData,{headers: AuthHeader()})
+                await axios.put(API_URL+commentId, formData,{headers: AuthHeader()})
             }
         } catch (error) {
-            console.log(error.message)
+            return error.response.data.message;  
         }
     }
-     // fonction like commentaire
+     // like comment
      async likePost(postId, data) {
         try{ 
             if(data.likeId){
@@ -72,7 +72,7 @@ class CommentService {
                 return await axios.post(API_URL+postId+"/like", data, {headers: AuthHeader()});
             }  
         } catch (error) {
-            console.log(error.message);            
+            console.log(error.response.data.message);            
         }
     }
 }

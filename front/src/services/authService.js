@@ -16,7 +16,7 @@ class AuthService {
                 document.location.href = "groupomania";
             }
         } catch (error) {
-            console.log(error.message);
+            return error.response.data.message;
         }
     }
 
@@ -38,11 +38,11 @@ class AuthService {
                  const formData = new FormData();
                  formData.append('user', JSON.stringify(user));
                  formData.append('image', image);
-                 await axios.post(API_URL + "signup", formData)
+                  await axios.post(API_URL + "signup", formData)
                  document.location.href = "login";
              }
         } catch (error) {
-            console.log(error.message);
+            return error.response.data.message;
         }
     }
 
@@ -60,7 +60,6 @@ class AuthService {
     }
 
     async modifyProfils(userId, user, image){
-        console.log('modify');
         try {
             if(image === undefined){   
                 const formData = new FormData();
@@ -73,7 +72,8 @@ class AuthService {
                  await axios.put(API_URL + userId, formData, {headers: AuthHeader()})
              }            
         } catch (error) {
-            console.log(error.message);            
+           console.log(error.response);    
+           return error.response.data.message       
         }
     }
 

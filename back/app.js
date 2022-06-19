@@ -37,5 +37,9 @@ app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use('/api/auth', userRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/commentaire', commentaireRoutes);
-
+app.use( (error,req, res, next) => {
+    // console.log("je suis dans le app.js");
+    // console.log(error);
+   return res.status(error.status || 500).json({message: error.message, error: error});
+})
 export default app;
