@@ -14,7 +14,7 @@ const infoUser = (props) => {
                 <img src={props.avatar} width={"50px"} height={"50px"} alt={props.firstname} />
                 <div>
                     <p>{props.firstname} {props.lastname}</p>
-                    <p>Publié le {props.dataTime}</p>
+                    <p>Publié le {props.dataTime} à {props.hour}</p>
                 </div>
             </div>
         )

@@ -34,7 +34,7 @@ class PageProfils extends Component {
                 firstname: response.data.firstname,
                 avatar :response.data.avatar,
             })
-            let user = JSON.parse(localStorage.getItem("user"))
+            let user = JSON.parse(sessionStorage.getItem("user"))
             
             user = {
                 ...user,
@@ -42,7 +42,7 @@ class PageProfils extends Component {
                 firstname: response.data.firstname,
                 avatar :response.data.avatar,
             }
-            localStorage.setItem("user", JSON.stringify(user));
+            sessionStorage.setItem("user", JSON.stringify(user));
 
         })        
 
@@ -89,13 +89,13 @@ class PageProfils extends Component {
                 this.setState({
                     avatar :response.data.avatar,
                 })
-                let user = JSON.parse(localStorage.getItem("user"))
+                let user = JSON.parse(sessionStorage.getItem("user"))
                 
                 user = {
                     ...user,
                     avatar :response.data.avatar,
                 }
-                localStorage.setItem("user", JSON.stringify(user));
+                sessionStorage.setItem("user", JSON.stringify(user));
     
             })        
             window.location.reload();
@@ -105,7 +105,7 @@ class PageProfils extends Component {
         console.log("delete");
         let userId = this.state.userId;
         await AuthService.deleteUser(userId);
-        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
         document.location.href = "/";
     }
 

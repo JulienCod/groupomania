@@ -12,7 +12,7 @@ class AuthService {
         try {
             const response = await axios.post(API_URL + "login", user);
             if (response.data.token) {
-                localStorage.setItem("user", JSON.stringify(response.data));
+                sessionStorage.setItem("user", JSON.stringify(response.data));
                 document.location.href = "groupomania";
             }
         } catch (error) {
@@ -22,7 +22,7 @@ class AuthService {
 
     //fonction de deconnexion
     logout(){
-        localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
         document.location.href = "/";
     }
 
@@ -48,7 +48,7 @@ class AuthService {
 
     // // fonction de contrôle d'utilisateur
     getCurrentUser(){
-        return JSON.parse(localStorage.getItem("user"))
+        return JSON.parse(sessionStorage.getItem("user"))
     }
 
     async getById(userId){

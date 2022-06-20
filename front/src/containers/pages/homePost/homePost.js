@@ -25,7 +25,7 @@ class HomePost extends Component {
     closeWelcome = () =>{
         let user = AuthService.getCurrentUser();
         user.welcome = false;
-        localStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("user", JSON.stringify(user));
         this.setState({
             welcome:false
         })
@@ -37,7 +37,7 @@ class HomePost extends Component {
         if (welcome) {
             welcomeContent = (
                 <div className={classes.welcome}>
-                    <span>Bienvenue {this.state.firstname} {this.state.lastname}</span>
+                    <span>Bienvenue {this.state.lastname} {this.state.firstname}</span>
                     <RiCloseCircleLine onClick={this.closeWelcome} className={classes.closeWelcome}/>
                 </div>
             )
