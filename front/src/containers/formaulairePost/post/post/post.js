@@ -73,7 +73,7 @@ class Post extends Component {
                 <article className={classes.post__container}>
                     <section className={classes.post} >
                         <div className={classes.post__info}>   
-                            <InfoUSer mode="post" avatar={this.props.user.avatar} firstname={this.props.user.firstname} lastname={this.props.user.lastname} dataTime={this.props.post.datePublication} />
+                            <InfoUSer mode="post" avatar={this.props.user.avatar} firstname={this.props.user.firstname} lastname={this.props.user.lastname} dataTime={this.props.post.datePublication} hour={this.props.post.hourPublication} />
                             {options}
                         </div>
                         {modify}
