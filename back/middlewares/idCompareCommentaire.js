@@ -9,7 +9,7 @@ const idCompareCommentaire= async (req, res, next) => {
         let commentaire = await Commentaire.findByPk(id);
         if(!commentaire)throw new CommentError(404, "Le commentaire n'existe pas");
         const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
+        const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
         const userId = decodedToken.userId;
         const isAdmin = decodedToken.isAdmin;
         if (commentaire.dataValues.userId !== userId && !isAdmin) throw new UserError(403,"Requête non autorisée");
