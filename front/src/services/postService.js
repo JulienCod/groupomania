@@ -1,5 +1,4 @@
 import axios from 'axios';
-// import AuthService from './authService.js';
 import AuthHeader from './authHeader.js';
 
 // import dotenv from 'dotenv';
@@ -50,6 +49,7 @@ class PostService {
             return await axios.delete(API_URL+postId ,{headers: AuthHeader()} );
         } catch (error) {
             console.log(error.response.data.message);            
+            return (error.response.data.message);            
         }
     }
 

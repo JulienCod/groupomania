@@ -46,7 +46,7 @@ const signupSchema = Joi.object({
     avatar: Joi.object()
 })
 
-export default function FormSignup() {
+export default function Formulaire() {
   const [file, setFile] = useState("");
   const [preview, setPreview] = useState("");
 

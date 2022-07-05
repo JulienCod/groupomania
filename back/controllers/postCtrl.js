@@ -5,10 +5,11 @@ import LikePost from '../models/likePost.js';
 import fs from "fs"
 import { LikeError, PostError } from '../error/customError.js';
 import { formPostValidation, formModifyValidation } from '../middlewares/formValidartion.js';
+import sequelize from 'sequelize'
 
 // display all post
-const getAll = (req, res, next) => {
-    Post.findAll({order: ['id'],include:[User, LikePost]})
+const getAll = async (req, res, next) => {
+    await Post.findAll({order:[['createdAt', 'DESC']],include:[User, LikePost]})
     .then(posts => res.status(200).json(posts))
     .catch(error => next(error));
 }
