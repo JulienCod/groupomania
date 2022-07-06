@@ -118,6 +118,14 @@ class OldComment extends Component {
     }
 
     render(){
+        let description="";
+        if(this.props.description){
+            description =(
+                <div className={classes.comment}>
+                    <p  className={classes.commentaire__text} >{this.props.description}</p>
+                </div>   
+            )
+        }
         let options = "";
         if (this.props.userId === this.state.currentUser || this.state.admin) {
             options = (
@@ -130,7 +138,9 @@ class OldComment extends Component {
         let image = "";
         if (this.props.image){
             image = (
-                        <img src={this.props.image} className={classes.img} alt=""  />
+                        <div className={classes.container__img}>
+                            <img src={this.props.image} className={classes.img} alt=""  />
+                        </div>
                     )
         }
         let modify = "";
@@ -141,13 +151,12 @@ class OldComment extends Component {
         }else{
             modify=(
                 <div className={classes.container__comment}>
-                    <div className={classes.comment}>
-                        <p  className={classes.commentaire__text} >{this.props.description}</p>
-                        {options}
-                    </div>   
-                    <div className={classes.container__img}>
+                    
                         {image}
-                    </div>
+                    
+                        {description}
+                    
+                        {options}
                 </div>
             )
         }

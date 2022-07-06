@@ -3,6 +3,7 @@ import classes from './homePost.module.css';
 import {RiCloseCircleLine} from 'react-icons/ri';
 import PostManager from '../../formaulairePost/post/postManager';
 import AuthService from '../../../services/authService';
+import ScrollButton from '../../../components/scroll-to-top/scrollToTop';
 
 class HomePost extends Component {
     constructor(props){
@@ -45,8 +46,10 @@ class HomePost extends Component {
 
         return (
             <>
+                <h1>Groupomania</h1>
                 {welcomeContent}
 
+                <ScrollButton />
                 <PostManager />
             </>
         );

@@ -8,12 +8,21 @@
     /* border: 2px solid green; */
 }
 .container__comment{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
     width:100%;
+    background-color:rgb(204, 199, 199);
+    border-radius: 1rem;
+    margin:auto 2rem auto 2.1rem;
+    box-shadow: 0px 0px 10px 2px #4E5166;
+    align-items: center;
 
 }
 .commentaire__text{
     width: 100%;
     min-height: 40px;
+    align-items: center;
 }
 .infoUser{
     position:relative;
@@ -52,23 +61,20 @@
 }
 .comment{
     display: flex;
-    flex:1 1 ;
-    background-color:rgb(204, 199, 199);
-    border-radius: 1rem;
-    margin:auto 2rem auto 2.1rem;
-    box-shadow: 0px 0px 10px 2px #4E5166;
+    flex:1 1 56%;
+
 }
 .comment__option{
     display: flex;
     font-size:2.8rem;
 }
 .container__img{
-    width:20%;
-    margin:0.5rem 0 0 2.5rem; 
+    flex:1 1 100%;
+    margin: 0.5rem;
 }
 
 .img{
-    width:100%;
+    max-width:75%;
 }
 /* icon modify post */
 .iconModify{
@@ -96,8 +102,6 @@
 
 @media screen and (max-width:700px){
     .comment__option{
-        display: flex;
-        flex-direction: column;
         justify-content: center;
     }
     /* icon modify post */

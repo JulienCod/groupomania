@@ -9,6 +9,7 @@
     top:0;
     padding: 1rem 0;
     margin:5.5rem 0;
+    position:relative
 }
 @media screen and (max-width:700px){
     .main{
