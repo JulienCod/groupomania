@@ -157,6 +157,7 @@ class PageProfils extends Component {
                             id='password'
                             value={this.state.password} 
                             onChange={(event)=> this.setState({password:event.target.value}) }
+                            className={classes.field}
                         />
                         <input 
                             type="password" 
@@ -165,6 +166,7 @@ class PageProfils extends Component {
                             id='newPassword'
                             value={this.state.newPassword} 
                             onChange={(event)=> this.setState({newPassword:event.target.value}) }
+                            className={classes.field}
                         />        
                     </div>
 
@@ -181,6 +183,7 @@ class PageProfils extends Component {
                             id='lastname'
                             value={this.state.lastname} 
                             onChange={(event)=> this.setState({lastname:event.target.value}) }
+                            className={classes.field}
                         />                        
                         <input 
                             title='Nom'
@@ -190,6 +193,7 @@ class PageProfils extends Component {
                             id='firstname'
                             value={this.state.firstname} 
                             onChange={(event)=> this.setState({firstname:event.target.value}) }
+                            className={classes.field}
                         />                        
                     </div>
 

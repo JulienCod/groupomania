@@ -61,6 +61,7 @@ box-shadow: 1px 1px 3px #4E5166;
     resize: none;
     border-radius: 1rem;
     font-size: 1rem;
+    padding:0.5rem;
 }
 /* icon envoi */
 .newPost__send{
@@ -95,6 +96,7 @@ box-shadow: 1px 1px 3px #4E5166;
     resize: none;
     font-size: 1rem;
     border-radius: 1rem;
+    padding:0.5rem;
 }
 .error{
     color:#FD2D01;

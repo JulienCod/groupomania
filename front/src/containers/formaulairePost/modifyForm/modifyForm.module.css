@@ -56,6 +56,8 @@ box-shadow: 1px 1px 3px #4E5166;
     resize: none;
     border-radius: 1rem;
     font-size: 1rem;
+    padding:0.5rem;
+
 }
 .modify__send{
     color:#4E5166;
@@ -76,6 +78,8 @@ box-shadow: 1px 1px 3px #4E5166;
     resize: none;
     border-radius: 1rem;
     font-size: 1rem;
+    padding:0.5rem;
+
 }
 
 .modify__img__send{

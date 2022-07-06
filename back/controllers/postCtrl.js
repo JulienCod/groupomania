@@ -8,7 +8,7 @@ import { formPostValidation, formModifyValidation } from '../middlewares/formVal
 
 // display all post
 const getAll = (req, res, next) => {
-    Post.findAll({order: ['id'],include:[User, LikePost]})
+    Post.findAll({order: [['createdAt', 'DESC']],include:[User, LikePost]})
     .then(posts => res.status(200).json(posts))
     .catch(error => next(error));
 }

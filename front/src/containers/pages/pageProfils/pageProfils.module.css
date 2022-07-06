@@ -117,6 +117,10 @@
 .error{
     color:#FD2D01;
 }
+.field{
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
 
 @media screen and (max-width:700px){
     .profils{
