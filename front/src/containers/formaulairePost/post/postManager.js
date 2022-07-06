@@ -51,7 +51,6 @@ class PostManager extends Component {
                         likePost: post.likePosts
                     }
                 })
-                listPost.reverse()
                  this.setState({
                     listPost,
                     loading:false,
