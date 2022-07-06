@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import AuthService from '../../../services/authService';
 import classes from "./pageProfils.module.css";
+import { userModifyMinValidation, userModifyValidation } from '../../../services/formValidation';
 
 class PageProfils extends Component {
 
@@ -63,50 +64,57 @@ class PageProfils extends Component {
         let userId = this.state.userId
         let image =  this.fileInput.current.files[0];
         let user ={}
+        let errorform = null;
         if(this.state.password || this.state.newPassword){
-             user = {
-                    email: this.state.email,
+            user = {
+                email: this.state.email,
                     lastname: this.state.lastname,
                     firstname: this.state.firstname,
                     password: this.state.password,
                     newPassword: this.state.newPassword,
             }
+            
+            errorform = userModifyValidation(user);
         }else{
-             user = {
-                    email: this.state.email,
+            user = {
+                email: this.state.email,
                     lastname: this.state.lastname,
                     firstname: this.state.firstname,
             }
+            errorform = userModifyMinValidation(user);
         }
-        let error = await AuthService.modifyProfils(userId, user, image);
-        if(error){
+        if (errorform.error) {
             this.setState({
-                errorMessage: error
+                messageError: errorform.error.details[0].message
             })
         }else{
-            await AuthService.getById(userId)
-            .then((response) => {
-                this.setState({
-                    avatar :response.data.avatar,
-                })
-                let user = JSON.parse(sessionStorage.getItem("user"))
-                
-                user = {
-                    ...user,
-                    avatar :response.data.avatar,
-                }
-                sessionStorage.setItem("user", JSON.stringify(user));
-    
-            })        
-            window.location.reload();
+            const error = await AuthService.modifyProfils(userId, user, image);
+            if(!error){
+                await AuthService.getById(userId)
+                .then((response) => {
+                    this.setState({
+                        avatar :response.data.avatar,
+                    })
+                    let user = JSON.parse(sessionStorage.getItem("user"))
+                    
+                    user = {
+                        ...user,
+                        avatar :response.data.avatar,
+                    }
+                    sessionStorage.setItem("user", JSON.stringify(user));
+        
+                })        
+                window.location.reload();
+            }
         }
     }
     deleteProfiles = async () =>{
-        console.log("delete");
-        let userId = this.state.userId;
-        await AuthService.deleteUser(userId);
-        sessionStorage.removeItem("user");
-        document.location.href = "/";
+        if(window.confirm('Voulez-vous vraiment supprimer votre profil')){
+            let userId = this.state.userId;
+            await AuthService.deleteUser(userId);
+            sessionStorage.removeItem("user");
+            document.location.href = "/";
+        }
     }
 
     render(){
@@ -127,9 +135,9 @@ class PageProfils extends Component {
             )
         }
         let error="";
-        if(this.state.errorMessage){
+        if(this.state.messageError){
             error=(
-                <span className={classes.error}>{this.state.errorMessage}</span>
+                <span className={classes.error}>{this.state.messageError}</span>
             )
         }
         return (

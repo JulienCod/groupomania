@@ -72,7 +72,8 @@ class AuthService {
                  await axios.put(API_URL + userId, formData, {headers: AuthHeader()})
              }            
         } catch (error) {   
-           alert(error.response.data.message);      
+           alert(error.response.data.message);
+           return error.response.data.message
         }
     }
 
