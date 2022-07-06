@@ -3,9 +3,7 @@ import classes from './modifyForm.module.css';
 import {FiSend} from 'react-icons/fi';
 import PostService from '../../../services/postService';
 import CommentService from '../../../services/commentService';
-
-
-
+import { formModifyValidation } from '../../../services/formValidation';
 
 class ModifyForm extends Component {
     constructor(props) {
@@ -62,12 +60,19 @@ class ModifyForm extends Component {
             description : this.state.description,
         }
 
-        let error = await PostService.modifyPost(postId, post, image);
-        if(error){
+        
+        const errorform = formModifyValidation(post);
+        
+        if(!this.state.description && !image) {
             this.setState({
-                messageError:error
+                messageError: "Le post doit contenir au minimum une image ou du texte"
+            })
+        }else if (errorform.error) {
+            this.setState({
+                messageError: errorform.error.details[0].message
             })
         }else{
+            await PostService.modifyPost(postId, post, image);
             await this.props.parentCallback();
             this.componentDidMount();
         }
@@ -79,14 +84,19 @@ class ModifyForm extends Component {
         let comment = {
             description : this.state.description,
         }
-        await CommentService.modifyComment(commentId, comment, image);
         
-        let error = await CommentService.modifyComment(commentId, comment, image);
-        if(error){
+        const errorform = formModifyValidation(comment);
+        
+        if(!this.state.description && !image) {
             this.setState({
-                messageError:error
+                messageError: "Le commentaire doit contenir au minimum une image ou du texte"
+            })
+        }else if (errorform.error) {
+            this.setState({
+                messageError: errorform.error.details[0].message
             })
         }else{
+            await CommentService.modifyComment(commentId, comment, image);
             await this.props.parentCallback();
             this.componentDidMount();
         }

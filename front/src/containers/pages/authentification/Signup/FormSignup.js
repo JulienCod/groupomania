@@ -3,46 +3,9 @@ import { useForm } from 'react-hook-form';
 import AuthService from  '../../../../services/authService';
 import classes from './formSignup.module.css';
 import { joiResolver } from '@hookform/resolvers/joi';
-import Joi from 'joi';
+import { signupSchema } from '../../../../services/formValidation';
 import Button from '../../../../components/button/btn';
 import Image from '../../../../components/image/image';
-
-// validation schema
-const signupSchema = Joi.object({
-    email: Joi.string()
-        .required()
-        .email({minDomainSegments:2, tlds: {allow: ['com', 'net', 'fr']}})
-        .messages({
-          "string.empty": "L'adresse mail est obligatoire",
-          "string.email": "l'extension doit contenir un @ et un dommaine avec minimum deux caractères",
-        }),
-        
-    password: Joi.string()
-        .required()
-        .pattern(new RegExp(/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{7,})\S$/))
-        .min(8)
-        .messages({
-          "string.empty": "Le mot de passe est obligatoire",
-          "string.pattern.base": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre",
-          "string.min":"Le mot de passe doit contenir au minimum 8 caractères",
-        }),
-    lastname: Joi.string()
-        .required()
-        .pattern(new RegExp('^[^$=]{3,30}$'))
-        .messages({
-          "string.empty":"Le prénom est obligatoire",
-          "string.pattern.base":"Le prénom doit contenir entre 3 et 30 caractères",
-        }),
-
-    firstname: Joi.string()
-        .required()
-        .pattern(new RegExp('^[^$=]{3,30}$'))
-        .messages({
-          "string.empty":"Le nom est obligatoire",
-          "string.pattern.base":"Le nom doit contenir entre 3 et 30 caractères",
-        }),
-    avatar: Joi.object()
-})
 
 export default function FormSignup() {
   const [file, setFile] = useState("");

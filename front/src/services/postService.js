@@ -40,7 +40,7 @@ class PostService {
                 await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }
         } catch (error) {
-            return error.response.data.message;
+            console.log(error.response.data.message);
         }
     }
 
@@ -67,7 +67,7 @@ class PostService {
                 await axios.put(API_URL+postId, formData,{headers: AuthHeader()});
             }
         } catch (error) {
-            return error.response.data.message;
+            console.log(error.response.data.message);
         }
     }
     // like post

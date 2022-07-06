@@ -40,7 +40,7 @@ const login = async (req, res, next) => {
         let user = await User.findOne({where : {email : body.email}})
         if(!user) throw new AuthentificationError(404,"L'utilisateur n'existe pas");
         let valid = await bcrypt.compare(body.password, user.dataValues.password);
-        if(!valid) throw new AuthentificationError(401,"Le mot de passe saisie est incorrect")
+        if(!valid) throw new AuthentificationError(401,"Le mot de passe saisi est incorrect")
         if ( user.dataValues.isAdmin) {
             return res.status(200).json({
                 userId: user.dataValues.id,

@@ -5,6 +5,7 @@ import PostService from '../../../services/postService';
 import Authservice from '../../../services/authService';
 import commentService from '../../../services/commentService';
 import AuthService from '../../../services/authService';
+import  {formValidationComment, formValidationPost} from '../../../services/formValidation';
 
 
 class NewForm extends Component {
@@ -54,12 +55,18 @@ class NewForm extends Component {
             userId : userId,
             description : description
         }
-        let error = await PostService.createPost(post, image);
-        if(error){
+        const errorform = formValidationPost(post);
+        
+        if(!description && !image) {
             this.setState({
-                messageError: error
+                messageError: "Le post doit contenir au minimum une image ou du texte"
+            })
+        }else if (errorform.error) {
+            this.setState({
+                messageError: errorform.error.details[0].message
             })
         }else{
+            await PostService.createPost(post, image);
             this.fileInput.current.value = null;
             await this.props.parentCallback();
             this.componentDidMount();
@@ -77,12 +84,17 @@ class NewForm extends Component {
             description : description,
             postId : this.props.idPost
         }
-        let error = await commentService.createComment(comment, image);
-        if (error){
+        const errorform = formValidationComment(comment);
+        if(!description && !image) {
             this.setState({
-                messageError: error
+                messageError: "Le commentaire doit contenir au minimum une image ou du texte"
+            })
+        }else if (errorform.error) {
+            this.setState({
+                messageError: errorform.error.details[0].message
             })
         }else{
+            await commentService.createComment(comment, image);
             this.fileInput.current.value = null;
             await this.props.parentCallback();
             this.componentDidMount();
@@ -173,9 +185,9 @@ class NewForm extends Component {
             )
         }
         return (
-           <>
-               {content}
-           </>
+            <>
+                {content}
+            </>
         );
     }
 }

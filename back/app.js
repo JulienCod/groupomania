@@ -10,7 +10,7 @@ import commentaireRoutes from './routes/commentaireRoutes.js';
 const app = express();
 
 
-// app.use(helmet({ crossOriginResourcePolicy: { policy: "same-site" } }));
+app.use(helmet({ crossOriginResourcePolicy: { policy: "same-site" } }));
 // Permet d'analyser le corps de la requête.
 app.use(express.json()); 
 

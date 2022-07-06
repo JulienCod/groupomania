@@ -15,7 +15,7 @@ class CommentService {
         try {
             return await axios.get(API_URL+idComment, {headers: AuthHeader()})
         } catch (error) {
-            console.log(error.response.data.message);  
+            alert(error.response.data.message);  
         }
     }
 
@@ -33,7 +33,7 @@ class CommentService {
                 await axios.post(API_URL, formData, {headers: AuthHeader()});           
             }
         } catch (error) {
-            return error.response.data.message;  
+            alert(error.response.data.message);  
         }
     }
 
@@ -42,7 +42,7 @@ class CommentService {
         try {
             return await axios.delete(API_URL+commentId, {headers: AuthHeader()})
         } catch (error) {
-            console.log(error.response.data.message);           
+            alert(error.response.data.message);           
         }
     }
 
@@ -60,7 +60,7 @@ class CommentService {
                 await axios.put(API_URL+commentId, formData,{headers: AuthHeader()})
             }
         } catch (error) {
-            return error.response.data.message;  
+            alert(error.response.data.message);  
         }
     }
      // like comment
@@ -72,7 +72,7 @@ class CommentService {
                 return await axios.post(API_URL+postId+"/like", data, {headers: AuthHeader()});
             }  
         } catch (error) {
-            console.log(error.response.data.message);            
+            alert(error.response.data.message);            
         }
     }
 }

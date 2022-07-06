@@ -16,7 +16,7 @@ class AuthService {
                 document.location.href = "groupomania";
             }
         } catch (error) {
-            return error.response.data.message;
+            alert(error.response.data.message);
         }
     }
 
@@ -42,7 +42,7 @@ class AuthService {
                  document.location.href = "login";
              }
         } catch (error) {
-            return error.response.data.message;
+            alert("L'adresse email est déjà utilisée") ;
         }
     }
 
@@ -55,7 +55,7 @@ class AuthService {
         try {
             return await axios.get(API_URL+userId, {headers: AuthHeader()})
         } catch (error) {
-            console.log(error.message);
+            alert(error.message);
         }
     }
 
@@ -71,19 +71,16 @@ class AuthService {
                  formData.append('image', image);
                  await axios.put(API_URL + userId, formData, {headers: AuthHeader()})
              }            
-        } catch (error) {
-           console.log(error.response);    
-           return error.response.data.message       
+        } catch (error) {   
+           alert(error.response.data.message);      
         }
     }
 
     async deleteUser(userId) {
-        console.log('delete profils');
         try {
             await axios.delete(API_URL+userId, {headers: AuthHeader()})
         } catch (error) {
-            console.log(error.message);            
-            
+            alert(error.message);
         }
     }
   

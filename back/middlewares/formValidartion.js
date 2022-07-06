@@ -8,9 +8,13 @@ const formPostValidation = (body) =>{
                 "number.empty":"L'identifiant de l'utilisateur n'est pas renseignée"
             }),
         description: Joi.string()
+            .min(3)
+            .max(1000)
             .pattern(new RegExp('^[^$=]{3,}$'))
             .messages({
-                "string.pattern.base":"Le texte doit contenir au moins 3 caractères et ne doivent pas contenir de signe = ou $"
+                "string.min":"La description doit contenir au minimum 3 caractères",
+                "string.max":"La description ne doit pas contenir plus de 1000 caractères",
+                "string.pattern.base":"La description ne doit pas contenir de signe = ou $",
             }),
         image: Joi.string()
             .min(5)
@@ -33,8 +37,13 @@ const formCommentValidation = (body) =>{
             }),
         description: Joi.string()
             .pattern(new RegExp('^[^$=]{3,}$'))
+            .min(3)
+            .max(1000)
+            .pattern(new RegExp('^[^$=]{3,}$'))
             .messages({
-                "string.pattern.base":"Le texte doit contenir au moins 3 caractères et ne doivent pas contenir de signe = ou $"
+                "string.min":"La description doit contenir au minimum 3 caractères",
+                "string.max":"La description ne doit pas contenir plus de 1000 caractères",
+                "string.pattern.base":"La description ne doit pas contenir de signe = ou $",
             }),
         image: Joi.string()
             .min(5)
@@ -45,9 +54,13 @@ const formCommentValidation = (body) =>{
 const formModifyValidation = (body) =>{
     const userSchema = Joi.object({
         description: Joi.string()
+            .min(3)
+            .max(1000)
             .pattern(new RegExp('^[^$=]{3,}$'))
             .messages({
-                "string.pattern.base":"Le texte doit contenir au moins 3 caractères et ne doivent pas contenir de signe = ou $"
+                "string.min":"La description doit contenir au minimum 3 caractères",
+                "string.max":"La description ne doit pas contenir plus de 1000 caractères",
+                "string.pattern.base":"La description ne doit pas contenir de signe = ou $",
             }),
         image: Joi.string()
             .min(5)
