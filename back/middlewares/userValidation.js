@@ -12,7 +12,7 @@ const userSignupValidation = (body) =>{
             
         password: Joi.string()
             .min(8)
-            .pattern(new RegExp('^([^$=]([a-z].{0,})([A-Z].{0,})([0-9].{0,}))'))
+            .pattern(new RegExp('/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{7,})\S$/'))
             .required()
             .messages({
                 "string.min":"Le mot de passe doit contenir au minimum 8 caractères",
