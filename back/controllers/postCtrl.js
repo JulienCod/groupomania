@@ -39,6 +39,7 @@ const createPost = async (req, res, next) => {
         if (!post.description && !image) {
             throw new PostError(400,"Le post doit contenir au minimum une image ou du texte")
         }
+        console.log(post);
         let createPost = await Post.create({...post})
         if (createPost) {
             res.status(201).json({msg: "Create post"})
