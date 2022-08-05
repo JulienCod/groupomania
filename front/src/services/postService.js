@@ -1,19 +1,15 @@
 import axios from 'axios';
-// import AuthService from './authService.js';
 import AuthHeader from './authHeader.js';
 
-// import dotenv from 'dotenv';
 
-// dotenv.config();
-
-const API_URL = "http://localhost:3000/api/post/";
+const API_URL = `${process.env.REACT_APP_API_URL}`;
 
 
 class PostService {
     //display all posts
     async getAll(){
         try {
-            return await axios.get(API_URL, {headers: AuthHeader()});
+            return await axios.get(API_URL+"api/post/", {headers: AuthHeader()});
         } catch (error) {
             console.log(error.response.data.message);
         }
@@ -21,7 +17,7 @@ class PostService {
     //display one Post
     async getById(postId){
         try {
-            return await axios.get(API_URL+postId, {headers: AuthHeader()});
+            return await axios.get(API_URL+"api/post/"+postId, {headers: AuthHeader()});
         } catch (error) {
             console.log(error.response.data.message);
         }
@@ -32,12 +28,14 @@ class PostService {
             if(!image){    
                 const formData = new FormData();
                 formData.append("post", JSON.stringify(post));
-                await axios.post(API_URL, formData, {headers: AuthHeader()});           
-            }else{                
+                await axios.post(API_URL+"api/post/", formData, {headers: AuthHeader()});           
+            }else{     
+                console.log(image);           
                 const formData = new FormData();
                 formData.append("post", JSON.stringify(post));
                 formData.append('image', image);
-                await axios.post(API_URL, formData, {headers: AuthHeader()});           
+                await axios.post(API_URL+"api/post/", formData, {headers: AuthHeader(), 'Content-Type': 'application/json',
+                'mode': 'no-cors'});           
             }
         } catch (error) {
             console.log(error.response.data.message);
@@ -47,7 +45,7 @@ class PostService {
     //delete post
     async deletePost(postId){
         try {
-            return await axios.delete(API_URL+postId ,{headers: AuthHeader()} );
+            return await axios.delete(API_URL+"api/post/"+postId ,{headers: AuthHeader()} );
         } catch (error) {
             console.log(error.response.data.message);            
         }
@@ -59,12 +57,12 @@ class PostService {
             if(!image){    
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
-                await axios.put(API_URL+postId, formData, {headers: AuthHeader()});           
+                await axios.put(API_URL+"api/post/"+postId, formData, {headers: AuthHeader()});           
             }else{      
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
                 formData.append('image', image);
-                await axios.put(API_URL+postId, formData,{headers: AuthHeader()});
+                await axios.put(API_URL+"api/post/"+postId, formData,{headers: AuthHeader()});
             }
         } catch (error) {
             console.log(error.response.data.message);
@@ -74,9 +72,9 @@ class PostService {
     async likePost(postId, data) {
         try{ 
             if(data.likeId){
-                return await axios.put(API_URL+data.likeId+"/like", data, {headers: AuthHeader()});
+                return await axios.put(API_URL+"api/post/"+data.likeId+"/like", data, {headers: AuthHeader()});
             }else{
-                return await axios.post(API_URL+postId+"/like", data, {headers: AuthHeader()});
+                return await axios.post(API_URL+"api/post/"+postId+"/like", data, {headers: AuthHeader()});
             }
         } catch (error) {
             console.log(error.response.data.message);            

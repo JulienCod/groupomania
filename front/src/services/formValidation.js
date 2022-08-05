@@ -19,16 +19,16 @@ const signupSchema = Joi.object({
             "string.min":"Le mot de passe doit contenir au minimum 8 caractères",
         }),
     lastname: Joi.string()
-    .required()
-    .min(3)
-    .max(30)
-    .pattern(new RegExp('^[^$=]{3,30}$'))
-    .messages({
-        "string.empty":"Le prénom est obligatoire",
-        "string.min":"Le prénom doit contenir au minimum 3 caractères",
-        "string.max":"Le prénom ne doit pas contenir plus de 30 caractères",
-        "string.pattern.base":"Le prénom ne doit pas contenir les caractères $ ou =",
-    }),
+        .required()
+        .min(3)
+        .max(30)
+        .pattern(new RegExp('^[^$=]{3,30}$'))
+        .messages({
+            "string.empty":"Le prénom est obligatoire",
+            "string.min":"Le prénom doit contenir au minimum 3 caractères",
+            "string.max":"Le prénom ne doit pas contenir plus de 30 caractères",
+            "string.pattern.base":"Le prénom ne doit pas contenir les caractères $ ou =",
+        }),
     firstname: Joi.string()
         .required()
         .min(3)

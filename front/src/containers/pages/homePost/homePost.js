@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import classes from './homePost.module.css';
 import {RiCloseCircleLine} from 'react-icons/ri';
-import PostManager from '../../formaulairePost/post/postManager';
+import PostManager from '../../formulairePost/post/postManager';
 import AuthService from '../../../services/authService';
 import ScrollButton from '../../../components/scroll-to-top/scrollToTop';
 

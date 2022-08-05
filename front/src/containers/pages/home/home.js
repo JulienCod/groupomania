@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "../../../components/image/image";
 
 import NavAuth from "../../../components/nav/auth/navAuth";
 import classes from "./home.module.css";
