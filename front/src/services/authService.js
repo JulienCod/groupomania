@@ -13,7 +13,7 @@ class AuthService {
                 document.location.href = "groupomania";
             }
         } catch (error) {
-            alert(error.response.data.message);
+            console.log(error.response.data.message);
         }
     }
 
@@ -39,7 +39,7 @@ class AuthService {
                 document.location.href = "login";
             }
         } catch (error) {
-            alert("L'adresse email est déjà utilisée") ;
+            console.log(error.response) ;
         }
     }
 

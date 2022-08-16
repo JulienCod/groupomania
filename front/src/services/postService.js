@@ -29,16 +29,15 @@ class PostService {
                 const formData = new FormData();
                 formData.append("post", JSON.stringify(post));
                 await axios.post(API_URL+"api/post/", formData, {headers: AuthHeader()});           
-            }else{     
-                console.log(image);           
+            }else{              
                 const formData = new FormData();
                 formData.append("post", JSON.stringify(post));
                 formData.append('image', image);
-                await axios.post(API_URL+"api/post/", formData, {headers: AuthHeader(), 'Content-Type': 'application/json',
-                'mode': 'no-cors'});           
+                await axios.post(API_URL+"api/post/", formData, {headers: AuthHeader()
+  });           
             }
         } catch (error) {
-            console.log(error.response.data.message);
+            console.log(error.response);
         }
     }
 
