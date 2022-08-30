@@ -8,41 +8,40 @@ import { formPostValidation, formModifyValidation } from '../middlewares/formVal
 
 // display all post
 const getAll = (req, res, next) => {
-    Post.findAll({order: [['createdAt', 'DESC']],include:[User, LikePost]})
-    .then(posts => res.status(200).json(posts))
-    .catch(error => next(error));
+    Post.findAll({ order: [['createdAt', 'DESC']], include: [User, LikePost] })
+        .then(posts => res.status(200).json(posts))
+        .catch(error => next(error));
 }
 
 // display post id
-const getById = (req, res, next) =>{
+const getById = (req, res, next) => {
     let id = req.params.id;
-    Post.findByPk(id,{include:[Commentaire, LikePost]})
-    .then(post => res.status(200).json(post))
-    .catch(error => next(error));
+    Post.findByPk(id, { include: [Commentaire, LikePost] })
+        .then(post => res.status(200).json(post))
+        .catch(error => next(error));
 }
 
 // create post
 const createPost = async (req, res, next) => {
     try {
-        let post =JSON.parse(req.body.post);
+        let post = JSON.parse(req.body.post);
         let image = req.file;
-        if(image){
+        if (image) {
             post = {
                 ...post,
                 image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             }
         }
         if (post.description) {
-            const {error} = formPostValidation(post);
-            if (error)throw new PostError(401, error.details[0].message)            
+            const { error } = formPostValidation(post);
+            if (error) throw new PostError(401, error.details[0].message)
         }
         if (!post.description && !image) {
-            throw new PostError(400,"Le post doit contenir au minimum une image ou du texte")
+            throw new PostError(400, "Le post doit contenir au minimum une image ou du texte")
         }
-        console.log(post);
-        let createPost = await Post.create({...post})
+        let createPost = await Post.create({ ...post })
         if (createPost) {
-            res.status(201).json({msg: "Create post"})
+            res.status(201).json({ msg: "Create post" })
         }
     } catch (error) {
         next(error);
@@ -51,33 +50,31 @@ const createPost = async (req, res, next) => {
 
 // update post
 const updatePost = async (req, res, next) => {
-    const {id} = req.params;
+    const { id } = req.params;
     const postObject = req.file ?
-    {
-        ...JSON.parse(req.body.description),
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } :{...JSON.parse(req.body.description)}
+        {
+            ...JSON.parse(req.body.description),
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } : { ...JSON.parse(req.body.description) }
     try {
         if (postObject.description) {
-            const {error} = formModifyValidation(postObject);
-            if(error) throw new PostError(401, error.details[0].message);            
+            const { error } = formModifyValidation(postObject);
+            if (error) throw new PostError(401, error.details[0].message);
         }
         let post = await Post.findByPk(id)
-        if(!post) throw new PostError(404, "Le Post n'existe pas");
-        if(postObject.image){
-            if(post.image){
-                console.log(post.image);
+        if (!post) throw new PostError(404, "Le Post n'existe pas");
+        if (postObject.image) {
+            if (post.image) {
                 const filename = post.image.split('/images/')[1];
-                fs.unlink(`images/${filename}`,(error) =>{
+                fs.unlink(`images/${filename}`, (error) => {
                     if (error) throw error;
-                    console.log(filename);
                 });
             }
         }
         post.image = postObject.image;
         post.description = postObject.description;
         await post.save()
-        return res.status(200).json({msg : "update post"})
+        return res.status(200).json({ msg: "update post" })
     } catch (error) {
         next(error);
     }
@@ -85,30 +82,28 @@ const updatePost = async (req, res, next) => {
 
 // delete post 
 const deletePost = async (req, res, next) => {
-    const {id} =req.params;
+    const { id } = req.params;
     try {
-        let post = await Post.findByPk(id, {include:[Commentaire]})
-        if(!post) throw new PostError(404, "Le Post n'existe pas");
+        let post = await Post.findByPk(id, { include: [Commentaire] })
+        if (!post) throw new PostError(404, "Le Post n'existe pas");
         for (const commentaire of post.commentaires) {
-            if (commentaire.dataValues.image){
+            if (commentaire.dataValues.image) {
                 let filename = commentaire.dataValues.image.split('/images/')[1];
-                fs.unlink(`images/${filename}`,(error) =>{
+                fs.unlink(`images/${filename}`, (error) => {
                     if (error) throw error;
-                    console.log(filename);
                 });
             }
         }
-        if(post.image === null){
-            let ressource = Post.destroy({where : {id : id}})
-            if (ressource === 0) return res.status(404).json({msg: "Not found"})
-            res.status(200).json({msg: "Deleted post"})
-        }else{
+        if (post.image === null) {
+            let ressource = Post.destroy({ where: { id: id } })
+            if (ressource === 0) return res.status(404).json({ msg: "Not found" })
+            res.status(200).json({ msg: "Deleted post" })
+        } else {
             const filename = post.image.split('/images/')[1];
-            console.log(filename);
             fs.unlink(`images/${filename}`, () => {
-                let ressource = Post.destroy({where : {id : id}})
-                if (ressource === 0) return res.status(404).json({msg: "Not found"})
-                res.status(200).json({msg: "Deleted post"})
+                let ressource = Post.destroy({ where: { id: id } })
+                if (ressource === 0) return res.status(404).json({ msg: "Not found" })
+                res.status(200).json({ msg: "Deleted post" })
             })
         }
     } catch (error) {
@@ -122,14 +117,14 @@ const like = async (req, res, next) => {
     let body = req.body;
     try {
         let like = await LikePost.findByPk(id);
-        if(!like)throw new LikeError(404, "Le like n'existe pas");
-        if(body.likeId === like.dataValues.id && body.userId === like.dataValues.userId ){
+        if (!like) throw new LikeError(404, "Le like n'existe pas");
+        if (body.likeId === like.dataValues.id && body.userId === like.dataValues.userId) {
             like.liked = body.liked;
             await like.save();
-            return res.status(200).json({msg : "update like"})
-        } 
+            return res.status(200).json({ msg: "update like" })
+        }
     } catch (error) {
-        next(error);    
+        next(error);
     }
 }
 
@@ -138,15 +133,15 @@ const createLike = async (req, res, next) => {
     let id = req.params.id;
     try {
         let like = {
-            userId : req.body.userId,
-            postId : id,
+            userId: req.body.userId,
+            postId: id,
             liked: true,
         };
-        LikePost.create({...like})
-        .then(() => {res.status(201).json({msg: "Post liked"})})
+        LikePost.create({ ...like })
+            .then(() => { res.status(201).json({ msg: "Post liked" }) })
     } catch (error) {
         next(error);
     }
 }
 
-export {getAll, createPost, updatePost, deletePost, getById, like, createLike};
+export { getAll, createPost, updatePost, deletePost, getById, like, createLike };

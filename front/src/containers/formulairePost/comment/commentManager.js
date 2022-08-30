@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import classes from "./commentManager.module.css";
 import OldComment from './oldComment/oldComment';
 import NewForm from '../newForm/newForm';
-import {FiHeart} from 'react-icons/fi';
-import {FaHeart} from 'react-icons/fa';
+import { FiHeart } from 'react-icons/fi';
+import { FaHeart } from 'react-icons/fa';
 import PostService from '../../../services/postService';
 import AuthService from '../../../services/authService';
 
@@ -16,52 +16,52 @@ class CommentManager extends Component {
             postId: "",
             userId: "",
             loading: false,
-            currentUser:"",
-            displayComment : false,
-            countLike:0,
+            currentUser: "",
+            displayComment: false,
+            countLike: 0,
             liked: false,
             listPost: [],
         }
     }
-     componentDidMount = async() =>{
+    componentDidMount = async () => {
         let idPost = this.props.idPost
         let currentUser = AuthService.getCurrentUser().userId
         await PostService.getById(idPost)
-        .then( response => {
-            if(response) {    
-                let listPost =response.data.likePosts   
-                let findUserLike = listPost.find(user => user.userId === currentUser )
-                let liked = false;
-                if(findUserLike){
-                    liked = findUserLike.liked;
+            .then(response => {
+                if (response) {
+                    let listPost = response.data.likePosts
+                    let findUserLike = listPost.find(user => user.userId === currentUser)
+                    let liked = false;
+                    if (findUserLike) {
+                        liked = findUserLike.liked;
+                    }
+                    let countLike = listPost.filter(like => like.liked)
+                    this.setState({
+                        postId: response.data.id,
+                        userId: response.data.userId,
+                        listComments: response.data.commentaires,
+                        loading: false,
+                        listPost: listPost,
+                        currentUser: currentUser,
+                        countLike: countLike.length,
+                        liked: liked,
+                    })
                 }
-                let countLike = listPost.filter(like => like.liked)   
-                this.setState({
-                    postId:response.data.id,
-                    userId: response.data.userId,
-                    listComments :response.data.commentaires,
-                    loading: false,
-                    listPost: listPost,
-                    currentUser: currentUser,
-                    countLike : countLike.length,
-                    liked:liked,
-                })
-            }
-        })
+            })
     }
-    handleCallback = async () =>{
-        this.setState  ({
+    handleCallback = async () => {
+        this.setState({
             loading: true,
         })
         await this.componentDidMount();
     }
 
-    displayComment = () =>{
+    displayComment = () => {
         let value = Boolean;
-        
-        if(this.state.displayComment){
+
+        if (this.state.displayComment) {
             value = false;
-        }else if(!this.state.displayComment){
+        } else if (!this.state.displayComment) {
             value = true;
         }
         this.setState({
@@ -73,27 +73,27 @@ class CommentManager extends Component {
         let postId = this.state.postId;
         let liked = false;
         let findUserLike = this.state.listPost.find(user => user.userId === this.state.currentUser)
-        let likeId ="";
-        if(findUserLike){
+        let likeId = "";
+        if (findUserLike) {
             likeId = findUserLike.id
         }
-        let data ={
-            likeId:likeId,
-            userId:this.state.currentUser,
-            liked:liked
+        let data = {
+            likeId: likeId,
+            userId: this.state.currentUser,
+            liked: liked
         }
-        if(this.state.liked){
+        if (this.state.liked) {
             likeId = findUserLike.id;
-            liked= false;
-            data={
+            liked = false;
+            data = {
                 ...data,
                 likeId: likeId
             }
             await PostService.likePost(postId, data);
             await this.componentDidMount();
-        }else{
+        } else {
             liked = true;
-            data={
+            data = {
                 ...data,
                 liked: liked
             }
@@ -102,39 +102,39 @@ class CommentManager extends Component {
         }
     }
 
-    render(){
+    render() {
         let listComments = "";
-        if(this.state.listComments.length > 0){
-            listComments = this.state.listComments.map(comment =>{
+        if (this.state.listComments.length > 0) {
+            listComments = this.state.listComments.map(comment => {
                 return (
-                    <OldComment {...comment} key={comment.id} parentCallback={this.handleCallback}/>
+                    <OldComment {...comment} key={comment.id} parentCallback={this.handleCallback} />
                 )
             })
-            
+
         }
-        let content ="";
-        if(this.state.displayComment){
+        let content = "";
+        if (this.state.displayComment) {
             content = (
                 <>
                     <h3 className={classes.commentaire__title}>Commentaires</h3>
                     {listComments}
-                    <NewForm status="comment" idPost={this.props.idPost} parentCallback={this.handleCallback}/>
+                    <NewForm status="comment" idPost={this.props.idPost} parentCallback={this.handleCallback} />
                 </>
             )
         }
 
         return (
             <section className={classes.commentaire__container}>
-                <div className={classes.container__likeAndCom }>
+                <div className={classes.container__likeAndCom}>
                     <div onClick={this.displayComment} className={classes.container__com}>
                         <p >Commentaire</p>
                     </div>
                     <div className={classes.container__like}>
                         {
-                        this.state.liked?
-                        <FaHeart  onClick={this.like} className={classes.heartLiked}/>
-                        :
-                        <FiHeart  onClick={this.like} className={classes.heart}/>
+                            this.state.liked ?
+                                <FaHeart onClick={this.like} className={classes.heartLiked} />
+                                :
+                                <FiHeart onClick={this.like} className={classes.heart} />
                         }
                         <span>{this.state.countLike}</span>
                     </div>
