@@ -41,20 +41,22 @@ class ResizeFile {
     }
 
     async profile(file) {
-        return new Promise((resolve) => {
-            Resizer.imageFileResizer(
-                file,
-                600,
-                600,
-                "WEBP",
-                50,
-                0,
-                (uri) => {
-                    resolve(uri);
-                },
-                "file"
-            );
-        });
+        if (file) {            
+            return new Promise((resolve) => {
+                Resizer.imageFileResizer(
+                    file,
+                    600,
+                    600,
+                    "WEBP",
+                    50,
+                    0,
+                    (uri) => {
+                        resolve(uri);
+                    },
+                    "file"
+                );
+            });
+        }
     }
 }
 
