@@ -4,6 +4,7 @@ import {FiSend} from 'react-icons/fi';
 import PostService from '../../../services/postService';
 import CommentService from '../../../services/commentService';
 import { formModifyValidation } from '../../../services/formValidation';
+import resizeFile from '../../../services/resizeFile';
 
 class ModifyForm extends Component {
     constructor(props) {
@@ -55,7 +56,8 @@ class ModifyForm extends Component {
     submitModifyPost = async (event) => {
         event.preventDefault();
         const postId = this.props.post.postId;
-        let image =  this.fileInput.current.files[0];
+        let file = this.fileInput.current.files[0];
+        let image = await resizeFile.social(file);
         let post = {
             description : this.state.description,
         }
@@ -80,7 +82,8 @@ class ModifyForm extends Component {
     submitModifyComment = async (event) => {
         event.preventDefault();
         const commentId = this.props.id;
-        let image =  this.fileInput.current.files[0];
+        let file = this.fileInput.current.files[0];
+        let image = await resizeFile.social(file);
         let comment = {
             description : this.state.description,
         }

@@ -4,7 +4,9 @@ import multer from 'multer';
 const MIME_TYPE = {
     'image/png': 'png',
     'image/jpeg': 'jpg',
-    'image/jpg': 'jpg'
+    'image/jpg': 'jpg',
+    'image/webp': 'webp',
+    'image/gif': 'gif',
 }
 
 const storage = multer.diskStorage({

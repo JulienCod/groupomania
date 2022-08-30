@@ -6,6 +6,7 @@ import Authservice from '../../../services/authService';
 import commentService from '../../../services/commentService';
 import AuthService from '../../../services/authService';
 import  {formValidationComment, formValidationPost} from '../../../services/formValidation';
+import resizeFile from '../../../services/resizeFile';
 
 
 class NewForm extends Component {
@@ -49,7 +50,8 @@ class NewForm extends Component {
     submitPost = async (event) => {
         event.preventDefault();
         let description = this.state.descriptionPost;
-        let image =  this.fileInput.current.files[0];
+        let file = this.fileInput.current.files[0];
+        let image = await resizeFile.social(file);
         let userId = Authservice.getCurrentUser().userId;
         let post = {
             userId : userId,
@@ -77,7 +79,8 @@ class NewForm extends Component {
     submitCommentaire = async (event) =>{
         event.preventDefault();
         let description = this.state.descriptionComment;
-        let image =  this.fileInput.current.files[0];
+        let file = this.fileInput.current.files[0];
+        let image = await resizeFile.social(file);
         let userId = Authservice.getCurrentUser().userId
         let comment = {
             userId : userId,

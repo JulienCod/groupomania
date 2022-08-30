@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import AuthService from '../../../services/authService';
 import classes from "./pageProfils.module.css";
 import { userModifyMinValidation, userModifyValidation } from '../../../services/formValidation';
+import resizeFile from '../../../services/resizeFile';
 
 class PageProfils extends Component {
 
@@ -62,7 +63,8 @@ class PageProfils extends Component {
     handleValidationModify = async (event) => {
         event.preventDefault();    
         let userId = this.state.userId
-        let image =  this.fileInput.current.files[0];
+        let file = this.fileInput.current.files[0];
+        let image = await resizeFile.profile(file);
         let user ={}
         let errorform = null;
         if(this.state.password || this.state.newPassword){
