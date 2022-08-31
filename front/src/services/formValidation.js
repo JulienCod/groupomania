@@ -65,11 +65,6 @@ const loginSchema = Joi.object({
 
 const formValidationPost = (body) =>{
     const formSchema = Joi.object({
-        userId: Joi.number()
-        .required()
-        .messages({
-            "number.empty":"L'identifiant de l'utilisateur n'est pas renseigné"
-        }),
         description: Joi.string()
         .empty('')
         .default('default value')
@@ -86,11 +81,6 @@ const formValidationPost = (body) =>{
 }
 const formValidationComment = (body) =>{
     const formSchema = Joi.object({
-        userId: Joi.number()
-        .required()
-        .messages({
-            "number.empty":"L'identifiant de l'utilisateur n'est pas renseigné"
-        }),
         postId: Joi.number()
             .required()
             .messages({
