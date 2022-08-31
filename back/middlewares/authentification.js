@@ -5,6 +5,7 @@ import User from '../models/user.js';
 // Contrôle d'authentification de l'utilisateur et de l'existance dans la base de données
 const auth = async (req, res, next) => {
     try {
+        if(!req.headers.authorization)throw new UserError(403,"L'utilisateur n'est pas authentifié");
         const token = await req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
         const userId = await decodedToken.userId;

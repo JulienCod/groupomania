@@ -97,7 +97,7 @@ class OldComment extends Component {
                 ...data,
                 likeId: likeId
             }
-            await CommentService.likePost(commentId, data);
+            await CommentService.likeComment(commentId, data);
             await this.componentDidMount();
         }else{
             liked = true;

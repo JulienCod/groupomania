@@ -23,7 +23,7 @@ const signup = async (req, res, next) => {
         let hash = await bcrypt.hash(user.password, 10);
         user.password = hash;
         await User.create({ ...user });
-        return res.status(201).json({ msg: "Create User" });
+        return res.status(201).json({user: user, msg: "Create User" });
     } catch (error) {
         next(error)
     }
@@ -50,7 +50,7 @@ const login = async (req, res, next) => {
                         isAdmin: user.dataValues.isAdmin
                     },
                     `${process.env.TOKEN_KEY}`,
-                    { expiresIn: '24h' }
+                    { expiresIn: '1h' }
                 ),
                 avatar: user.dataValues.avatar,
                 welcome: "true",
@@ -63,8 +63,7 @@ const login = async (req, res, next) => {
                 userId: user.dataValues.id,
                 token: jwt.sign(
                     {
-                        userId: user.dataValues.id,
-                        isAdmin: user.dataValues.isAdmin
+                        userId: user.dataValues.id
                     },
                     `${process.env.TOKEN_KEY}`,
                     { expiresIn: '24h' }

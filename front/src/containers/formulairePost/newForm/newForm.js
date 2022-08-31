@@ -52,9 +52,7 @@ class NewForm extends Component {
         let description = this.state.descriptionPost;
         let file = this.fileInput.current.files[0];
         let image = await resizeFile.social(file);
-        let userId = Authservice.getCurrentUser().userId;
         let post = {
-            userId : userId,
             description : description
         }
         const errorform = formValidationPost(post);
@@ -81,9 +79,7 @@ class NewForm extends Component {
         let description = this.state.descriptionComment;
         let file = this.fileInput.current.files[0];
         let image = await resizeFile.social(file);
-        let userId = Authservice.getCurrentUser().userId
         let comment = {
-            userId : userId,
             description : description,
             postId : this.props.idPost
         }

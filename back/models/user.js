@@ -4,8 +4,8 @@ import Post from './post.js';
 import Commentaire from './commentaire.js';
 import LikeComment from './likeComment.js';
 import LikePost from './likePost.js';
-// import Like from './like.js';
 
+const URL = `${process.env.URL}`;
 //schema User
 const {DataTypes} = sequelize;
 const User = Bd.define('user', {
@@ -37,7 +37,7 @@ const User = Bd.define('user', {
     },
     avatar: {
         type: DataTypes.STRING,
-        defaultValue:"http://localhost:3000/images/profils.png" ,
+        defaultValue: URL+"images/profils.png" ,
         allowNull: true
     },
     isAdmin: {

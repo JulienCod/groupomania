@@ -5,6 +5,7 @@ import LikePost from '../models/likePost.js';
 import fs from "fs"
 import { LikeError, PostError } from '../error/customError.js';
 import { formPostValidation, formModifyValidation } from '../middlewares/formValidartion.js';
+import jwt from 'jsonwebtoken';
 
 // display all post
 const getAll = (req, res, next) => {
@@ -24,7 +25,14 @@ const getById = (req, res, next) => {
 // create post
 const createPost = async (req, res, next) => {
     try {
-        let post = JSON.parse(req.body.post);
+        const token = await req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
+        const userId = await decodedToken.userId;
+        const body = JSON.parse(req.body.post);
+        let post ={
+            userId : userId,
+            description : body.description
+        } 
         let image = req.file;
         if (image) {
             post = {
@@ -41,7 +49,7 @@ const createPost = async (req, res, next) => {
         }
         let createPost = await Post.create({ ...post })
         if (createPost) {
-            res.status(201).json({ msg: "Create post" })
+            res.status(201).json({post: createPost, msg: "Create post" })
         }
     } catch (error) {
         next(error);
