@@ -11,6 +11,6 @@ router.post('/signup', limiter, multer, signup);
 router.post('/login', limiter, login);
 router.put('/:id', limiter, auth, userCompare, multer, updateUser);
 router.delete('/:id', limiter, auth, userCompare,  deleteUser);
-router.get('/:id',auth, getById)
+router.get('/:id', auth, userCompare, getById)
 
 export default router;

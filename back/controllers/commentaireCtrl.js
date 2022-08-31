@@ -3,6 +3,7 @@ import fs from "fs"
 import LikeComment from '../models/likeComment.js';
 import { CommentError, LikeError } from '../error/customError.js';
 import { formCommentValidation, formModifyValidation } from '../middlewares/formValidartion.js';
+import jwt from 'jsonwebtoken';
 
 //display comment
 const getById = (req, res, next) => {
@@ -12,10 +13,18 @@ const getById = (req, res, next) => {
         .catch(error => next(error));
 }
 
-// création d'un post
+// create comment
 const createCommentaire = async (req, res, next) => {
     try {
-        let commentaire = JSON.parse(req.body.commentaire);
+        const token = await req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
+        const userId = await decodedToken.userId;
+        const body = JSON.parse(req.body.commentaire);
+        let commentaire ={
+            userId : userId,
+            postId : body.postId,
+            description : body.description
+        } 
         let image = req.file;
         if (image) {
             commentaire = {
@@ -32,7 +41,7 @@ const createCommentaire = async (req, res, next) => {
         }
         let createComment = await Commentaire.create({ ...commentaire })
         if (createComment) {
-            res.status(201).json({ msg: "Create commentaire" })
+            res.status(201).json({commentaire: createComment, msg: "Create commentaire" })
         }
     } catch (error) {
         next(error);
