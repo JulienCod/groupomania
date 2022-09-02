@@ -5,7 +5,6 @@ import { CommentError, LikeError } from '../error/customError.js';
 import { formCommentValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 import jwt from 'jsonwebtoken';
 
-//display comment
 const getById = (req, res, next) => {
     let id = req.params.id;
     Commentaire.findByPk(id, { include: [LikeComment] })
@@ -13,7 +12,6 @@ const getById = (req, res, next) => {
         .catch(error => next(error));
 }
 
-// create comment
 const createCommentaire = async (req, res, next) => {
     try {
         const token = await req.headers.authorization.split(' ')[1];
@@ -48,7 +46,6 @@ const createCommentaire = async (req, res, next) => {
     }
 }
 
-// update comment
 const updateCommentaire = async (req, res, next) => {
     const { id } = req.params;
     const commentObject = req.file ?
@@ -66,7 +63,8 @@ const updateCommentaire = async (req, res, next) => {
         if (commentObject.image) {
             if (comment.image) {
                 const filename = comment.image.split('/images/')[1];
-                fs.unlink(`images/${filename}`, () => {
+                fs.unlink(`images/${filename}`, (error) => {
+                    if (error) console.log(error);
                 })
             }
         }
@@ -79,7 +77,6 @@ const updateCommentaire = async (req, res, next) => {
     }
 }
 
-// delete comment
 const deleteCommentaire = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -101,7 +98,7 @@ const deleteCommentaire = async (req, res, next) => {
         next(error);
     }
 }
-// update like comment
+
 const like = async (req, res, next) => {
     let id = req.params.id;
     let body = req.body;
@@ -117,7 +114,7 @@ const like = async (req, res, next) => {
         next(error);
     }
 }
-// create like
+
 const createLike = async (req, res, next) => {
     let id = req.params.id;
     try {

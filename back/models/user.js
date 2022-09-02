@@ -20,7 +20,7 @@ const User = Bd.define('user', {
         unique: true,
         allowNull: false,
         validate :{
-            isEmail: {msg: "l'adresse email est valide"}
+            isEmail: true
         }
     },
     password: {

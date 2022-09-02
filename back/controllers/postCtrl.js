@@ -7,14 +7,12 @@ import { LikeError, PostError } from '../error/customError.js';
 import { formPostValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 import jwt from 'jsonwebtoken';
 
-// display all post
 const getAll = (req, res, next) => {
     Post.findAll({ order: [['createdAt', 'DESC']], include: [User, LikePost] })
         .then(posts => res.status(200).json(posts))
         .catch(error => next(error));
 }
 
-// display post id
 const getById = (req, res, next) => {
     let id = req.params.id;
     Post.findByPk(id, { include: [Commentaire, LikePost] })
@@ -22,7 +20,6 @@ const getById = (req, res, next) => {
         .catch(error => next(error));
 }
 
-// create post
 const createPost = async (req, res, next) => {
     try {
         const token = await req.headers.authorization.split(' ')[1];
@@ -56,7 +53,6 @@ const createPost = async (req, res, next) => {
     }
 }
 
-// update post
 const updatePost = async (req, res, next) => {
     const { id } = req.params;
     const postObject = req.file ?
@@ -75,7 +71,7 @@ const updatePost = async (req, res, next) => {
             if (post.image) {
                 const filename = post.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, (error) => {
-                    if (error) throw error;
+                    if (error) console.log(error);
                 });
             }
         }
@@ -88,7 +84,6 @@ const updatePost = async (req, res, next) => {
     }
 }
 
-// delete post 
 const deletePost = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -119,7 +114,6 @@ const deletePost = async (req, res, next) => {
     }
 }
 
-// modify like
 const like = async (req, res, next) => {
     let id = req.params.id;
     let body = req.body;
@@ -136,7 +130,6 @@ const like = async (req, res, next) => {
     }
 }
 
-// create like
 const createLike = async (req, res, next) => {
     let id = req.params.id;
     try {

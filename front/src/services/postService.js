@@ -1,82 +1,103 @@
 import axios from 'axios';
 import AuthHeader from './authHeader.js';
-
+import Swal from 'sweetalert2';
 
 const API_URL = `${process.env.REACT_APP_API_URL}`;
 
 
 class PostService {
-    //display all posts
-    async getAll(){
+
+    async getAll() {
         try {
-            return await axios.get(API_URL+"api/post/", {headers: AuthHeader()});
+            return await axios.get(API_URL + "api/post/", { headers: AuthHeader() });
         } catch (error) {
-            console.log(error.response.data.message);
-        }
-    }
-    //display one Post
-    async getById(postId){
-        try {
-            return await axios.get(API_URL+"api/post/"+postId, {headers: AuthHeader()});
-        } catch (error) {
-            console.log(error.response.data.message);
-        }
-    }
-    // create post
-    async createPost(post, image){
-        try {
-            if(!image){    
-                const formData = new FormData();
-                formData.append("post", JSON.stringify(post));
-                await axios.post(API_URL+"api/post/", formData, {headers: AuthHeader()});           
-            }else{              
-                const formData = new FormData();
-                formData.append("post", JSON.stringify(post));
-                formData.append('image', image);
-                await axios.post(API_URL+"api/post/", formData, {headers: AuthHeader()
-  });           
-            }
-        } catch (error) {
-            console.log(error.response);
+            return Swal.fire({
+                icon: 'error',
+                title: error.response.data.message,
+                showConfirmButton: false,
+            });
         }
     }
 
-    //delete post
-    async deletePost(postId){
+    async getById(postId) {
         try {
-            return await axios.delete(API_URL+"api/post/"+postId ,{headers: AuthHeader()} );
+            return await axios.get(API_URL + "api/post/" + postId, { headers: AuthHeader() });
         } catch (error) {
-            console.log(error.response.data.message);            
+            return Swal.fire({
+                icon: 'error',
+                title: error.response.data.message,
+                showConfirmButton: false,
+            });
         }
     }
 
-    //update post
-    async modifyPost(postId, post, image){
+    async createPost(post, image) {
         try {
-            if(!image){    
+            if (!image) {
+                const formData = new FormData();
+                formData.append("post", JSON.stringify(post));
+                await axios.post(API_URL + "api/post/", formData, { headers: AuthHeader() });
+            } else {
+                const formData = new FormData();
+                formData.append("post", JSON.stringify(post));
+                formData.append('image', image);
+                await axios.post(API_URL + "api/post/", formData, { headers: AuthHeader() });
+            }
+        } catch (error) {
+            return Swal.fire({
+                icon: 'error',
+                title: error.response.data.message,
+                showConfirmButton: false,
+            });
+        }
+    }
+
+    async deletePost(postId) {
+        try {
+            return await axios.delete(API_URL + "api/post/" + postId, { headers: AuthHeader() });
+        } catch (error) {
+            return Swal.fire({
+                icon: 'error',
+                title: error.response.data.message,
+                showConfirmButton: false,
+            });
+        }
+    }
+
+    async modifyPost(postId, post, image) {
+        try {
+            if (!image) {
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
-                await axios.put(API_URL+"api/post/"+postId, formData, {headers: AuthHeader()});           
-            }else{      
+                await axios.put(API_URL + "api/post/" + postId, formData, { headers: AuthHeader() });
+            } else {
                 const formData = new FormData();
                 formData.append("description", JSON.stringify(post));
                 formData.append('image', image);
-                await axios.put(API_URL+"api/post/"+postId, formData,{headers: AuthHeader()});
+                await axios.put(API_URL + "api/post/" + postId, formData, { headers: AuthHeader() });
             }
         } catch (error) {
-            console.log(error.response.data.message);
+            return Swal.fire({
+                icon: 'error',
+                title: error.response.data.message,
+                showConfirmButton: false,
+            });
         }
     }
-    // like post
+
     async likePost(postId, data) {
-        try{ 
-            if(data.likeId){
-                return await axios.put(API_URL+"api/post/"+data.likeId+"/like", data, {headers: AuthHeader()});
-            }else{
-                return await axios.post(API_URL+"api/post/"+postId+"/like", data, {headers: AuthHeader()});
+        try {
+            if (data.likeId) {
+                return await axios.put(API_URL + "api/post/" + data.likeId + "/like", data, { headers: AuthHeader() });
+            } else {
+                return await axios.post(API_URL + "api/post/" + postId + "/like", data, { headers: AuthHeader() });
             }
         } catch (error) {
-            console.log(error.response.data.message);            
+            return Swal.fire({
+                icon: 'error',
+                title: error.response.data.message,
+                showConfirmButton: false,
+            });
         }
     }
 }

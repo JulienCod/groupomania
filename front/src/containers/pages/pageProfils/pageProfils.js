@@ -1,22 +1,23 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import AuthService from '../../../services/authService';
 import classes from "./pageProfils.module.css";
 import { userModifyMinValidation, userModifyValidation } from '../../../services/formValidation';
 import resizeFile from '../../../services/resizeFile';
+import Swal from 'sweetalert2';
 
 class PageProfils extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            email:"",
-            lastname:"",
-            firstname:"",
-            password:"",
-            imagePreview:"",
-            avatar:"",
-            newPassword:"",
-            errorMessage:"",
+            email: "",
+            lastname: "",
+            firstname: "",
+            password: "",
+            imagePreview: "",
+            avatar: "",
+            newPassword: "",
+            errorMessage: "",
         }
         this.handleInputChange = this.handleInputChange.bind(this)
         this.fileInput = React.createRef();
@@ -26,33 +27,33 @@ class PageProfils extends Component {
         let userId = AuthService.getCurrentUser().userId;
         this.setState({
             userId: userId,
-            errorMessage:"",
+            errorMessage: "",
         })
         AuthService.getById(userId)
-        .then((response) => {
-            this.setState({
-                email: response.data.email,
-                lastname: response.data.lastname,
-                firstname: response.data.firstname,
-                avatar :response.data.avatar,
-            })
-            let user = JSON.parse(sessionStorage.getItem("user"))
-            
-            user = {
-                ...user,
-                lastname: response.data.lastname,
-                firstname: response.data.firstname,
-                avatar :response.data.avatar,
-            }
-            sessionStorage.setItem("user", JSON.stringify(user));
+            .then((response) => {
+                this.setState({
+                    email: response.data.email,
+                    lastname: response.data.lastname,
+                    firstname: response.data.firstname,
+                    avatar: response.data.avatar,
+                })
+                let user = JSON.parse(sessionStorage.getItem("user"))
 
-        })        
+                user = {
+                    ...user,
+                    lastname: response.data.lastname,
+                    firstname: response.data.firstname,
+                    avatar: response.data.avatar,
+                }
+                sessionStorage.setItem("user", JSON.stringify(user));
+
+            })
 
     }
     handleInputChange = (event) => {
         const name = event.target.name;
         this.setState({
-            [name] : event.target.value,
+            [name]: event.target.value,
         })
     }
 
@@ -61,27 +62,27 @@ class PageProfils extends Component {
         this.setState({ imagePreview: URL.createObjectURL(this.fileInput.current.files[0]) })
     }
     handleValidationModify = async (event) => {
-        event.preventDefault();    
+        event.preventDefault();
         let userId = this.state.userId
         let file = this.fileInput.current.files[0];
         let image = await resizeFile.profile(file);
-        let user ={}
+        let user = {}
         let errorform = null;
-        if(this.state.password || this.state.newPassword){
+        if (this.state.password || this.state.newPassword) {
             user = {
                 email: this.state.email,
-                    lastname: this.state.lastname,
-                    firstname: this.state.firstname,
-                    password: this.state.password,
-                    newPassword: this.state.newPassword,
+                lastname: this.state.lastname,
+                firstname: this.state.firstname,
+                password: this.state.password,
+                newPassword: this.state.newPassword,
             }
-            
+
             errorform = userModifyValidation(user);
-        }else{
+        } else {
             user = {
                 email: this.state.email,
-                    lastname: this.state.lastname,
-                    firstname: this.state.firstname,
+                lastname: this.state.lastname,
+                firstname: this.state.firstname,
             }
             errorform = userModifyMinValidation(user);
         }
@@ -89,56 +90,71 @@ class PageProfils extends Component {
             this.setState({
                 messageError: errorform.error.details[0].message
             })
-        }else{
+        } else {
             const error = await AuthService.modifyProfils(userId, user, image);
-            if(!error){
+            if (!error) {
                 await AuthService.getById(userId)
-                .then((response) => {
-                    this.setState({
-                        avatar :response.data.avatar,
+                    .then((response) => {
+                        this.setState({
+                            avatar: response.data.avatar,
+                        })
+                        let user = JSON.parse(sessionStorage.getItem("user"))
+
+                        user = {
+                            ...user,
+                            avatar: response.data.avatar,
+                        }
+                        sessionStorage.setItem("user", JSON.stringify(user));
+
                     })
-                    let user = JSON.parse(sessionStorage.getItem("user"))
-                    
-                    user = {
-                        ...user,
-                        avatar :response.data.avatar,
-                    }
-                    sessionStorage.setItem("user", JSON.stringify(user));
-        
-                })        
                 window.location.reload();
             }
         }
     }
-    deleteProfiles = async () =>{
-        if(window.confirm('Voulez-vous vraiment supprimer votre profil')){
-            let userId = this.state.userId;
-            await AuthService.deleteUser(userId);
-            sessionStorage.removeItem("user");
-            document.location.href = "/";
-        }
+    deleteProfiles = async () => {
+        Swal.fire({
+            title: 'Êtes-vous sur de vouloir supprimer votre compte?',
+            text: "Cette action sera irréversible!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer mon compte!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                let userId = this.state.userId;
+                await AuthService.deleteUser(userId);
+                Swal.fire(
+                    'Supprimer!',
+                    'Votre compte a bien été supprimé.',
+                    'success'
+                )
+                sessionStorage.removeItem("user");
+                document.location.href = "/";
+            }
+        })
     }
 
-    render(){
+    render() {
         let image = "";
 
-        
-        if(this.state.imagePreview){
+
+        if (this.state.imagePreview) {
             image = (
                 <div className={classes.container__img}>
-                    <img src={this.state.imagePreview}  alt="" className={classes.image} />
-                </div>    
+                    <img src={this.state.imagePreview} alt="" className={classes.image} />
+                </div>
             )
-        }else{
-            image = ( 
+        } else {
+            image = (
                 <div className={classes.container__img}>
-                    <img src={this.state.avatar} alt="" className={classes.image}/>
-                </div>                       
+                    <img src={this.state.avatar} alt="" className={classes.image} />
+                </div>
             )
         }
-        let error="";
-        if(this.state.messageError){
-            error=(
+        let error = "";
+        if (this.state.messageError) {
+            error = (
                 <span className={classes.error}>{this.state.messageError}</span>
             )
         }
@@ -147,29 +163,29 @@ class PageProfils extends Component {
                 <form method="post" className={classes.form}>
 
                     <div className={classes.title}>
-                        <h1>Profils utilisateur</h1>    
+                        <h1>Profils utilisateur</h1>
                     </div>
 
                     <div className={classes.password}>
                         <h2>Modifier le mot de passe</h2>
-                        <input 
-                            type="password" 
-                            name="password" 
-                            placeholder="Mot de passe actuel" 
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Mot de passe actuel"
                             id='password'
-                            value={this.state.password} 
-                            onChange={(event)=> this.setState({password:event.target.value}) }
+                            value={this.state.password}
+                            onChange={(event) => this.setState({ password: event.target.value })}
                             className={classes.field}
                         />
-                        <input 
-                            type="password" 
-                            name="newPassword" 
-                            placeholder="Nouveau mot de passe" 
+                        <input
+                            type="password"
+                            name="newPassword"
+                            placeholder="Nouveau mot de passe"
                             id='newPassword'
-                            value={this.state.newPassword} 
-                            onChange={(event)=> this.setState({newPassword:event.target.value}) }
+                            value={this.state.newPassword}
+                            onChange={(event) => this.setState({ newPassword: event.target.value })}
                             className={classes.field}
-                        />        
+                        />
                     </div>
 
                     <div className={classes.firstname_lastname}>
@@ -177,38 +193,38 @@ class PageProfils extends Component {
                         <p>{this.state.email}</p>
 
                         <h3>Nom et prénom</h3>
-                        <input 
+                        <input
                             title='Prénom'
-                            type="text" 
-                            name="lastname" 
-                            placeholder="Prénom" 
+                            type="text"
+                            name="lastname"
+                            placeholder="Prénom"
                             id='lastname'
-                            value={this.state.lastname} 
-                            onChange={(event)=> this.setState({lastname:event.target.value}) }
+                            value={this.state.lastname}
+                            onChange={(event) => this.setState({ lastname: event.target.value })}
                             className={classes.field}
-                        />                        
-                        <input 
+                        />
+                        <input
                             title='Nom'
-                            type="text" 
-                            name="firstname" 
-                            placeholder="Nom" 
+                            type="text"
+                            name="firstname"
+                            placeholder="Nom"
                             id='firstname'
-                            value={this.state.firstname} 
-                            onChange={(event)=> this.setState({firstname:event.target.value}) }
+                            value={this.state.firstname}
+                            onChange={(event) => this.setState({ firstname: event.target.value })}
                             className={classes.field}
-                        />                        
+                        />
                     </div>
 
                     <div className={classes.avatar}>
                         <h2>Photo de profil</h2>
                         {image}
-                        <input 
-                            type="file" 
+                        <input
+                            type="file"
                             accept="image/*"
-                            name="avatar" 
-                            placeholder="avatar" 
+                            name="avatar"
+                            placeholder="avatar"
                             id='avatar'
-                            ref={this.fileInput} 
+                            ref={this.fileInput}
                             onChange={this.handleImageChange}
                             className={classes.inputfile}
                         />

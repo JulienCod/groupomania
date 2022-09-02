@@ -104,10 +104,11 @@ const updateUser = async (req, res, next) => {
         let user = await User.findByPk(id);
         if (!user) throw new AuthentificationError(404, "L'utilisateur n'existe pas");
         if (userObject.avatar) {
+            
             const filename = user.avatar.split('/images/')[1];
             if (filename != "profils.png") {
                 fs.unlink(`images/${filename}`, (error) => {
-                    if (error) throw error;
+                    if (error) console.log(error);
                 });
             }
             user.avatar = userObject.avatar;
