@@ -102,7 +102,13 @@ class AuthService {
     }
 
     getCurrentUser() {
-        return JSON.parse(sessionStorage.getItem("user"))
+        const token = window.sessionStorage.getItem("token");
+        if(token){
+            const { userId: userId } = jwt_decode(token);
+            return userId;
+        }else{
+            return false;
+        }
     }
 
     async getById(userId) {
