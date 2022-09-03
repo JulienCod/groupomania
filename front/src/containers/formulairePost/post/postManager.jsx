@@ -6,14 +6,12 @@ import FormPost from '../newForm/formPost/FormPost';
 
 export default function PostManager() {
 
-    const [loading, setLoading] = useState(false);
     const [currentUserId, setCurrentUserId] = useState(AuthService.getCurrentUser());
     const [admin, setAdmin] = useState(AuthService.getAdmin());
     const [listPosts, setListPosts] = useState([]);
     const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
-        setLoading(true);
         PostService.getAll()
             .then(async response => {
                 if (response) {
@@ -44,7 +42,6 @@ export default function PostManager() {
                         }
                     })
                     setListPosts(listPost);
-                    setLoading(false);
                     setRefresh(false);
                 }
             })
@@ -55,20 +52,13 @@ export default function PostManager() {
     }
     return (
         <>
+            <FormPost parentCallback={handleCallback} />
             {
-                loading ?
-                    <div>chargement ...</div>
-                    :
-                    <>
-                        <FormPost parentCallback={handleCallback} />
-                        {
-                            listPosts.map(post => {
-                                return (
-                                    <Post {...post} key={post.post.postId}  parentCallback={handleCallback} currentUserId={currentUserId} admin={admin} />
-                                )
-                            })
-                        }
-                    </>
+                listPosts.map(post => {
+                    return (
+                        <Post {...post} key={post.post.postId} parentCallback={handleCallback} currentUserId={currentUserId} admin={admin} />
+                    )
+                })
             }
         </>
     )
