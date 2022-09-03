@@ -118,7 +118,7 @@ class CommentManager extends Component {
                 <>
                     <h3 className={classes.commentaire__title}>Commentaires</h3>
                     {listComments}
-                    <FormComment status="comment" idPost={this.props.idPost} parentCallback={this.handleCallback} />
+                    <FormComment idPost={this.props.idPost} parentCallback={this.handleCallback} />
                 </>
             )
         }

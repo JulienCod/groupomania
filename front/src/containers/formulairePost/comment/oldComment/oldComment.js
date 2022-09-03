@@ -6,8 +6,8 @@ import InfoUser from '../../../infoUser/infoUser';
 import classes from "./oldComment.module.css";
 import AuthService from '../../../../services/authService';
 import CommentService from '../../../../services/commentService';
-import ModifyForm from '../../modifyForm/modifyForm';
 import Swal from 'sweetalert2';
+import ModifyComment from '../../modifyForm/modifyComent/ModifyComment';
 
 class OldComment extends Component {
     constructor(props) {
@@ -163,7 +163,7 @@ class OldComment extends Component {
         let modify = "";
         if (this.state.modify) {
             modify = (
-                <ModifyForm mode="comment" {...this.props} parentCallback={this.handleCallback} />
+                <ModifyComment {...this.props} parentCallback={this.handleCallback} />
             )
         } else {
             modify = (
