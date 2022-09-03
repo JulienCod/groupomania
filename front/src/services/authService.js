@@ -110,6 +110,21 @@ class AuthService {
             return false;
         }
     }
+    
+    getAdmin(){
+        const token = window.sessionStorage.getItem("token");
+        if(token){
+            const { isAdmin: isAdmin } = jwt_decode(token);
+            if (isAdmin === undefined) {
+                return false;
+            }else{
+                return isAdmin;
+            }
+        }else{
+            return false;
+        }
+
+    }
 
     async getById(userId) {
         try {
