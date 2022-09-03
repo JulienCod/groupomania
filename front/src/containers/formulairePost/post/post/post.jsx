@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState } from 'react';
 import { FiPenTool } from 'react-icons/fi';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import ContainerPost from '../ContainerPost/ContainerPost';

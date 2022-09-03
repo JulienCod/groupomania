@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classes from "./commentManager.module.css";
 import OldComment from './oldComment/oldComment';
-import NewForm from '../newForm/newForm';
 import { FiHeart } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 import PostService from '../../../services/postService';
 import AuthService from '../../../services/authService';
+import FormComment from '../newForm/formComment/FormComment';
 
 
 class CommentManager extends Component {
@@ -118,7 +118,7 @@ class CommentManager extends Component {
                 <>
                     <h3 className={classes.commentaire__title}>Commentaires</h3>
                     {listComments}
-                    <NewForm status="comment" idPost={this.props.idPost} parentCallback={this.handleCallback} />
+                    <FormComment status="comment" idPost={this.props.idPost} parentCallback={this.handleCallback} />
                 </>
             )
         }

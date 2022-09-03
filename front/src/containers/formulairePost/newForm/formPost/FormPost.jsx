@@ -24,15 +24,15 @@ export default function FormPost(props) {
         let description = descriptionPost;
         let image = await resizeFile.social(file);
         let post = {
-            description : description
+            description: description
         }
         const errorform = formValidationPost(post);
-        
-        if(!description && !image) {
-                setMessageError("Le post doit contenir au minimum une image ou du texte")
-        }else if (errorform.error) {
-                setMessageError(errorform.error.details[0].message)
-        }else{
+
+        if (!description && !image) {
+            setMessageError("Le post doit contenir au minimum une image ou du texte")
+        } else if (errorform.error) {
+            setMessageError(errorform.error.details[0].message)
+        } else {
             await postService.createPost(post, image);
             setFile(null);
             setPreview("");

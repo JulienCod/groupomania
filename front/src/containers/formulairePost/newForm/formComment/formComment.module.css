@@ -1,12 +1,13 @@
-.inputfile{
+.inputfile {
     width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
 }
-.inputfile + label{
+
+.inputfile+label {
     text-decoration: none;
     padding: 10px;
     font-family: arial;
@@ -22,70 +23,89 @@
     -moz-box-shadow: 3px 3px 8px #444444;
     cursor: pointer;
 }
-.inputfile + label:hover{
+
+.inputfile+label:hover {
     padding: 10px;
-color: #4E5166;
-background-color: #FFD7D7;
-border: 3px solid #FD2D01;
-box-shadow: 1px 1px 3px #4E5166;
--webkit-box-shadow: 1px 1px 3px #4E5166;
--moz-box-shadow: 1px 1px 3px #4E5166;
+    color: #4E5166;
+    background-color: #FFD7D7;
+    border: 3px solid #FD2D01;
+    box-shadow: 1px 1px 3px #4E5166;
+    -webkit-box-shadow: 1px 1px 3px #4E5166;
+    -moz-box-shadow: 1px 1px 3px #4E5166;
 }
-.img__send{
+
+.img__send {
     display: flex;
-    position:relative;
+    position: relative;
     justify-content: center;
     align-items: center;
     min-height: 3rem;
     width: 100%
 }
-.newCommentaire{
+
+.newCommentaire {
     padding: 1rem;
 }
-.commentaire__form{
+
+.commentaire__form {
     display: flex;
-    justify-content:space-around;
+    justify-content: space-around;
     align-items: center;
-    gap:1rem;
+    gap: 1rem;
 }
-.comment__img__send{
+
+.comment__img__send {
     display: flex;
-    position:relative;
+    position: relative;
     justify-content: center;
     align-items: center;
     min-height: 3rem;
     padding-right: 4rem;
 }
-.newCommentaire__textarea{
-    flex:1 1 75% ;
+
+.newCommentaire__textarea {
+    flex: 1 1 75%;
     resize: none;
     font-size: 1rem;
     border-radius: 1rem;
-    padding:0.5rem;
+    padding: 0.5rem;
 }
-.error{
-    color:#FD2D01;
+
+.newCom__send {
+    font-size: 2.5rem;
+    color: #4E5166;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+}
+
+.error {
+    color: #FD2D01;
     font-size: 1rem;
 }
-@media screen and (max-width:900px){
-    .commentaire__form{
+
+@media screen and (max-width:900px) {
+    .commentaire__form {
         display: flex;
         flex-wrap: wrap;
     }
-    .newCommentaire__textarea{
+
+    .newCommentaire__textarea {
         flex: 1 1 80%;
     }
-    .comment__img__send{
+
+    .comment__img__send {
         flex: 1 1 30%
     }
 }
 
 @media screen and (max-width:700px) {
-    .newCommentaire__textarea{
+    .newCommentaire__textarea {
         flex: 1 1 73%;
     }
+
     /* icon envoi */
-.newPost__send{
-    font-size: 1.5rem;
-}
+    .newCom__send {
+        font-size: 1.5rem;
+    }
 }
