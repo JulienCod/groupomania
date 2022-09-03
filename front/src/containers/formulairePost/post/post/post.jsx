@@ -6,8 +6,8 @@ import CommentManager from '../../comment/commentManager';
 import classes from "./post.module.css";
 import InfoUSer from "../../../infoUser/infoUser";
 import PostService from '../../../../services/postService';
-import ModifyForm from '../../modifyForm/modifyForm';
 import Swal from 'sweetalert2';
+import ModifyPost from '../../modifyForm/modifyPost/ModifyPost';
 
 export default function Post(props) {
 
@@ -66,7 +66,7 @@ export default function Post(props) {
                 </div>
                 {
                     updatePost ?
-                        <ModifyForm mode="post" {...props} parentCallback={handleCallback} />
+                        <ModifyPost {...props} parentCallback={handleCallback} />
                         :
                         <ContainerPost image={props.post.image} description={props.post.description} />
                 }
