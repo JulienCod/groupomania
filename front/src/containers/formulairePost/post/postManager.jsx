@@ -1,8 +1,8 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PostService from '../../../services/postService';
-import NewForm from '../newForm/newForm';
 import AuthService from '../../../services/authService';
 import Post from "./post/post";
+import FormPost from '../newForm/formPost/FormPost';
 
 export default function PostManager() {
 
@@ -60,11 +60,11 @@ export default function PostManager() {
                     <div>chargement ...</div>
                     :
                     <>
-                        <NewForm parentCallback={handleCallback} status="post" />
+                        <FormPost parentCallback={handleCallback} />
                         {
                             listPosts.map(post => {
                                 return (
-                                    <Post {...post} key={post.post.postId} parentCallback={handleCallback} currentUserId={currentUserId} admin={admin} />
+                                    <Post {...post} key={post.post.postId}  parentCallback={handleCallback} currentUserId={currentUserId} admin={admin} />
                                 )
                             })
                         }
