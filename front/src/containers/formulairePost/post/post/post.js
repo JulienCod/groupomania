@@ -33,7 +33,7 @@ class Post extends Component {
 
     deletePost = async () => {
         Swal.fire({
-            title: 'Êtes-vous sur de vouloir supprimer ce post?',
+            title: 'Êtes-vous sûr de vouloir supprimer ce post?',
             text: "Cette action sera irréversible!",
             icon: 'warning',
             showCancelButton: true,

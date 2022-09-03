@@ -3,7 +3,7 @@ import React from "react";
 import NavAuth from "../../../components/nav/auth/navAuth";
 import classes from "./home.module.css";
 
-const Home = (props) => (
+const Home = () => (
     <article className={classes.home__article}>
         <section className={classes.container}>
             <h1>Bienvenue sur Groupomania</h1>
