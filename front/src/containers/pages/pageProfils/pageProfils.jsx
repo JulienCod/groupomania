@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import AuthService from '../../../services/authService';
 import classes from "./pageProfils.module.css";
 import { userModifyMinValidation, userModifyValidation } from '../../../services/formValidation';
@@ -20,6 +20,7 @@ export default function PageProfils() {
 
     useEffect(() => {
         setMessageError("");
+        setUserId(AuthService.getCurrentUser());
         AuthService.getById(userId)
             .then((response) => {
                 setEmail(response.data.email);

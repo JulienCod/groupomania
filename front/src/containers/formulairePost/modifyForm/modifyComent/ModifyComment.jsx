@@ -17,7 +17,6 @@ export default function ModifyComment(props) {
         setDescription(props.description);
         setImage(props.image);
         setMessageError("");
-
     }, []);
 
     const handleChange = event => {

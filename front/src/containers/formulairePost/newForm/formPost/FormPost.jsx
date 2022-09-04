@@ -37,6 +37,7 @@ export default function FormPost(props) {
             setFile(null);
             setPreview("");
             setDescriptionPost("");
+            setMessageError("");
             await props.parentCallback();
         }
     }

@@ -104,8 +104,8 @@ class AuthService {
     getCurrentUser() {
         const token = window.sessionStorage.getItem("token");
         if(token){
-            const { userId: userId } = jwt_decode(token);
-            return userId;
+            const { userId: id } = jwt_decode(token);
+            return id;
         }else{
             return false;
         }
@@ -114,11 +114,11 @@ class AuthService {
     getAdmin(){
         const token = window.sessionStorage.getItem("token");
         if(token){
-            const { isAdmin: isAdmin } = jwt_decode(token);
-            if (isAdmin === undefined) {
+            const { isAdmin: admin } = jwt_decode(token);
+            if (admin === undefined) {
                 return false;
             }else{
-                return isAdmin;
+                return admin;
             }
         }else{
             return false;

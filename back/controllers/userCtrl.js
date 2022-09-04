@@ -43,7 +43,6 @@ const login = async (req, res, next) => {
         if (!valid) throw new AuthentificationError(401, "Le mot de passe saisi est incorrect")
         if (user.dataValues.isAdmin) {
             return res.status(200).json({
-                userId: user.dataValues.id,
                 token: jwt.sign(
                     {
                         userId: user.dataValues.id,
@@ -52,15 +51,16 @@ const login = async (req, res, next) => {
                     `${process.env.TOKEN_KEY}`,
                     { expiresIn: '1h' }
                 ),
-                avatar: user.dataValues.avatar,
-                welcome: "true",
-                lastname: user.dataValues.lastname,
-                firstname: user.dataValues.firstname,
-                admin: user.dataValues.isAdmin
+                user:{
+                    avatar: user.dataValues.avatar,
+                    welcome: "true",
+                    lastname: user.dataValues.lastname,
+                    firstname: user.dataValues.firstname,
+                    admin: user.dataValues.isAdmin
+                }
             })
         } else {
             return res.status(200).json({
-                userId: user.dataValues.id,
                 token: jwt.sign(
                     {
                         userId: user.dataValues.id
@@ -68,10 +68,12 @@ const login = async (req, res, next) => {
                     `${process.env.TOKEN_KEY}`,
                     { expiresIn: '24h' }
                 ),
-                avatar: user.dataValues.avatar,
-                welcome: "true",
-                lastname: user.dataValues.lastname,
-                firstname: user.dataValues.firstname
+                user:{
+                    avatar: user.dataValues.avatar,
+                    welcome: "true",
+                    lastname: user.dataValues.lastname,
+                    firstname: user.dataValues.firstname
+                }
             })
         }
     } catch (error) {
@@ -139,7 +141,7 @@ const deleteUser = async (req, res, next) => {
             if (commentaire.dataValues.image) {
                 filename = commentaire.dataValues.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, (error) => {
-                    if (error) throw error;
+                    if (error) console.log(error);
                 });
             }
         }
@@ -147,14 +149,14 @@ const deleteUser = async (req, res, next) => {
             if (post.dataValues.image) {
                 filename = post.dataValues.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, (error) => {
-                    if (error) throw error;
+                    if (error) console.log(error);
                 });
             }
         }
         filename = user.avatar.split('/images/')[1];
         if (filename != "profils.png") {
             fs.unlink(`images/${filename}`, (error) => {
-                if (error) throw error;
+                if (error) console.log(error);
             });
         }
         let ressource = await User.destroy({ where: { id: id } })

@@ -48,8 +48,8 @@ export default function FormComment(props) {
                 <img src={avatarCurrentUser} width={"50px"} height={"50px"} alt="" />
                 <textarea
                     type="textarea"
-                    name="descriptionComment"
-                    id="descriptionComment"
+                    name={`description${props.idPost}`}
+                    id={`description${props.idPost}`}
                     placeholder='Écrivez un commentaire ...'
                     value={descriptionComment}
                     onChange={(event) => setDescriptionComment(event.target.value)}
@@ -59,12 +59,12 @@ export default function FormComment(props) {
                 <input
                     type="file"
                     accept="image/*"
-                    name="pictureComment"
-                    id='pictureComment'
+                    name={`picture${props.idPost}`}
+                    id={`picture${props.idPost}`}
                     className={classes.inputfile}
                     onChange={(e) => { handleChange(e) }}
                 />
-                <label htmlFor="pictureComment">Sélectionner une image</label>
+                <label htmlFor={`picture${props.idPost}`}>Sélectionner une image</label>
                 <div className={classes.comment__img__send}>
                     {preview &&
                         <div className={classes.container__img}>

@@ -4,10 +4,11 @@ import LikeComment from '../models/likeComment.js';
 import { CommentError, LikeError } from '../error/customError.js';
 import { formCommentValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 import jwt from 'jsonwebtoken';
+import User from '../models/user.js';
 
 const getById = (req, res, next) => {
     let id = req.params.id;
-    Commentaire.findByPk(id, { include: [LikeComment] })
+    Commentaire.findByPk(id, { include: [LikeComment, User] })
         .then(commentaires => res.status(200).json(commentaires))
         .catch(error => next(error));
 }

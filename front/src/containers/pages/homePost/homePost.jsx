@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import classes from './homePost.module.css';
 import { RiCloseCircleLine } from 'react-icons/ri';
 import PostManager from '../../formulairePost/post/postManager';
-import AuthService from '../../../services/authService';
 import ScrollButton from '../../../components/scroll-to-top/scrollToTop';
 
 const HomePost = () => {
-    const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser())
+    const [currentUser, setCurrentUser] = useState(sessionStorage.getItem("user"));
     const [welcome, setWelcome] = useState(false);
 
     useEffect(() => {
+        setCurrentUser(sessionStorage.getItem("user"))
         if (currentUser.welcome) {
             setWelcome(true)
         }
