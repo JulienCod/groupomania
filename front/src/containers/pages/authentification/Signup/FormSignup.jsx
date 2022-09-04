@@ -30,7 +30,7 @@ export default function FormSignup() {
       lastname: data.lastname,
       firstname: data.firstname,
     }
-    AuthService.signup(signup, image)
+    await AuthService.signup(signup, image)
   }
 
   return (
@@ -92,7 +92,7 @@ export default function FormSignup() {
           }
         </div>
         <div>
-          <Button>Créez un compte</Button>
+          <Button>Créer un compte</Button>
         </div>
       </form>
     </article>

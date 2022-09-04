@@ -6,7 +6,7 @@ const signupSchema = Joi.object({
         .email({minDomainSegments:2, tlds: {allow: ['com', 'net', 'fr']}})
         .messages({
             "string.empty": "L'adresse mail est obligatoire",
-            "string.email": "l'extension doit contenir un @ et un dommaine avec minimum deux caractères",
+            "string.email": "l'extension doit contenir un @ et un domaine en '.com' '.net' ou '.fr'",
         }),
         
     password: Joi.string()
@@ -24,21 +24,21 @@ const signupSchema = Joi.object({
         .max(30)
         .pattern(new RegExp('^[^$=]{3,30}$'))
         .messages({
-            "string.empty":"Le prénom est obligatoire",
-            "string.min":"Le prénom doit contenir au minimum 3 caractères",
-            "string.max":"Le prénom ne doit pas contenir plus de 30 caractères",
-            "string.pattern.base":"Le prénom ne doit pas contenir les caractères $ ou =",
+            "string.empty":"Le nom est obligatoire",
+            "string.min":"Le nom doit contenir au minimum 3 caractères",
+            "string.max":"Le nom ne doit pas contenir plus de 30 caractères",
+            "string.pattern.base":"Le nom ne doit pas contenir les caractères $ ou =",
         }),
-    firstname: Joi.string()
+        firstname: Joi.string()
         .required()
         .min(3)
         .max(30)
         .pattern(new RegExp('^[^$=]{3,30}$'))
         .messages({
-            "string.empty":"Le nom est obligatoire",
-            "string.min":"Le nom doit contenir au minimum 3 caractères",
-            "string.max":"Le nom ne doit pas contenir plus de 30 caractères",
-            "string.pattern.base":"Le nom ne doit pas contenir les caractères $ ou =",
+            "string.empty":"Le prénom est obligatoire",
+            "string.min":"Le prénom doit contenir au minimum 3 caractères",
+            "string.max":"Le prénom ne doit pas contenir plus de 30 caractères",
+            "string.pattern.base":"Le prénom ne doit pas contenir les caractères $ ou =",
         }),
     avatar: Joi.object()
 })
@@ -155,21 +155,21 @@ const userModifyValidation = (body) =>{
         .max(30)
         .pattern(new RegExp('^[^$=]{3,30}$'))
         .messages({
-            "string.empty":"Le prénom est obligatoire",
-            "string.min":"Le prénom doit contenir au minimum 3 caractères",
-            "string.max":"Le prénom ne doit pas contenir plus de 30 caractères",
-            "string.pattern.base":"Le prénom ne doit pas contenir les caractères $ ou =",
+            "string.empty":"Le nom est obligatoire",
+            "string.min":"Le nom doit contenir au minimum 3 caractères",
+            "string.max":"Le nom ne doit pas contenir plus de 30 caractères",
+            "string.pattern.base":"Le nom ne doit pas contenir les caractères $ ou =",
         }),
         firstname: Joi.string()
-            .required()
-            .min(3)
-            .max(30)
-            .pattern(new RegExp('^[^$=]{3,30}$'))
-            .messages({
-                "string.empty":"Le nom est obligatoire",
-                "string.min":"Le nom doit contenir au minimum 3 caractères",
-                "string.max":"Le nom ne doit pas contenir plus de 30 caractères",
-                "string.pattern.base":"Le nom ne doit pas contenir les caractères $ ou =",
+        .required()
+        .min(3)
+        .max(30)
+        .pattern(new RegExp('^[^$=]{3,30}$'))
+        .messages({
+                "string.empty":"Le prénom est obligatoire",
+                "string.min":"Le prénom doit contenir au minimum 3 caractères",
+                "string.max":"Le prénom ne doit pas contenir plus de 30 caractères",
+                "string.pattern.base":"Le prénom ne doit pas contenir les caractères $ ou =",
             }),
         avatar: Joi.string()
             .min(5)

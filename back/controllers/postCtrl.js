@@ -15,7 +15,7 @@ const getAll = (req, res, next) => {
 
 const getById = (req, res, next) => {
     let id = req.params.id;
-    Post.findByPk(id, { include: [Commentaire, LikePost] })
+    Post.findByPk(id, { include: [Commentaire, LikePost, User] })
         .then(post => res.status(200).json(post))
         .catch(error => next(error));
 }
@@ -93,7 +93,7 @@ const deletePost = async (req, res, next) => {
             if (commentaire.dataValues.image) {
                 let filename = commentaire.dataValues.image.split('/images/')[1];
                 fs.unlink(`images/${filename}`, (error) => {
-                    if (error) throw error;
+                    if (error) console.log(error);
                 });
             }
         }

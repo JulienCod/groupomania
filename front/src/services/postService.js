@@ -9,7 +9,7 @@ class PostService {
 
     async getAll() {
         try {
-            return await axios.get(API_URL + "api/post/", { headers: AuthHeader() });
+            return await axios.get(API_URL + "api/post/");
         } catch (error) {
             return Swal.fire({
                 icon: 'error',

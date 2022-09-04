@@ -1,0 +1,111 @@
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile+label {
+    text-decoration: none;
+    padding: 10px;
+    font-family: arial;
+    font-size: 1em;
+    color: #FFFFFF;
+    background-color: #FD2D01;
+    border-radius: 22px;
+    -webkit-border-radius: 22px;
+    -moz-border-radius: 22px;
+    border: 3px solid #FFD7D7;
+    box-shadow: 3px 3px 8px #444444;
+    -webkit-box-shadow: 3px 3px 8px #444444;
+    -moz-box-shadow: 3px 3px 8px #444444;
+    cursor: pointer;
+}
+
+.inputfile+label:hover {
+    padding: 10px;
+    color: #4E5166;
+    background-color: #FFD7D7;
+    border: 3px solid #FD2D01;
+    box-shadow: 1px 1px 3px #4E5166;
+    -webkit-box-shadow: 1px 1px 3px #4E5166;
+    -moz-box-shadow: 1px 1px 3px #4E5166;
+}
+
+.img__send {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    min-height: 3rem;
+    width: 100%
+}
+
+.newCommentaire {
+    padding: 1rem;
+}
+
+.commentaire__form {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+}
+
+.comment__img__send {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    min-height: 3rem;
+    padding-right: 4rem;
+}
+
+.newCommentaire__textarea {
+    flex: 1 1 75%;
+    resize: none;
+    font-size: 1rem;
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+.newCom__send {
+    font-size: 2.5rem;
+    color: #4E5166;
+    cursor: pointer;
+    position: absolute;
+    right: 1rem;
+}
+
+.error {
+    color: #FD2D01;
+    font-size: 1rem;
+}
+
+@media screen and (max-width:900px) {
+    .commentaire__form {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .newCommentaire__textarea {
+        flex: 1 1 80%;
+    }
+
+    .comment__img__send {
+        flex: 1 1 30%
+    }
+}
+
+@media screen and (max-width:700px) {
+    .newCommentaire__textarea {
+        flex: 1 1 73%;
+    }
+
+    /* icon envoi */
+    .newCom__send {
+        font-size: 1.5rem;
+    }
+}

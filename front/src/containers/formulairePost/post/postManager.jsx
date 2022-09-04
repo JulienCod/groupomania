@@ -1,28 +1,18 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PostService from '../../../services/postService';
-import NewForm from '../newForm/newForm';
 import AuthService from '../../../services/authService';
 import Post from "./post/post";
+import FormPost from '../newForm/formPost/FormPost';
 
-class PostManager extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            listPost: [],
-            currentUserId: 0,
-            loading: false,
-            admin: false,
-        }
-    }
-    componentDidMount = async () => {
-        let storage = AuthService.getCurrentUser();
-        this.setState({
-            loading: true,
-            currentUserId: storage.userId,
-            admin: storage.admin
-        })
+export default function PostManager() {
 
-        await PostService.getAll()
+    const [currentUserId, setCurrentUserId] = useState(AuthService.getCurrentUser());
+    const [admin, setAdmin] = useState(AuthService.getAdmin());
+    const [listPosts, setListPosts] = useState([]);
+    const [refresh, setRefresh] = useState(false);
+
+    useEffect(() => {
+        PostService.getAll()
             .then(async response => {
                 if (response) {
                     const listPost = await response.data.map(post => {
@@ -51,37 +41,25 @@ class PostManager extends Component {
                             likePost: post.likePosts
                         }
                     })
-                    this.setState({
-                        listPost,
-                        loading: false,
-                    })
+                    setListPosts(listPost);
+                    setRefresh(false);
                 }
             })
+    }, [refresh])
+
+    const handleCallback = () => {
+        setRefresh(true);
     }
-
-    handleCallback = () => {
-        this.setState({
-            loading: true,
-        })
-        this.componentDidMount();
-    }
-
-    render() {
-        let listPost = "";
-        listPost = this.state.listPost.map(post => {
-
-            return (
-                <Post {...post} key={post.post.postId} parentCallback={this.handleCallback} currentUserId={this.state.currentUserId} admin={this.state.admin} />
-            )
-        })
-
-        return (
-            <>
-                <NewForm parentCallback={this.handleCallback} status="post" />
-                {listPost}
-            </>
-        )
-    }
+    return (
+        <>
+            <FormPost parentCallback={handleCallback} />
+            {
+                listPosts.map(post => {
+                    return (
+                        <Post {...post} key={post.post.postId} parentCallback={handleCallback} currentUserId={currentUserId} admin={admin} />
+                    )
+                })
+            }
+        </>
+    )
 }
-
-export default PostManager;
