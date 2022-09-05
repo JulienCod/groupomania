@@ -16,20 +16,15 @@ export default function PostManager() {
             .then(async response => {
                 if (response) {
                     const listPost = await response.data.map(post => {
-                        let utc = parseInt(post.createdAt.split('T')[1].split('.')[0].split(':')[0]) + 2;
-                        utc = utc.toString()
-                        let tabHour = post.createdAt.split('T')[1].split('.')[0].split(':')
-                        tabHour.splice(0, 1, utc)
-                        tabHour.pop()
-                        let hour = tabHour.join(':')
+                        let formatPublication = new Date(post.createdAt);
                         return {
                             index: post.id,
                             post: {
                                 postId: post.id,
                                 description: post.description,
                                 image: post.image,
-                                datePublication: post.createdAt.split('T')[0].split('-').reverse().join('-'),
-                                hourPublication: hour,
+                                datePublication: formatPublication.toLocaleDateString(),
+                                hourPublication: formatPublication.toLocaleTimeString("en-GB",{hour: "numeric", minute: "numeric"}),
                                 userId: post.userId,
                             },
                             user: {

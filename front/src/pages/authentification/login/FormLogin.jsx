@@ -1,10 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import AuthService from  '../../../../services/authService';
+import AuthService from  '../../../services/authService';
 import { joiResolver } from '@hookform/resolvers/joi';
 import classes from './FormLogin.module.css';
-import Button from '../../../../components/button/btn';
-import { loginSchema } from '../../../../services/formValidation';
+import Button from '../../../components/button/btn';
+import { loginSchema } from '../../../services/formValidation';
 
 export default function FormLogin() {
   const { register, handleSubmit, formState:{ errors } } = useForm({

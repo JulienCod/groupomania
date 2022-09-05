@@ -1,6 +1,6 @@
 .button { 
     position: fixed; 
-    width: 100%;
+    /* width: 100%; */
     bottom: 6.5rem;
     height: 1rem;
     font-size: 3rem;

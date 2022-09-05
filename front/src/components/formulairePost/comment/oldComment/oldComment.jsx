@@ -130,7 +130,7 @@ export default function OldComment(props) {
                     <InfoUser avatar={user.avatar} mode={"comment"} cssInfoUser={classes.infoUser} />
                     <>
                         {modify ?
-                            <ModifyComment {...props} parentCallback={handleCallback} />
+                            <ModifyComment {...props} modifyComment={modifyComment} parentCallback={handleCallback} />
                             :
                             <div className={classes.container__comment}>
 

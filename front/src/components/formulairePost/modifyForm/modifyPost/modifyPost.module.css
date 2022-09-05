@@ -70,25 +70,6 @@ box-shadow: 1px 1px 3px #4E5166;
 .error{
     color: #FD2D01;
 }
-/**********************************************/
-/*              Commentaire                   */
-
-.modifyCommentaire__textarea{
-    flex: 1 1 75%;
-    resize: none;
-    border-radius: 1rem;
-    font-size: 1rem;
-    padding:0.5rem;
-
-}
-
-.modify__img__send{
-    display: flex;
-    position:relative;
-    justify-content: center;
-    align-items: center;
-    min-height: 3rem;
-}
 
 @media screen and (max-width:900px){
     .form{
@@ -116,10 +97,7 @@ box-shadow: 1px 1px 3px #4E5166;
     .modifyPost__textarea{
         flex:1 1 100%;
     }
-    .modifyCommentaire__textarea{
-        flex: 1 1 100%;
-        resize: none;
-        border-radius: 1rem;
-        font-size: 1rem;
+    .modify__send{
+        font-size:1.5rem;
     }
 }

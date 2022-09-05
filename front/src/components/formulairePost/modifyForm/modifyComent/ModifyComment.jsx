@@ -3,7 +3,7 @@ import classes from './modifyComment.module.css';
 import CommentService from '../../../../services/commentService';
 import { formModifyValidation } from '../../../../services/formValidation';
 import resizeFile from '../../../../services/resizeFile';
-import {FiSend} from 'react-icons/fi';
+import { FiSend, FiPenTool } from 'react-icons/fi';
 
 export default function ModifyComment(props) {
 
@@ -79,7 +79,10 @@ export default function ModifyComment(props) {
                             <img src={image} width="100px" alt={image} className={classes.image} />
                         </div>
                     }
-                    <FiSend onClick={submitModifyComment} className={classes.modify__send} />
+                    <div className={classes.container__options}>
+                        <FiPenTool title="Modifier" onClick={props.modifyComment} className={classes.iconModify} />
+                        <FiSend onClick={submitModifyComment} className={classes.modify__send} />
+                    </div>
                 </div>
 
             </form>

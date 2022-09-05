@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import AuthService from '../../../../services/authService';
+import AuthService from '../../../services/authService';
 import classes from './formSignup.module.css';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { signupSchema } from '../../../../services/formValidation';
-import Button from '../../../../components/button/btn';
-import Image from '../../../../components/image/image';
-import resizeFile from '../../../../services/resizeFile';
+import { signupSchema } from '../../../services/formValidation';
+import Button from '../../../components/button/btn';
+import Image from '../../../components/image/image';
+import resizeFile from '../../../services/resizeFile';
 
 export default function FormSignup() {
   const [file, setFile] = useState("");

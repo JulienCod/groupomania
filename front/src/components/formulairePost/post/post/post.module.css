@@ -9,9 +9,6 @@
     margin:2rem auto;
 }
 
-.post{
-
-}
 .post__info{
     width: 100%;
     height: 6.3rem;
@@ -67,7 +64,7 @@
     .post__option{
         position: absolute;
         right:0.5rem;
-        margin:0 2rem;
+        margin:0 -1rem;
         display: flex;
         flex-direction: column;
     }
