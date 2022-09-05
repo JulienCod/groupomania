@@ -4,6 +4,7 @@ import CommentService from '../../../../services/commentService';
 import { formModifyValidation } from '../../../../services/formValidation';
 import resizeFile from '../../../../services/resizeFile';
 import { FiSend, FiPenTool } from 'react-icons/fi';
+import { RiCloseCircleLine } from 'react-icons/ri';
 
 export default function ModifyComment(props) {
 
@@ -12,12 +13,14 @@ export default function ModifyComment(props) {
     const [preview, setPreview] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
+        setReload(false);
         setDescription(props.description);
         setImage(props.image);
         setMessageError("");
-    }, []);
+    }, [reload]);
 
     const handleChange = event => {
         const selectedFile = event.target.files[0]
@@ -35,7 +38,6 @@ export default function ModifyComment(props) {
         }
 
         const errorform = formModifyValidation(comment);
-
         if (!description && !image) {
             setMessageError("Le commentaire doit contenir au minimum une image ou du texte")
         } else if (errorform.error) {
@@ -45,6 +47,7 @@ export default function ModifyComment(props) {
             await props.parentCallback();
         }
     }
+
 
     return (
         <div className={classes.form__container}>
@@ -72,16 +75,24 @@ export default function ModifyComment(props) {
                 <div className={classes.modify__img__send}>
                     {preview ?
                         <div className={classes.container__img}>
-                            <img src={preview} width="100px" alt={preview} className={classes.image} />
+                            <RiCloseCircleLine title="Supprimer l'image" onClick={() => {
+                                setPreview("");
+                                setFile(null);
+                            }} className={classes.closePreview} />
+                            <img src={preview} alt={preview} className={classes.image} />
                         </div>
                         :
-                        <div className={classes.container__img}>
-                            <img src={image} width="100px" alt={image} className={classes.image} />
-                        </div>
+                        <>
+                            {image &&
+                                <div className={classes.container__img}>
+                                    <img src={image} alt={image} className={classes.image} />
+                                </div>
+                            }
+                        </>
                     }
                     <div className={classes.container__options}>
                         <FiPenTool title="Modifier" onClick={props.modifyComment} className={classes.iconModify} />
-                        <FiSend onClick={submitModifyComment} className={classes.modify__send} />
+                        <FiSend title="Envoyer" onClick={submitModifyComment} className={classes.modify__send} />
                     </div>
                 </div>
 

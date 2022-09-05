@@ -28,17 +28,23 @@ export default function OldComment(props) {
 
 
     useEffect(() => {
+        fetch();
+        setReload(false);
         setModify(false);
         setDelComment(false);
-        setReload(false);
-        CommentService.getById(props.id)
-            .then(comment => {
-                let commentId = comment.data.id;
-                let postId = comment.data.postId;
-                let likeComments = comment.data.likeComments;
-                let user = comment.data.user;
-                let image = comment.data.image;
-                let findUserLike = likeComments.find(user => user.userId === currentUser)
+        
+    }, [reload]);
+    
+    const fetch = async () => {
+        await CommentService.getById(props.id)
+            .then(async comment => {
+                let commentId = await comment.data.id;
+                let postId =  comment.data.postId;
+                let likeComments =  comment.data.likeComments;
+                let user =  comment.data.user;
+                let image =  comment.data.image;
+                let description= comment.data.description;
+                let findUserLike =  likeComments.find(user => user.userId === currentUser)
                 let liked = false;
                 if (findUserLike) {
                     liked = findUserLike.liked;
@@ -51,9 +57,10 @@ export default function OldComment(props) {
                 setLikeComments(likeComments);
                 setCountLike(listLiked.length);
                 setLiked(liked);
+                setDescription(description);
             })
 
-    }, [reload]);
+    }
 
     const modifyComment = () => {
         setModify(!modify);
@@ -72,12 +79,14 @@ export default function OldComment(props) {
             if (result.isConfirmed) {
                 let commentId = props.id;
                 setDelComment(true);
+                setModify(!modify);
                 await CommentService.deleteComment(commentId);
                 Swal.fire(
                     'Supprimer!',
                     'Le commentaire a bien été supprimé.',
                     'success'
-                )
+                    )
+                await handleCallback();
             }
         })
     }
@@ -116,12 +125,10 @@ export default function OldComment(props) {
             setReload(true);
         }
     }
-    
+
     const handleCallback = async () => {
-        setReload(true);
         await props.parentCallback();
     }
-
     return (
         <>
             {!delComment &&
@@ -130,19 +137,19 @@ export default function OldComment(props) {
                     <InfoUser avatar={user.avatar} mode={"comment"} cssInfoUser={classes.infoUser} />
                     <>
                         {modify ?
-                            <ModifyComment {...props} modifyComment={modifyComment} parentCallback={handleCallback} />
+                            // <ModifyComment {...props} modifyComment={modifyComment} parentCallback={handleCallback} />
+                            <ModifyComment {...props} modifyComment={modifyComment} parentCallback={() =>{setReload(true)}} />
                             :
                             <div className={classes.container__comment}>
-
+                                {description &&
+                                    <div className={classes.comment}>
+                                        <h5>{user.firstname} {user.lastname}</h5>
+                                        <p className={classes.commentaire__text} >{description}</p>
+                                    </div>
+                                }
                                 {image &&
                                     <div className={classes.container__img}>
                                         <img src={image} className={classes.img} alt="" />
-                                    </div>
-                                }
-
-                                {description &&
-                                    <div className={classes.comment}>
-                                        <p className={classes.commentaire__text} >{props.description}</p>
                                     </div>
                                 }
 

@@ -20,7 +20,7 @@ const HomePost = () => {
 
             {welcome &&
                 <div className={classes.welcome}>
-                    <span>Bienvenue {currentUser.lastname} {currentUser.firstname}</span>
+                    <span>Bienvenue {currentUser.firstname}</span>
                     <RiCloseCircleLine onClick={() => {
                         currentUser.welcome = false;
                         window.sessionStorage.setItem("user", JSON.stringify(currentUser));

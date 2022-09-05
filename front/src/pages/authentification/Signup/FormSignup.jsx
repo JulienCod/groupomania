@@ -7,17 +7,19 @@ import { signupSchema } from '../../../services/formValidation';
 import Button from '../../../components/button/btn';
 import Image from '../../../components/image/image';
 import resizeFile from '../../../services/resizeFile';
+import { RiCloseCircleLine } from 'react-icons/ri';
 
 export default function FormSignup() {
   const [file, setFile] = useState("");
   const [preview, setPreview] = useState("");
 
-  const handleChange = event => {
-    const selectedFile = event.target.files[0]
+  const handleChange =async event => {
+    const selectedFile = await event.target.files[0]
     setFile(selectedFile)
     const filePreview = URL.createObjectURL(selectedFile);
     setPreview(filePreview)
   }
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: joiResolver(signupSchema)
   });
@@ -84,15 +86,22 @@ export default function FormSignup() {
             />
             <label htmlFor='avatar'>Sélectionner une image</label>
           </div>
-          {
-            file ?
-              <Image src={preview} alt={file.name} cssImage={classes.image} />
+          <div className={classes.container__img}>
+            {file ?
+              <>
+                <RiCloseCircleLine title="Supprimer l'image" onClick={() => {
+                  setPreview("");
+                  setFile("");
+                }} className={classes.closePreview} />
+                <Image src={preview} alt={file.name} cssImage={classes.image} />
+              </>
               :
               <Image src="images/profils/profils.png" alt="image de profils par défault" cssImage={classes.image} />
-          }
+            }
+          </div>
         </div>
         <div>
-          <Button>Créer un compte</Button>
+          <Button title="Créer un compte">Créer un compte</Button>
         </div>
       </form>
     </article>

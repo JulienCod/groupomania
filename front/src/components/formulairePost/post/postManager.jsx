@@ -12,13 +12,14 @@ export default function PostManager() {
     const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
+        setRefresh(false);
         PostService.getAll()
             .then(async response => {
                 if (response) {
                     const listPost = await response.data.map(post => {
                         let formatPublication = new Date(post.createdAt);
                         return {
-                            index: post.id,
+                            index:  post.id,
                             post: {
                                 postId: post.id,
                                 description: post.description,
@@ -36,8 +37,7 @@ export default function PostManager() {
                             likePost: post.likePosts
                         }
                     })
-                    setListPosts(listPost);
-                    setRefresh(false);
+                    setListPosts(await listPost);
                 }
             })
     }, [refresh])

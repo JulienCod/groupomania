@@ -21,6 +21,7 @@
     text-align: center;
     font-size:16px;
     padding:0.3rem;
+    width:75%;
 }
 .container__inputfile{
     height: 1rem;
@@ -67,6 +68,16 @@ box-shadow: 1px 1px 3px #4E5166;
     color:#FD2D01;
     padding:1rem;
 }
+.container__img{
+    position: relative;
+}
+.closePreview {
+    position: absolute;
+    font-size: 2.5rem;
+    left:0;
+    cursor: pointer;
+    color: #FD2D01;
+}
 
 @media screen and (max-width: 700px){
     .form{
@@ -74,5 +85,8 @@ box-shadow: 1px 1px 3px #4E5166;
         padding: 1rem 0;
         margin:0;
         border-radius: 0rem;
+    }
+    .field input{
+        width:90%;
     }
 }

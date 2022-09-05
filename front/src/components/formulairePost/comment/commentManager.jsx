@@ -15,6 +15,7 @@ export default function CommentManager(props) {
     const [reload, setReload] = useState(false);
     const [countLike, setCountLike] = useState(0);
     const [listPost, setListPost] = useState([]);
+    const [countCommentaire, setCountCommentaire] = useState(0);
 
     useEffect(() => {
         setReload(false);
@@ -34,6 +35,7 @@ export default function CommentManager(props) {
                     setListPost(listPost)
                     setCountLike(countLike.length)
                     setLiked(liked)
+                    setCountCommentaire(response.data.commentaires.length)
                 }
             })
     }, [reload]);
@@ -78,15 +80,19 @@ export default function CommentManager(props) {
     return (
         <section className={classes.commentaire__container}>
             <div className={classes.container__likeAndCom}>
-                <div onClick={() => setDisplayComment(!displayComment)} className={classes.container__com}>
-                    <p >Commentaire</p>
+                <div title="afficher les commentaires" onClick={() => setDisplayComment(!displayComment)} className={classes.container__com}>
+                    {countCommentaire <= 1 ?
+                        <p>{countCommentaire} Commentaire</p>
+                        :
+                        <p>{countCommentaire} Commentaires</p>
+                    }
                 </div>
-                <div className={classes.container__like}>
+                <div title="" className={classes.container__like}>
                     {
                         liked ?
-                            <FaHeart onClick={like} className={classes.heartLiked} />
+                            <FaHeart title="Enlever le like" onClick={like} className={classes.heartLiked} />
                             :
-                            <FiHeart onClick={like} className={classes.heart} />
+                            <FiHeart title="Ajouter un like" onClick={like} className={classes.heart} />
                     }
                     <span>{countLike}</span>
                 </div>
@@ -97,7 +103,7 @@ export default function CommentManager(props) {
                     {listComments.length > 0 &&
                         listComments.map(comment => {
                             return (
-                                <OldComment {...comment} key={comment.id} parentCallback={handleCallback} />
+                                <OldComment {...comment} key={comment.id} displayComment={() => setDisplayComment(!displayComment)} parentCallback={handleCallback} />
                             )
                         }
                         )}

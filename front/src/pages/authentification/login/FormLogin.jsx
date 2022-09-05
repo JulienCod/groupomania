@@ -31,7 +31,7 @@ export default function FormLogin() {
           <span className={classes.error}>{errors.password?.message}</span>
         </div>
         <div>
-          <Button>Se connecter</Button>  
+          <Button title="Se connecter">Se connecter</Button>  
         </div>
       </form>
     </article>

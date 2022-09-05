@@ -149,20 +149,20 @@ export default function PageProfils() {
 
                     <h3>Nom et prénom</h3>
                     <input
-                        title='Prénom'
+                        title='Nom'
                         type="text"
                         name="lastname"
-                        placeholder="Prénom"
+                        placeholder="Nom"
                         id='lastname'
                         value={lastname}
                         onChange={(event) => setLastname(event.target.value)}
                         className={classes.field}
                     />
                     <input
-                        title='Nom'
+                        title='Prénom'
                         type="text"
                         name="firstname"
-                        placeholder="Nom"
+                        placeholder="Prénom"
                         id='firstname'
                         value={firstname}
                         onChange={(event) => setFirstname(event.target.value)}
