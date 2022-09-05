@@ -1,5 +1,4 @@
 import axios from 'axios';
-import AuthHeader from './authHeader.js';
 import Swal from 'sweetalert2';
 
 const API_URL = `${process.env.REACT_APP_API_URL}`;
@@ -21,7 +20,7 @@ class PostService {
 
     async getById(postId) {
         try {
-            return await axios.get(API_URL + "api/post/" + postId, { headers: AuthHeader() });
+            return await axios.get(API_URL + "api/post/" + postId);
         } catch (error) {
             return Swal.fire({
                 icon: 'error',
@@ -33,16 +32,12 @@ class PostService {
 
     async createPost(post, image) {
         try {
-            if (!image) {
-                const formData = new FormData();
-                formData.append("post", JSON.stringify(post));
-                await axios.post(API_URL + "api/post/", formData, { headers: AuthHeader() });
-            } else {
-                const formData = new FormData();
-                formData.append("post", JSON.stringify(post));
+            const formData = new FormData();
+            formData.append("post", JSON.stringify(post));
+            if (image) {
                 formData.append('image', image);
-                await axios.post(API_URL + "api/post/", formData, { headers: AuthHeader() });
             }
+            await axios.post(API_URL + "api/post/", formData);
         } catch (error) {
             return Swal.fire({
                 icon: 'error',
@@ -54,7 +49,7 @@ class PostService {
 
     async deletePost(postId) {
         try {
-            return await axios.delete(API_URL + "api/post/" + postId, { headers: AuthHeader() });
+            return await axios.delete(API_URL + "api/post/" + postId);
         } catch (error) {
             return Swal.fire({
                 icon: 'error',
@@ -66,16 +61,12 @@ class PostService {
 
     async modifyPost(postId, post, image) {
         try {
-            if (!image) {
-                const formData = new FormData();
-                formData.append("description", JSON.stringify(post));
-                await axios.put(API_URL + "api/post/" + postId, formData, { headers: AuthHeader() });
-            } else {
-                const formData = new FormData();
-                formData.append("description", JSON.stringify(post));
+            const formData = new FormData();
+            formData.append("description", JSON.stringify(post));
+            if (image) {
                 formData.append('image', image);
-                await axios.put(API_URL + "api/post/" + postId, formData, { headers: AuthHeader() });
             }
+            await axios.put(API_URL + "api/post/" + postId, formData);
         } catch (error) {
             return Swal.fire({
                 icon: 'error',
@@ -88,9 +79,9 @@ class PostService {
     async likePost(postId, data) {
         try {
             if (data.likeId) {
-                return await axios.put(API_URL + "api/post/" + data.likeId + "/like", data, { headers: AuthHeader() });
+                return await axios.put(API_URL + "api/post/" + data.likeId + "/like", data);
             } else {
-                return await axios.post(API_URL + "api/post/" + postId + "/like", data, { headers: AuthHeader() });
+                return await axios.post(API_URL + "api/post/" + postId + "/like", data);
             }
         } catch (error) {
             return Swal.fire({

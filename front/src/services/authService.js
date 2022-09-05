@@ -1,5 +1,4 @@
 import axios from 'axios';
-import AuthHeader from './authHeader';
 import Swal from 'sweetalert2';
 import jwt_decode from "jwt-decode";
 
@@ -128,7 +127,7 @@ class AuthService {
 
     async getById(userId) {
         try {
-            return await axios.get(API_URL + "api/auth/" + userId, { headers: AuthHeader() })
+            return await axios.get(API_URL + "api/auth/" + userId)
         } catch (error) {
             console.log(error.message);
         }
@@ -141,7 +140,7 @@ class AuthService {
             if (image !== undefined) {
                 formData.append('image', image);
             }
-            await axios.put(API_URL + "api/auth/" + userId, formData, { headers: AuthHeader() })
+            await axios.put(API_URL + "api/auth/" + userId, formData)
             await Swal.fire({
                 icon: 'success',
                 title: 'Votre compte à bien été modifié!',
@@ -159,7 +158,7 @@ class AuthService {
 
     async deleteUser(userId) {
         try {
-            await axios.delete(API_URL + "api/auth/" + userId, { headers: AuthHeader() })
+            await axios.delete(API_URL + "api/auth/" + userId)
         } catch (error) {
             return Swal.fire({
                 icon: 'warning',

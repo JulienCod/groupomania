@@ -4,6 +4,7 @@ import { FiSend } from 'react-icons/fi';
 import resizeFile from '../../../../services/resizeFile';
 import { formValidationPost } from '../../../../services/formValidation';
 import postService from '../../../../services/postService';
+import { RiCloseCircleLine } from 'react-icons/ri';
 
 export default function FormPost(props) {
 
@@ -12,8 +13,8 @@ export default function FormPost(props) {
     const [preview, setPreview] = useState("");
     const [descriptionPost, setDescriptionPost] = useState("");
 
-    const handleChange = event => {
-        const selectedFile = event.target.files[0]
+    const handleChange = async event => {
+        const selectedFile = await event.target.files[0]
         setFile(selectedFile)
         const filePreview = URL.createObjectURL(selectedFile);
         setPreview(filePreview)
@@ -69,10 +70,14 @@ export default function FormPost(props) {
                     <div className={classes.img__send}>
                         {preview &&
                             <div className={classes.container__img}>
-                                <img src={preview} width="100px" alt="" className={classes.image} />
+                                <RiCloseCircleLine title="Supprimer l'image" onClick={() => {
+                                    setPreview("");
+                                    setFile(null);
+                                }} className={classes.closePreview} />
+                                <img src={preview} alt="" className={classes.image} />
                             </div>
                         }
-                        <FiSend title="envoyé" type="submit" onClick={submitPost} className={classes.newPost__send} />
+                        <FiSend title="Envoyer" type="submit" onClick={submitPost} className={classes.newPost__send} />
                     </div>
                 </form>
             </section>

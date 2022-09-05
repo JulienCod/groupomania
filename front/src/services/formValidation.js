@@ -58,8 +58,8 @@ const loginSchema = Joi.object({
         .min(8)
         .messages({
             "string.empty": "Le mot de passe est obligatoire",
-            "string.pattern.base": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre",
             "string.min": "Le mot de passe doit contenir au minimum 8 caractères",
+            "string.pattern.base": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule, un chiffre et au miminum 8 caractères",
         })
 })
 

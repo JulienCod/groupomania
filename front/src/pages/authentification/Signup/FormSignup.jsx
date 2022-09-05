@@ -92,7 +92,7 @@ export default function FormSignup() {
           }
         </div>
         <div>
-          <Button>Créer un compte</Button>
+          <Button title="Créer un compte">Créer un compte</Button>
         </div>
       </form>
     </article>

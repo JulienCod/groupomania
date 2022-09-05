@@ -78,15 +78,15 @@ export default function CommentManager(props) {
     return (
         <section className={classes.commentaire__container}>
             <div className={classes.container__likeAndCom}>
-                <div onClick={() => setDisplayComment(!displayComment)} className={classes.container__com}>
+                <div title="afficher les commentaires" onClick={() => setDisplayComment(!displayComment)} className={classes.container__com}>
                     <p >Commentaire</p>
                 </div>
-                <div className={classes.container__like}>
+                <div title="" className={classes.container__like}>
                     {
                         liked ?
-                            <FaHeart onClick={like} className={classes.heartLiked} />
+                            <FaHeart title="Enlever le like" onClick={like} className={classes.heartLiked} />
                             :
-                            <FiHeart onClick={like} className={classes.heart} />
+                            <FiHeart title="Ajouter un like" onClick={like} className={classes.heart} />
                     }
                     <span>{countLike}</span>
                 </div>
