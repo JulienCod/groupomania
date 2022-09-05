@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 const formPostValidation = (body) =>{
-    const userSchema = Joi.object({
+    const formPostSchema = Joi.object({
         userId: Joi.number()
             .required()
             .messages({
@@ -20,11 +20,11 @@ const formPostValidation = (body) =>{
             .min(5)
             .max(255)
     })
-    return userSchema.validate(body);
+    return formPostSchema.validate(body);
 }
 
 const formCommentValidation = (body) =>{
-    const userSchema = Joi.object({
+    const formCommentSchema = Joi.object({
         userId: Joi.number()
             .required()
             .messages({
@@ -49,10 +49,10 @@ const formCommentValidation = (body) =>{
             .min(5)
             .max(255)
     })
-    return userSchema.validate(body);
+    return formCommentSchema.validate(body);
 }
 const formModifyValidation = (body) =>{
-    const userSchema = Joi.object({
+    const formModifySchema = Joi.object({
         description: Joi.string()
             .min(3)
             .max(1000)
@@ -66,7 +66,7 @@ const formModifyValidation = (body) =>{
             .min(5)
             .max(255)
     })
-    return userSchema.validate(body);
+    return formModifySchema.validate(body);
 }
 
 export {formPostValidation, formCommentValidation, formModifyValidation}

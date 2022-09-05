@@ -26,10 +26,10 @@ const createPost = async (req, res, next) => {
         const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
         const userId = await decodedToken.userId;
         const body = JSON.parse(req.body.post);
-        let post ={
-            userId : userId,
-            description : body.description
-        } 
+        let post = {
+            userId: userId,
+            description: body.description
+        }
         let image = req.file;
         if (image) {
             post = {
@@ -46,7 +46,7 @@ const createPost = async (req, res, next) => {
         }
         let createPost = await Post.create({ ...post })
         if (createPost) {
-            res.status(201).json({post: createPost, msg: "Create post" })
+            res.status(201).json({ post: createPost, msg: "Create post" })
         }
     } catch (error) {
         next(error);
