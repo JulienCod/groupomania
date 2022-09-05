@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import classes from './homePost.module.css';
 import { RiCloseCircleLine } from 'react-icons/ri';
-import PostManager from '../../formulairePost/post/postManager';
-import ScrollButton from '../../../components/scroll-to-top/scrollToTop';
+import PostManager from '../../components/formulairePost/post/postManager';
+import ScrollButton from '../../components/scroll-to-top/scrollToTop';
 
 const HomePost = () => {
-    const [currentUser, setCurrentUser] = useState(sessionStorage.getItem("user"));
+    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem("user")));
     const [welcome, setWelcome] = useState(false);
 
     useEffect(() => {
-        setCurrentUser(sessionStorage.getItem("user"))
         if (currentUser.welcome) {
             setWelcome(true)
         }
     }, [])
-
+    
     return (
         <>
             <h1>Groupomania</h1>

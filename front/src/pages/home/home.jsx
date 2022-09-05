@@ -1,6 +1,6 @@
 import React from "react";
 
-import NavAuth from "../../../components/nav/auth/navAuth";
+import NavAuth from "../../components/nav/auth/navAuth";
 import classes from "./home.module.css";
 
 const Home = () => (

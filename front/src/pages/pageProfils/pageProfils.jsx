@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import AuthService from '../../../services/authService';
+import AuthService from '../../services/authService';
 import classes from "./pageProfils.module.css";
-import { userModifyMinValidation, userModifyValidation } from '../../../services/formValidation';
-import resizeFile from '../../../services/resizeFile';
+import { userModifyMinValidation, userModifyValidation } from '../../services/formValidation';
+import resizeFile from '../../services/resizeFile';
 import Swal from 'sweetalert2';
 
 export default function PageProfils() {

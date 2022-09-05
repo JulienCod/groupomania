@@ -81,6 +81,17 @@ box-shadow: 1px 1px 3px #4E5166;
     align-items: center;
     min-height: 3rem;
 }
+.iconModify{
+    font-size:2.5rem;
+    color:#4E5166;
+    cursor: pointer;
+}
+.iconModify:hover{
+    color: blue;
+}
+.container__options{
+    margin-left:0.5rem;
+}
 
 @media screen and (max-width:900px){
     .form{
@@ -112,6 +123,9 @@ box-shadow: 1px 1px 3px #4E5166;
         font-size: 1rem;
     }
     .modify__send{
+        font-size:1.5rem;
+    }
+    .iconModify{
         font-size:1.5rem;
     }
 }
