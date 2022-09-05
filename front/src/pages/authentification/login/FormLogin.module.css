@@ -21,6 +21,7 @@
     text-align: center;
     font-size:16px;
     padding:0.3rem;
+    width:75%;
 }
 .error{
     color:#FD2D01;
@@ -32,5 +33,8 @@
         padding: 1rem 0;
         margin:0;
         border-radius: 0rem;
+    }
+    .field input{
+        width:90%;
     }
 }

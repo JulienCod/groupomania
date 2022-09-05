@@ -4,6 +4,7 @@ import { FiSend } from 'react-icons/fi';
 import PostService from '../../../../services/postService';
 import resizeFile from '../../../../services/resizeFile';
 import { formModifyValidation } from '../../../../services/formValidation';
+import { RiCloseCircleLine } from 'react-icons/ri';
 
 export default function ModifyPost(props) {
 
@@ -41,9 +42,9 @@ export default function ModifyPost(props) {
         const errorform = formModifyValidation(post);
 
         if (!description && !image) {
-                setMessageError("Le post doit contenir au minimum une image ou du texte");
+            setMessageError("Le post doit contenir au minimum une image ou du texte");
         } else if (errorform.error) {
-                setMessageError(errorform.error.details[0].message)
+            setMessageError(errorform.error.details[0].message)
         } else {
             await PostService.modifyPost(postId, post, image);
             await props.parentCallback();
@@ -75,6 +76,10 @@ export default function ModifyPost(props) {
                     <label htmlFor="pictureModifyPost">Sélectionner une image</label>
                     {preview ?
                         <div className={classes.container__img}>
+                            <RiCloseCircleLine title="Supprimer l'image" onClick={() => {
+                                setPreview("");
+                                setFile(null);
+                            }} className={classes.closePreview} />
                             <img src={preview} width="100px" alt={preview} className={classes.image} />
                         </div>
                         :

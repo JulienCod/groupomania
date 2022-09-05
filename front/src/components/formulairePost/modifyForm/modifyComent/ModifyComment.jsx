@@ -32,18 +32,12 @@ export default function ModifyComment(props) {
     const submitModifyComment = async (event) => {
         event.preventDefault();
         const commentId = props.id;
-        let image;
-        if(file === null){
-            image = null;
-        }else{
-            image = await resizeFile.social(file);
-        }
+        let image = await resizeFile.social(file);
         let comment = {
             description: description,
         }
 
         const errorform = formModifyValidation(comment);
-        console.log(image);
         if (!description && !image) {
             setMessageError("Le commentaire doit contenir au minimum une image ou du texte")
         } else if (errorform.error) {
@@ -51,9 +45,9 @@ export default function ModifyComment(props) {
         } else {
             await CommentService.modifyComment(commentId, comment, image);
             await props.parentCallback();
-            setReload(true);
         }
     }
+
 
     return (
         <div className={classes.form__container}>
@@ -85,18 +79,13 @@ export default function ModifyComment(props) {
                                 setPreview("");
                                 setFile(null);
                             }} className={classes.closePreview} />
-                            <img src={preview} width="100px" alt={preview} className={classes.image} />
+                            <img src={preview} alt={preview} className={classes.image} />
                         </div>
                         :
                         <>
                             {image &&
                                 <div className={classes.container__img}>
-                                    <RiCloseCircleLine title="Supprimer l'image" onClick={() => {
-                                        setPreview(null);
-                                        setFile(null);
-                                        setImage(null);
-                                    }} className={classes.closePreview} />
-                                    <img src={image} width="100px" alt={image} className={classes.image} />
+                                    <img src={image} alt={image} className={classes.image} />
                                 </div>
                             }
                         </>
