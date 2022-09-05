@@ -7,7 +7,7 @@ import LikePost from './likePost.js';
 
 const URL = `${process.env.URL}`;
 //schema User
-const {DataTypes} = sequelize;
+const { DataTypes } = sequelize;
 const User = Bd.define('user', {
     id: {
         type: DataTypes.INTEGER,
@@ -15,11 +15,11 @@ const User = Bd.define('user', {
         autoIncrement: true,
         allowNull: false
     },
-    email:{
+    email: {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
-        validate :{
+        validate: {
             isEmail: true
         }
     },
@@ -37,7 +37,7 @@ const User = Bd.define('user', {
     },
     avatar: {
         type: DataTypes.STRING,
-        defaultValue: URL+"images/profils.png" ,
+        defaultValue: URL + "images/profils.png",
         allowNull: true
     },
     isAdmin: {
@@ -48,13 +48,13 @@ const User = Bd.define('user', {
 })
 
 // association des tables
-User.hasMany(Post, {foreignKey: 'userId', onDelete: "Cascade"});
-Post.belongsTo(User, {foreignKey: 'userId'});
-User.hasMany(Commentaire, {foreignKey: 'userId', onDelete: "Cascade"});
-Commentaire.belongsTo(User, {foreignKey: 'userId'});
-User.hasMany(LikeComment, {foreignKey: 'userId', onDelete: "Cascade"});
-LikeComment.belongsTo(User, {foreignKey: 'userId'});
-User.hasMany(LikePost, {foreignKey: 'userId', onDelete: "Cascade"});
-LikePost.belongsTo(User, {foreignKey: 'userId'})
+User.hasMany(Post, { foreignKey: 'userId', onDelete: "Cascade" });
+Post.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Commentaire, { foreignKey: 'userId', onDelete: "Cascade" });
+Commentaire.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(LikeComment, { foreignKey: 'userId', onDelete: "Cascade" });
+LikeComment.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(LikePost, { foreignKey: 'userId', onDelete: "Cascade" });
+LikePost.belongsTo(User, { foreignKey: 'userId' })
 
 export default User;

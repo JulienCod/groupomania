@@ -51,14 +51,6 @@ box-shadow: 1px 1px 3px #4E5166;
     display: flex;
     align-items: center;
 }
-.modifyPost__textarea{
-    flex:1 1;
-    resize: none;
-    border-radius: 1rem;
-    font-size: 1rem;
-    padding:0.5rem;
-
-}
 .modify__send{
     color:#4E5166;
     font-size:2.5rem;
@@ -102,9 +94,6 @@ box-shadow: 1px 1px 3px #4E5166;
 }
 
 @media screen and (max-width:700px){
-    .modifyPost__send{
-        font-size:1.5rem
-    }
     .form{
         justify-content: center;
     }
@@ -121,5 +110,8 @@ box-shadow: 1px 1px 3px #4E5166;
         resize: none;
         border-radius: 1rem;
         font-size: 1rem;
+    }
+    .modify__send{
+        font-size:1.5rem;
     }
 }
