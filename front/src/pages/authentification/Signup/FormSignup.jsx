@@ -13,7 +13,7 @@ export default function FormSignup() {
   const [file, setFile] = useState("");
   const [preview, setPreview] = useState("");
 
-  const handleChange =async event => {
+  const handleChange = async event => {
     const selectedFile = await event.target.files[0]
     setFile(selectedFile)
     const filePreview = URL.createObjectURL(selectedFile);
@@ -41,6 +41,7 @@ export default function FormSignup() {
         <h2>Créer un compte</h2>
         <div className={classes.field}>
           <input
+            title='adresse email'
             type="email"
             placeholder="Adresse email"
             {...register("email")} />
@@ -49,6 +50,7 @@ export default function FormSignup() {
         <div className={classes.field}>
 
           <input
+            title='Mot de passe'
             type="password"
             placeholder="Mot de passe"
             {...register("password")} />
@@ -56,8 +58,9 @@ export default function FormSignup() {
         </div>
 
         <div className={classes.field}>
-
+    
           <input
+            title='Votre prénom'
             type="text"
             placeholder="Prénom"
             {...register("firstname")} />
@@ -66,6 +69,7 @@ export default function FormSignup() {
 
         <div className={classes.field}>
           <input
+            title='Votre nom'
             type="text"
             placeholder="Nom"
             {...register("lastname")}
@@ -76,6 +80,7 @@ export default function FormSignup() {
         <div className={classes.field}>
           <div className={classes.container__inputfile}>
             <input
+              title='Sélectionner une image'
               className={classes.inputfile}
               type="file"
               name='avatar'

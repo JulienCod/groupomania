@@ -55,6 +55,7 @@ export default function ModifyPost(props) {
         <div className={classes.form__container}>
             <form className={classes.form} method="post">
                 <textarea
+                    title='Champ de saisi de texte'
                     type="textarea"
                     name="description"
                     id="description"
@@ -66,6 +67,7 @@ export default function ModifyPost(props) {
                 {messageError && <span className={classes.error}>{messageError}</span>}
                 <div className={classes.input_img_send}>
                     <input
+                        title='Sélectionner une image'
                         type="file"
                         accept="image/*"
                         name="pictureModifyPost"

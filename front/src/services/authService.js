@@ -46,7 +46,7 @@ class AuthService {
                 window.sessionStorage.setItem("user", JSON.stringify(response.data.user));
                 await Swal.fire({
                     icon: 'success',
-                    title: 'Connexion réussi!',
+                    title: 'Connexion réussie!',
                     showConfirmButton: false,
                     timer: 2000,
                 });
@@ -83,7 +83,7 @@ class AuthService {
             await axios.post(API_URL + "api/auth/signup", formData)
             await Swal.fire({
                 icon: 'success',
-                title: 'Votre compte à bien été créé!',
+                title: 'Compte créé avec success !',
                 showConfirmButton: false,
                 timer: 2000,
             });

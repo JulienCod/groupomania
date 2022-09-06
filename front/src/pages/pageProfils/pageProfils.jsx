@@ -124,6 +124,7 @@ export default function PageProfils() {
                 <div className={classes.password}>
                     <h2>Modifier le mot de passe</h2>
                     <input
+                    title="Votre ancien mot de passe"
                         type="password"
                         name="password"
                         placeholder="Mot de passe actuel"
@@ -133,6 +134,7 @@ export default function PageProfils() {
                         className={classes.field}
                     />
                     <input
+                    title="Votre nouveau mot de passe"
                         type="password"
                         name="newPassword"
                         placeholder="Nouveau mot de passe"

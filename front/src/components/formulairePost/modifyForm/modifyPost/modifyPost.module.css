@@ -10,7 +10,8 @@
     text-decoration: none;
     padding: 10px;
     font-family: arial;
-    font-size: 1em;
+    font-size: 1.2em;
+    font-weight: bold;
     color: #FFFFFF;
     background-color: #FD2D01;
     border-radius: 22px;
@@ -52,8 +53,7 @@ box-shadow: 1px 1px 3px #4E5166;
     align-items: center;
 }
 .modifyPost__textarea{
-    flex:1 1;
-    resize: none;
+    flex:1 1 75%;
     border-radius: 1rem;
     font-size: 1rem;
     padding:0.5rem;
