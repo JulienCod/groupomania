@@ -115,8 +115,8 @@ const deletePost = async (req, res, next) => {
 }
 
 const createLike = async (req, res, next) => {
-    let id = req.params.id;
     try {
+        let id = req.params.id;
         const token = await req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
         const userId = await decodedToken.userId;
@@ -137,9 +137,7 @@ const createLike = async (req, res, next) => {
                 let ressource = LikePost.destroy({ where: { id: response.dataValues.id } })
                 if (ressource === 0) return res.status(404).json({ msg: "Not found" })
                 res.status(200).json({ msg: "Deleted like post" })
-                console.log("trouvé")
             } else {
-                console.log("nouveau")
                 LikePost.create({ ...like })
                     .then(() => { res.status(201).json({ msg: "Post liked" }) })
             }

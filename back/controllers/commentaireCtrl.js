@@ -5,6 +5,7 @@ import { CommentError, LikeError } from '../error/customError.js';
 import { formCommentValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
+import Post from '../models/post.js';
 
 const getById = (req, res, next) => {
     let id = req.params.id;
@@ -100,36 +101,43 @@ const deleteCommentaire = async (req, res, next) => {
     }
 }
 
-const like = async (req, res, next) => {
-    let id = req.params.id;
-    let body = req.body;
-    try {
-        let like = await LikeComment.findByPk(id);
-        if (!like) throw new LikeError(404, "Le like n'existe pas")
-        if (body.likeId === like.dataValues.id && body.userId === like.dataValues.userId) {
-            like.liked = body.liked;
-            await like.save();
-            return res.status(200).json({ msg: "update Comment" })
-        }
-    } catch (error) {
-        next(error);
-    }
-}
-
 const createLike = async (req, res, next) => {
-    let id = req.params.id;
     try {
+        let id = req.params.id;
+        const token = await req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
+        const userId = await decodedToken.userId;
+
+        let postId = await Post.findByPk(req.body.postId);
+        if (!postId) throw new PostError(404, "Le post n'existe pas");
+        let commentId = await Commentaire.findByPk(id);
+        if (!commentId) throw new PostError(404, "Le commentaire n'existe pas");
+
+        let barCode = userId + '-' + req.body.postId + '-' + id
         let like = {
-            userId: req.body.userId,
+            userId: userId,
             commentId: id,
             liked: true,
-            postId: req.body.postId
+            postId: req.body.postId,
+            barcode: barCode,
         };
-        LikeComment.create({ ...like })
-            .then(() => { res.status(201).json({ msg: "Comment liked" }) })
+
+        let findBarCode = LikeComment.findOne({ where: { barcode: barCode } });
+        findBarCode.then(response => {
+            if (response) {
+                console.log('supprimer')
+                let ressource = LikeComment.destroy({ where: { id: response.dataValues.id } })
+                if (ressource === 0) return res.status(404).json({ msg: "Not found" })
+                res.status(200).json({ msg: "Deleted like comment" })
+            } else {
+                console.log("nouveau")
+                LikeComment.create({ ...like })
+                .then(() => { res.status(201).json({ msg: "Comment liked" }) })
+            }
+        })
     } catch (error) {
         next(error);
     }
 }
 
-export { getById, createCommentaire, deleteCommentaire, updateCommentaire, like, createLike }
+export { getById, createCommentaire, deleteCommentaire, updateCommentaire, createLike }
