@@ -37,6 +37,7 @@ export default function FormSignup() {
 
   return (
     <article className={classes.article}>
+      <h1>Bienvenue sur Groupomania</h1>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
         <h2>Créer un compte</h2>
         <div className={classes.field}>
@@ -58,7 +59,7 @@ export default function FormSignup() {
         </div>
 
         <div className={classes.field}>
-    
+
           <input
             title='Votre prénom'
             type="text"
