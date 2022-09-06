@@ -49,6 +49,7 @@ export default function FormPost(props) {
                 <h2>Exprimez-vous ...</h2>
                 <form className={classes.newPost__form} method="post">
                     <textarea
+                        title='Champ de saisi de texte'
                         type="textarea"
                         name="descriptionPost"
                         id="descriptionPost"
@@ -59,6 +60,7 @@ export default function FormPost(props) {
                     ></textarea>
                     {messageError && <span className={classes.error}>{messageError}</span>}
                     <input
+                        title='Sélectionner une image'
                         type="file"
                         accept="image/*"
                         name="picturePost"

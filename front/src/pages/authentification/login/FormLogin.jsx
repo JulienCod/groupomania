@@ -19,13 +19,15 @@ export default function FormLogin() {
         <h2>Identifiez-vous</h2>
         <div className={classes.field}>
           <input type="email" 
+          title='adresse email'
           placeholder="Adresse email" 
           {...register("email")} />
           <span className={classes.error}>{errors.email?.message}</span>
         </div>
 
-        <div className={classes.field}>  
+        <div className={classes.field}>
           <input type="password" 
+          title='Mot de passe'
           placeholder="Mot de passe" 
           {...register("password")} />
           <span className={classes.error}>{errors.password?.message}</span>

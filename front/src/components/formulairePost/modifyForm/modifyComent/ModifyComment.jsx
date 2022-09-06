@@ -52,8 +52,8 @@ export default function ModifyComment(props) {
     return (
         <div className={classes.form__container}>
             <form className={classes.form} method="post">
-                <label htmlFor="textarea"></label>
                 <textarea
+                    title='Champ de saisi de texte'
                     type="textarea"
                     name="description"
                     id="description"
@@ -64,6 +64,7 @@ export default function ModifyComment(props) {
                 ></textarea>
                 {messageError && <span className={classes.error}>{messageError}</span>}
                 <input
+                    title='Sélectionner une image'
                     type="file"
                     accept="image/*"
                     name="pictureModifyComment"

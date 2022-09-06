@@ -51,6 +51,7 @@ export default function FormComment(props) {
                 <div className={classes.commentaire__content}>
                     <img src={avatarCurrentUser} width={"50px"} height={"50px"} alt="" />
                     <textarea
+                        title='Champ de saisi de texte'
                         type="textarea"
                         name={`description${props.idPost}`}
                         id={`description${props.idPost}`}
@@ -77,7 +78,7 @@ export default function FormComment(props) {
                                 setPreview("");
                                 setFile(null);
                             }} className={classes.closePreview} />
-                            <img src={preview}  alt="image de previsualisation" className={classes.image} />
+                            <img src={preview} alt="image de previsualisation" className={classes.image} />
                         </div>
                     }
                     <FiSend title="envoyer" type="submit" onClick={submitCommentaire} className={classes.newCom__send} />
