@@ -114,35 +114,39 @@ const deletePost = async (req, res, next) => {
     }
 }
 
-const like = async (req, res, next) => {
-    let id = req.params.id;
-    let body = req.body;
-    try {
-        let like = await LikePost.findByPk(id);
-        if (!like) throw new LikeError(404, "Le like n'existe pas");
-        if (body.likeId === like.dataValues.id && body.userId === like.dataValues.userId) {
-            like.liked = body.liked;
-            await like.save();
-            return res.status(200).json({ msg: "update like" })
-        }
-    } catch (error) {
-        next(error);
-    }
-}
-
 const createLike = async (req, res, next) => {
     let id = req.params.id;
     try {
+        const token = await req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
+        const userId = await decodedToken.userId;
+
+        let postId = await Post.findByPk(id);
+        if (!postId) throw new PostError(404, "Le post n'existe pas");
+
+        let barCode = userId + '-' + id
         let like = {
-            userId: req.body.userId,
+            userId: userId,
             postId: id,
             liked: true,
+            barcode: barCode,
         };
-        LikePost.create({ ...like })
-            .then(() => { res.status(201).json({ msg: "Post liked" }) })
+        let findBarCode = LikePost.findOne({ where: { barcode: barCode } });
+        findBarCode.then(response => {
+            if (response) {
+                let ressource = LikePost.destroy({ where: { id: response.dataValues.id } })
+                if (ressource === 0) return res.status(404).json({ msg: "Not found" })
+                res.status(200).json({ msg: "Deleted like post" })
+                console.log("trouvé")
+            } else {
+                console.log("nouveau")
+                LikePost.create({ ...like })
+                    .then(() => { res.status(201).json({ msg: "Post liked" }) })
+            }
+        })
     } catch (error) {
         next(error);
     }
 }
 
-export { getAll, createPost, updatePost, deletePost, getById, like, createLike };
+export { getAll, createPost, updatePost, deletePost, getById, createLike };

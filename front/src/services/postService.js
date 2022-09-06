@@ -78,11 +78,7 @@ class PostService {
 
     async likePost(postId, data) {
         try {
-            if (data.likeId) {
-                return await axios.put(API_URL + "api/post/" + data.likeId + "/like", data);
-            } else {
-                return await axios.post(API_URL + "api/post/" + postId + "/like", data);
-            }
+            return await axios.post(API_URL + "api/post/" + postId + "/like", data);
         } catch (error) {
             return Swal.fire({
                 icon: 'error',

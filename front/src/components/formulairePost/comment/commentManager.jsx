@@ -14,7 +14,6 @@ export default function CommentManager(props) {
     const [liked, setLiked] = useState(false);
     const [reload, setReload] = useState(false);
     const [countLike, setCountLike] = useState(0);
-    const [listPost, setListPost] = useState([]);
     const [countCommentaire, setCountCommentaire] = useState(0);
 
     useEffect(() => {
@@ -32,7 +31,6 @@ export default function CommentManager(props) {
 
                     let countLike = listPost.filter(like => like.liked)
                     setListComments(response.data.commentaires)
-                    setListPost(listPost)
                     setCountLike(countLike.length)
                     setLiked(liked)
                     setCountCommentaire(response.data.commentaires.length)
@@ -42,36 +40,12 @@ export default function CommentManager(props) {
 
     const like = async () => {
         let postId = props.idPost;
-        let liked = false;
-        let findUserLike = listPost.find(user => user.userId === currentUser)
-        let likeId = "";
-        if (findUserLike) {
-            likeId = findUserLike.id
-            liked = findUserLike.liked
-        }
+        let liked = true;
         let data = {
-            likeId: likeId,
-            userId: currentUser,
             liked: liked
         }
-        if (liked) {
-            liked = false;
-            data = {
-                ...data,
-                likeId: likeId,
-                liked: liked
-            }
-            await PostService.likePost(postId, data);
-            setReload(true);
-        } else {
-            liked = true;
-            data = {
-                ...data,
-                liked: liked
-            }
-            await PostService.likePost(postId, data)
-            setReload(true);
-        }
+        await PostService.likePost(postId, data)
+        setReload(true);
     }
 
     const handleCallback = async () => {
