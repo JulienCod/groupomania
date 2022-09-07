@@ -65,7 +65,7 @@ class CommentService {
 
     async likeComment(commentId, data) {
         try {
-            return await axios.post(API_URL + "api/commentaire/" + commentId + "/like", data);
+            return await axios.put(API_URL + "api/commentaire/" + commentId + "/like", data);
         } catch (error) {
             return Swal.fire({
                 icon: 'error',

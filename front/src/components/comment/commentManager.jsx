@@ -3,9 +3,9 @@ import classes from "./commentManager.module.css";
 import OldComment from './oldComment/oldComment';
 import { FiHeart } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
-import PostService from '../../../services/postService';
-import AuthService from '../../../services/authService';
-import FormComment from '../newForm/formComment/FormComment';
+import PostService from '../../services/postService';
+import AuthService from '../../services/authService';
+import FormComment from '../formulaire/newForm/formComment/FormComment';
 
 export default function CommentManager(props) {
     const [listComments, setListComments] = useState([]);
@@ -40,11 +40,7 @@ export default function CommentManager(props) {
 
     const like = async () => {
         let postId = props.idPost;
-        let liked = true;
-        let data = {
-            liked: liked
-        }
-        await PostService.likePost(postId, data)
+        await PostService.likePost(postId)
         setReload(true);
     }
 

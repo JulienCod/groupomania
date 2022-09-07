@@ -21,11 +21,6 @@ const LikePost = Bd.define('likePost', {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false,
-    },
-    barcode:{
-        type: DataTypes.STRING(),
-        allowNull: false,
-        unique: true,
     }
 })
 

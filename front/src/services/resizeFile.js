@@ -35,13 +35,13 @@ class ResizeFile {
                         "file"
                     );
                 });
-    
+
             }
-        } 
+        }
     }
 
     async profile(file) {
-        if (file) {            
+        if (file) {
             return new Promise((resolve) => {
                 Resizer.imageFileResizer(
                     file,

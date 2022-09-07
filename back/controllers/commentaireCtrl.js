@@ -1,7 +1,7 @@
 import Commentaire from '../models/commentaire.js';
 import fs from "fs"
 import LikeComment from '../models/likeComment.js';
-import { CommentError, LikeError } from '../error/customError.js';
+import { CommentError, LikeError, PostError } from '../error/customError.js';
 import { formCommentValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
@@ -20,11 +20,11 @@ const createCommentaire = async (req, res, next) => {
         const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
         const userId = await decodedToken.userId;
         const body = JSON.parse(req.body.commentaire);
-        let commentaire ={
-            userId : userId,
-            postId : body.postId,
-            description : body.description
-        } 
+        let commentaire = {
+            userId: userId,
+            postId: body.postId,
+            description: body.description
+        }
         let image = req.file;
         if (image) {
             commentaire = {
@@ -41,7 +41,7 @@ const createCommentaire = async (req, res, next) => {
         }
         let createComment = await Commentaire.create({ ...commentaire })
         if (createComment) {
-            res.status(201).json({commentaire: createComment, msg: "Create commentaire" })
+            res.status(201).json({ commentaire: createComment, msg: "Create commentaire" })
         }
     } catch (error) {
         next(error);
@@ -101,43 +101,47 @@ const deleteCommentaire = async (req, res, next) => {
     }
 }
 
-const createLike = async (req, res, next) => {
+const like = async (req, res, next) => {
     try {
-        let id = req.params.id;
+        let commentId = req.params.id;
         const token = await req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
         const userId = await decodedToken.userId;
 
-        let postId = await Post.findByPk(req.body.postId);
-        if (!postId) throw new PostError(404, "Le post n'existe pas");
-        let commentId = await Commentaire.findByPk(id);
-        if (!commentId) throw new PostError(404, "Le commentaire n'existe pas");
-
-        let barCode = userId + '-' + req.body.postId + '-' + id
-        let like = {
-            userId: userId,
-            commentId: id,
-            liked: true,
-            postId: req.body.postId,
-            barcode: barCode,
-        };
-
-        let findBarCode = LikeComment.findOne({ where: { barcode: barCode } });
-        findBarCode.then(response => {
-            if (response) {
-                console.log('supprimer')
-                let ressource = LikeComment.destroy({ where: { id: response.dataValues.id } })
-                if (ressource === 0) return res.status(404).json({ msg: "Not found" })
-                res.status(200).json({ msg: "Deleted like comment" })
+        const like = async () => {
+            let likeComment = await LikeComment.findOne({ where: { userId: userId, postId: req.body.postId, commentId: commentId } });
+            if (likeComment) {
+                likeComment.liked = !likeComment.liked;
+                await likeComment.save();
+                return res.status(200).json({ msg: "update like comment" })
             } else {
-                console.log("nouveau")
+                let like = {
+                    userId: userId,
+                    commentId: commentId,
+                    liked: true,
+                    postId: req.body.postId,
+                };
                 LikeComment.create({ ...like })
-                .then(() => { res.status(201).json({ msg: "Comment liked" }) })
+                    .then(() => { res.status(201).json({ msg: "Comment liked" }) })
             }
-        })
+        }
+
+        let postId = await Post.findByPk(req.body.postId, { include: [Commentaire] });
+        if (!postId) throw new PostError(404, "Le post n'existe pas");
+        if (postId.commentaires.length <= 0) {
+            throw new CommentError(404, "Le commentaire n'existe pas");
+        } else {
+            let comment = await postId.commentaires.find((response) => {
+                if (response.id === parseInt(commentId)) {
+                    return response.id
+                }
+            })
+            if (comment === undefined) throw new CommentError(404, "Le commentaire n'existe pas")
+            await like();
+        }
     } catch (error) {
         next(error);
     }
 }
 
-export { getById, createCommentaire, deleteCommentaire, updateCommentaire, createLike }
+export { getById, createCommentaire, deleteCommentaire, updateCommentaire, like }

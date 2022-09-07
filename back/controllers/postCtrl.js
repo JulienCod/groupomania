@@ -65,7 +65,8 @@ const updatePost = async (req, res, next) => {
             const { error } = formModifyValidation(postObject);
             if (error) throw new PostError(401, error.details[0].message);
         }
-        let post = await Post.findByPk(id)
+        let post = await Post.findByPk(id);
+        console.log(post);
         if (!post) throw new PostError(404, "Le Post n'existe pas");
         if (postObject.image) {
             if (post.image) {
@@ -77,7 +78,7 @@ const updatePost = async (req, res, next) => {
         }
         post.image = postObject.image;
         post.description = postObject.description;
-        await post.save()
+        await post.save();
         return res.status(200).json({ msg: "update post" })
     } catch (error) {
         next(error);
@@ -114,37 +115,33 @@ const deletePost = async (req, res, next) => {
     }
 }
 
-const createLike = async (req, res, next) => {
+const like = async (req, res, next) => {
     try {
-        let id = req.params.id;
+        let postId = req.params.id;
         const token = await req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
         const userId = await decodedToken.userId;
 
-        let postId = await Post.findByPk(id);
-        if (!postId) throw new PostError(404, "Le post n'existe pas");
+        let post = await Post.findByPk(postId);
+        if (!post) throw new PostError(404, "Le post n'existe pas");
 
-        let barCode = userId + '-' + id
-        let like = {
-            userId: userId,
-            postId: id,
-            liked: true,
-            barcode: barCode,
-        };
-        let findBarCode = LikePost.findOne({ where: { barcode: barCode } });
-        findBarCode.then(response => {
-            if (response) {
-                let ressource = LikePost.destroy({ where: { id: response.dataValues.id } })
-                if (ressource === 0) return res.status(404).json({ msg: "Not found" })
-                res.status(200).json({ msg: "Deleted like post" })
-            } else {
-                LikePost.create({ ...like })
-                    .then(() => { res.status(201).json({ msg: "Post liked" }) })
-            }
-        })
+        let likepost = await LikePost.findOne({ where: { postId: postId, userId: userId }});
+        if (likepost) {
+            likepost.liked = !likepost.liked;
+            await likepost.save();
+            return res.status(200).json({ msg: "update like post" })
+        } else {
+            let like = {
+                userId: userId,
+                postId: postId,
+                liked: true,
+            };
+            LikePost.create({ ...like })
+                .then(() => { res.status(201).json({ msg: "Post liked" }) })
+        }
     } catch (error) {
         next(error);
     }
 }
 
-export { getAll, createPost, updatePost, deletePost, getById, createLike };
+export { getAll, createPost, updatePost, deletePost, getById, like };

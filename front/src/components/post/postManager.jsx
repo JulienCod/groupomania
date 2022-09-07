@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import PostService from '../../../services/postService';
-import AuthService from '../../../services/authService';
+import PostService from '../../services/postService';
+import AuthService from '../../services/authService';
 import Post from "./post/post";
-import FormPost from '../newForm/formPost/FormPost';
+import FormPost from '../formulaire/newForm/formPost/FormPost';
 
 export default function PostManager() {
 

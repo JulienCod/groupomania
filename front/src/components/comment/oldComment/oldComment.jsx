@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FiHeart, FiPenTool } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import InfoUser from '../../../infoUser/infoUser';
+import InfoUser from '../../infoUser/infoUser';
 import classes from "./oldComment.module.css";
-import AuthService from '../../../../services/authService';
-import CommentService from '../../../../services/commentService';
+import AuthService from '../../../services/authService';
+import CommentService from '../../../services/commentService';
 import Swal from 'sweetalert2';
-import ModifyComment from '../../modifyForm/modifyComent/ModifyComment';
+import ModifyComment from '../../formulaire/modifyForm/modifyComent/ModifyComment';
 
 export default function OldComment(props) {
 
