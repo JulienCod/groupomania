@@ -3,9 +3,9 @@ import classes from "./commentManager.module.css";
 import OldComment from './oldComment/oldComment';
 import { FiHeart } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
-import PostService from '../../../services/postService';
-import AuthService from '../../../services/authService';
-import FormComment from '../newForm/formComment/FormComment';
+import PostService from '../../services/postService';
+import AuthService from '../../services/authService';
+import FormComment from '../formulaire/newForm/formComment/FormComment';
 
 export default function CommentManager(props) {
     const [listComments, setListComments] = useState([]);
@@ -14,7 +14,6 @@ export default function CommentManager(props) {
     const [liked, setLiked] = useState(false);
     const [reload, setReload] = useState(false);
     const [countLike, setCountLike] = useState(0);
-    const [listPost, setListPost] = useState([]);
     const [countCommentaire, setCountCommentaire] = useState(0);
 
     useEffect(() => {
@@ -32,7 +31,6 @@ export default function CommentManager(props) {
 
                     let countLike = listPost.filter(like => like.liked)
                     setListComments(response.data.commentaires)
-                    setListPost(listPost)
                     setCountLike(countLike.length)
                     setLiked(liked)
                     setCountCommentaire(response.data.commentaires.length)
@@ -42,36 +40,8 @@ export default function CommentManager(props) {
 
     const like = async () => {
         let postId = props.idPost;
-        let liked = false;
-        let findUserLike = listPost.find(user => user.userId === currentUser)
-        let likeId = "";
-        if (findUserLike) {
-            likeId = findUserLike.id
-            liked = findUserLike.liked
-        }
-        let data = {
-            likeId: likeId,
-            userId: currentUser,
-            liked: liked
-        }
-        if (liked) {
-            liked = false;
-            data = {
-                ...data,
-                likeId: likeId,
-                liked: liked
-            }
-            await PostService.likePost(postId, data);
-            setReload(true);
-        } else {
-            liked = true;
-            data = {
-                ...data,
-                liked: liked
-            }
-            await PostService.likePost(postId, data)
-            setReload(true);
-        }
+        await PostService.likePost(postId)
+        setReload(true);
     }
 
     const handleCallback = async () => {

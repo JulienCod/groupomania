@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FiHeart, FiPenTool } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import InfoUser from '../../../infoUser/infoUser';
+import InfoUser from '../../infoUser/infoUser';
 import classes from "./oldComment.module.css";
-import AuthService from '../../../../services/authService';
-import CommentService from '../../../../services/commentService';
+import AuthService from '../../../services/authService';
+import CommentService from '../../../services/commentService';
 import Swal from 'sweetalert2';
-import ModifyComment from '../../modifyForm/modifyComent/ModifyComment';
+import ModifyComment from '../../formulaire/modifyForm/modifyComent/ModifyComment';
 
 export default function OldComment(props) {
 
@@ -32,19 +32,19 @@ export default function OldComment(props) {
         setReload(false);
         setModify(false);
         setDelComment(false);
-        
+
     }, [reload]);
-    
+
     const fetch = async () => {
         await CommentService.getById(props.id)
             .then(async comment => {
                 let commentId = await comment.data.id;
-                let postId =  comment.data.postId;
-                let likeComments =  comment.data.likeComments;
-                let user =  comment.data.user;
-                let image =  comment.data.image;
-                let description= comment.data.description;
-                let findUserLike =  likeComments.find(user => user.userId === currentUser)
+                let postId = comment.data.postId;
+                let likeComments = comment.data.likeComments;
+                let user = comment.data.user;
+                let image = comment.data.image;
+                let description = comment.data.description;
+                let findUserLike = likeComments.find(user => user.userId === currentUser)
                 let liked = false;
                 if (findUserLike) {
                     liked = findUserLike.liked;
@@ -85,45 +85,18 @@ export default function OldComment(props) {
                     'Supprimer!',
                     'Le commentaire a bien été supprimé.',
                     'success'
-                    )
+                )
                 await handleCallback();
             }
         })
     }
 
     const like = async () => {
-        let liked = false;
-        let findUserLike = likeComments.find(user => user.userId === currentUser)
-        let likeId = "";
-        if (findUserLike) {
-            likeId = findUserLike.id
-            liked = findUserLike.liked
-        }
         let data = {
-            likeId: likeId,
-            userId: currentUser,
-            liked: liked,
             postId: postId
         }
-        if (liked) {
-            likeId = findUserLike.id;
-            liked = false;
-            data = {
-                ...data,
-                likeId: likeId,
-                liked: liked
-            }
-            await CommentService.likeComment(commentId, data);
-            setReload(true);
-        } else {
-            liked = true;
-            data = {
-                ...data,
-                liked: liked
-            }
-            await CommentService.likeComment(commentId, data)
-            setReload(true);
-        }
+        await CommentService.likeComment(commentId, data)
+        setReload(true);
     }
 
     const handleCallback = async () => {
@@ -137,8 +110,7 @@ export default function OldComment(props) {
                     <InfoUser avatar={user.avatar} mode={"comment"} firstname={user.firstname} cssInfoUser={classes.infoUser} />
                     <>
                         {modify ?
-                            // <ModifyComment {...props} modifyComment={modifyComment} parentCallback={handleCallback} />
-                            <ModifyComment {...props} modifyComment={modifyComment} parentCallback={() =>{setReload(true)}} />
+                            <ModifyComment {...props} modifyComment={modifyComment} parentCallback={() => { setReload(true) }} />
                             :
                             <div className={classes.container__comment}>
                                 {description &&

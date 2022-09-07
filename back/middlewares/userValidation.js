@@ -23,23 +23,23 @@ const userSignupValidation = (body) => {
             .required()
             .min(3)
             .max(30)
-            .pattern(new RegExp('^[^$=]{3,30}$'))
+            .pattern(new RegExp('^[^$=<>/]{3,30}$'))
             .messages({
                 "string.empty": "Le prénom est obligatoire",
                 "string.min": "Le prénom doit contenir au minimum 3 caractères",
                 "string.max": "Le prénom ne doit pas contenir plus de 30 caractères",
-                "string.pattern.base": "Le prénom ne doit pas contenir les caractères $ ou =",
+                "string.pattern.base": "Le prénom ne doit pas contenir les caractères suivant  $ = < > /",
             }),
         firstname: Joi.string()
             .required()
             .min(3)
             .max(30)
-            .pattern(new RegExp('^[^$=]{3,30}$'))
+            .pattern(new RegExp('^[^$=<>/]{3,30}$'))
             .messages({
                 "string.empty": "Le nom est obligatoire",
                 "string.min": "Le nom doit contenir au minimum 3 caractères",
                 "string.max": "Le nom ne doit pas contenir plus de 30 caractères",
-                "string.pattern.base": "Le nom ne doit pas contenir les caractères $ ou =",
+                "string.pattern.base": "Le nom ne doit pas contenir les caractères suivant  $ = < > /",
             }),
         avatar: Joi.string()
             .min(5)
@@ -103,23 +103,23 @@ const userModifyValidation = (body) => {
             .required()
             .min(3)
             .max(30)
-            .pattern(new RegExp('^[^$=]{3,30}$'))
+            .pattern(new RegExp('^[^$=<>/]{3,30}$'))
             .messages({
                 "string.empty": "Le prénom est obligatoire",
                 "string.min": "Le prénom doit contenir au minimum 3 caractères",
                 "string.max": "Le prénom ne doit pas contenir plus de 30 caractères",
-                "string.pattern.base": "Le prénom ne doit pas contenir les caractères $ ou =",
+                "string.pattern.base": "Le prénom ne doit pas contenir les caractères suivant  $ = < > /",
             }),
         firstname: Joi.string()
             .required()
             .min(3)
             .max(30)
-            .pattern(new RegExp('^[^$=]{3,30}$'))
+            .pattern(new RegExp('^[^$=<>/]{3,30}$'))
             .messages({
                 "string.empty": "Le nom est obligatoire",
                 "string.min": "Le nom doit contenir au minimum 3 caractères",
                 "string.max": "Le nom ne doit pas contenir plus de 30 caractères",
-                "string.pattern.base": "Le nom ne doit pas contenir les caractères $ ou =",
+                "string.pattern.base": "Le nom ne doit pas contenir les caractères suivant  $ = < > /",
             }),
         avatar: Joi.string()
             .min(5)
@@ -139,23 +139,23 @@ const userModifyMinValidation = (body) => {
             .required()
             .min(3)
             .max(30)
-            .pattern(new RegExp('^[^$=]{3,30}$'))
+            .pattern(new RegExp('^[^$=<>/]{3,30}$'))
             .messages({
                 "string.empty": "Le prénom est obligatoire",
                 "string.min": "Le prénom doit contenir au minimum 3 caractères",
                 "string.max": "Le prénom ne doit pas contenir plus de 30 caractères",
-                "string.pattern.base": "Le prénom ne doit pas contenir les caractères $ ou =",
+                "string.pattern.base": "Le prénom ne doit pas contenir les caractères suivant  $ = < > /",
             }),
         firstname: Joi.string()
             .required()
             .min(3)
             .max(30)
-            .pattern(new RegExp('^[^$=]{3,30}$'))
+            .pattern(new RegExp('^[^$=<>/]{3,30}$'))
             .messages({
                 "string.empty": "Le nom est obligatoire",
                 "string.min": "Le nom doit contenir au minimum 3 caractères",
                 "string.max": "Le nom ne doit pas contenir plus de 30 caractères",
-                "string.pattern.base": "Le nom ne doit pas contenir les caractères $ ou =",
+                "string.pattern.base": "Le nom ne doit pas contenir les caractères suivant  $ = < > /",
             }),
         avatar: Joi.string()
             .min(5)

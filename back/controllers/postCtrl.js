@@ -65,7 +65,8 @@ const updatePost = async (req, res, next) => {
             const { error } = formModifyValidation(postObject);
             if (error) throw new PostError(401, error.details[0].message);
         }
-        let post = await Post.findByPk(id)
+        let post = await Post.findByPk(id);
+        console.log(post);
         if (!post) throw new PostError(404, "Le Post n'existe pas");
         if (postObject.image) {
             if (post.image) {
@@ -77,7 +78,7 @@ const updatePost = async (req, res, next) => {
         }
         post.image = postObject.image;
         post.description = postObject.description;
-        await post.save()
+        await post.save();
         return res.status(200).json({ msg: "update post" })
     } catch (error) {
         next(error);
@@ -115,34 +116,32 @@ const deletePost = async (req, res, next) => {
 }
 
 const like = async (req, res, next) => {
-    let id = req.params.id;
-    let body = req.body;
     try {
-        let like = await LikePost.findByPk(id);
-        if (!like) throw new LikeError(404, "Le like n'existe pas");
-        if (body.likeId === like.dataValues.id && body.userId === like.dataValues.userId) {
-            like.liked = body.liked;
-            await like.save();
-            return res.status(200).json({ msg: "update like" })
+        let postId = req.params.id;
+        const token = await req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
+        const userId = await decodedToken.userId;
+
+        let post = await Post.findByPk(postId);
+        if (!post) throw new PostError(404, "Le post n'existe pas");
+
+        let likepost = await LikePost.findOne({ where: { postId: postId, userId: userId }});
+        if (likepost) {
+            likepost.liked = !likepost.liked;
+            await likepost.save();
+            return res.status(200).json({ msg: "update like post" })
+        } else {
+            let like = {
+                userId: userId,
+                postId: postId,
+                liked: true,
+            };
+            LikePost.create({ ...like })
+                .then(() => { res.status(201).json({ msg: "Post liked" }) })
         }
     } catch (error) {
         next(error);
     }
 }
 
-const createLike = async (req, res, next) => {
-    let id = req.params.id;
-    try {
-        let like = {
-            userId: req.body.userId,
-            postId: id,
-            liked: true,
-        };
-        LikePost.create({ ...like })
-            .then(() => { res.status(201).json({ msg: "Post liked" }) })
-    } catch (error) {
-        next(error);
-    }
-}
-
-export { getAll, createPost, updatePost, deletePost, getById, like, createLike };
+export { getAll, createPost, updatePost, deletePost, getById, like };

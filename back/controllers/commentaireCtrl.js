@@ -1,10 +1,11 @@
 import Commentaire from '../models/commentaire.js';
 import fs from "fs"
 import LikeComment from '../models/likeComment.js';
-import { CommentError, LikeError } from '../error/customError.js';
+import { CommentError, LikeError, PostError } from '../error/customError.js';
 import { formCommentValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
+import Post from '../models/post.js';
 
 const getById = (req, res, next) => {
     let id = req.params.id;
@@ -19,11 +20,11 @@ const createCommentaire = async (req, res, next) => {
         const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
         const userId = await decodedToken.userId;
         const body = JSON.parse(req.body.commentaire);
-        let commentaire ={
-            userId : userId,
-            postId : body.postId,
-            description : body.description
-        } 
+        let commentaire = {
+            userId: userId,
+            postId: body.postId,
+            description: body.description
+        }
         let image = req.file;
         if (image) {
             commentaire = {
@@ -40,7 +41,7 @@ const createCommentaire = async (req, res, next) => {
         }
         let createComment = await Commentaire.create({ ...commentaire })
         if (createComment) {
-            res.status(201).json({commentaire: createComment, msg: "Create commentaire" })
+            res.status(201).json({ commentaire: createComment, msg: "Create commentaire" })
         }
     } catch (error) {
         next(error);
@@ -101,35 +102,46 @@ const deleteCommentaire = async (req, res, next) => {
 }
 
 const like = async (req, res, next) => {
-    let id = req.params.id;
-    let body = req.body;
     try {
-        let like = await LikeComment.findByPk(id);
-        if (!like) throw new LikeError(404, "Le like n'existe pas")
-        if (body.likeId === like.dataValues.id && body.userId === like.dataValues.userId) {
-            like.liked = body.liked;
-            await like.save();
-            return res.status(200).json({ msg: "update Comment" })
+        let commentId = req.params.id;
+        const token = await req.headers.authorization.split(' ')[1];
+        const decodedToken = jwt.verify(token, `${process.env.TOKEN_KEY}`);
+        const userId = await decodedToken.userId;
+
+        const like = async () => {
+            let likeComment = await LikeComment.findOne({ where: { userId: userId, postId: req.body.postId, commentId: commentId } });
+            if (likeComment) {
+                likeComment.liked = !likeComment.liked;
+                await likeComment.save();
+                return res.status(200).json({ msg: "update like comment" })
+            } else {
+                let like = {
+                    userId: userId,
+                    commentId: commentId,
+                    liked: true,
+                    postId: req.body.postId,
+                };
+                LikeComment.create({ ...like })
+                    .then(() => { res.status(201).json({ msg: "Comment liked" }) })
+            }
+        }
+
+        let postId = await Post.findByPk(req.body.postId, { include: [Commentaire] });
+        if (!postId) throw new PostError(404, "Le post n'existe pas");
+        if (postId.commentaires.length <= 0) {
+            throw new CommentError(404, "Le commentaire n'existe pas");
+        } else {
+            let comment = await postId.commentaires.find((response) => {
+                if (response.id === parseInt(commentId)) {
+                    return response.id
+                }
+            })
+            if (comment === undefined) throw new CommentError(404, "Le commentaire n'existe pas")
+            await like();
         }
     } catch (error) {
         next(error);
     }
 }
 
-const createLike = async (req, res, next) => {
-    let id = req.params.id;
-    try {
-        let like = {
-            userId: req.body.userId,
-            commentId: id,
-            liked: true,
-            postId: req.body.postId
-        };
-        LikeComment.create({ ...like })
-            .then(() => { res.status(201).json({ msg: "Comment liked" }) })
-    } catch (error) {
-        next(error);
-    }
-}
-
-export { getById, createCommentaire, deleteCommentaire, updateCommentaire, like, createLike }
+export { getById, createCommentaire, deleteCommentaire, updateCommentaire, like }

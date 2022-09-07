@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import classes from './homePost.module.css';
 import { RiCloseCircleLine } from 'react-icons/ri';
-import PostManager from '../../components/formulairePost/post/postManager';
+import PostManager from '../../components/post/postManager';
 import ScrollButton from '../../components/scroll-to-top/scrollToTop';
 
 const HomePost = () => {

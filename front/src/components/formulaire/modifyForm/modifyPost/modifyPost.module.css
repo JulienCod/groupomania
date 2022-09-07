@@ -70,6 +70,15 @@ box-shadow: 1px 1px 3px #4E5166;
 .error{
     color: #FD2D01;
 }
+.container__img {
+    position: relative;
+}
+.closePreview {
+    position: absolute;
+    font-size: 2.5rem;
+    cursor: pointer;
+    color: #FD2D01;
+}
 
 @media screen and (max-width:900px){
     .form{

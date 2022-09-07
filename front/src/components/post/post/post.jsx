@@ -4,10 +4,10 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import ContainerPost from '../ContainerPost/ContainerPost';
 import CommentManager from '../../comment/commentManager';
 import classes from "./post.module.css";
-import InfoUSer from "../../../infoUser/infoUser";
-import PostService from '../../../../services/postService';
+import InfoUSer from "../../infoUser/infoUser";
+import PostService from '../../../services/postService';
 import Swal from 'sweetalert2';
-import ModifyPost from '../../modifyForm/modifyPost/ModifyPost';
+import ModifyPost from '../../formulaire/modifyForm/modifyPost/ModifyPost';
 
 export default function Post(props) {
 

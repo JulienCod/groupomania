@@ -87,7 +87,11 @@ class AuthService {
                 showConfirmButton: false,
                 timer: 2000,
             });
-            document.location.href = "login";
+            let userLogin = {
+                email: user.email,
+                password: user.password
+            }
+            this.login(userLogin);
         } catch (error) {
             if (error.response.data.error.name === "SequelizeUniqueConstraintError");
             {
@@ -102,24 +106,24 @@ class AuthService {
 
     getCurrentUser() {
         const token = window.sessionStorage.getItem("token");
-        if(token){
+        if (token) {
             const { userId: id } = jwt_decode(token);
             return id;
-        }else{
+        } else {
             return false;
         }
     }
-    
-    getAdmin(){
+
+    getAdmin() {
         const token = window.sessionStorage.getItem("token");
-        if(token){
+        if (token) {
             const { isAdmin: admin } = jwt_decode(token);
             if (admin === undefined) {
                 return false;
-            }else{
+            } else {
                 return admin;
             }
-        }else{
+        } else {
             return false;
         }
 
