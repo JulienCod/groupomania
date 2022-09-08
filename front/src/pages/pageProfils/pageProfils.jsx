@@ -4,6 +4,7 @@ import classes from "./pageProfils.module.css";
 import { userModifyMinValidation, userModifyValidation } from '../../services/formValidation';
 import resizeFile from '../../services/resizeFile';
 import Swal from 'sweetalert2';
+import Image from '../../components/image/image';
 
 export default function PageProfils() {
 
@@ -176,13 +177,9 @@ export default function PageProfils() {
                     <h2>Photo de profil</h2>
 
                     {file ?
-                        <div className={classes.container__img}>
-                            <img src={preview} alt="" className={classes.image} />
-                        </div>
+                        <Image cssContainer={classes.container__img} src={preview} cssImage={classes.image} alt={"image de prévisualisation"}/>
                         :
-                        <div className={classes.container__img}>
-                            <img src={avatar} alt="" className={classes.image} />
-                        </div>
+                        <Image cssContainer={classes.container__img} src={avatar} cssImage={classes.image} alt={"image de l'avatar"}/>
                     }
 
                     <input

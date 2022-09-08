@@ -7,7 +7,6 @@ import Commentaire from '../models/commentaire.js';
 import fs from 'fs'
 import { AuthentificationError, UserError } from '../error/customError.js';
 
-//signup
 const signup = async (req, res, next) => {
     let user = JSON.parse(req.body.user);
     let image = req.file;
@@ -23,12 +22,12 @@ const signup = async (req, res, next) => {
         let hash = await bcrypt.hash(user.password, 10);
         user.password = hash;
         await User.create({ ...user });
-        return res.status(201).json({user: user, msg: "Create User" });
+        return res.status(201).json({ user: user, msg: "Create User" });
     } catch (error) {
         next(error)
     }
 };
-// login
+
 const login = async (req, res, next) => {
     try {
         let body = {
@@ -49,9 +48,9 @@ const login = async (req, res, next) => {
                         isAdmin: user.dataValues.isAdmin
                     },
                     `${process.env.TOKEN_KEY}`,
-                    { expiresIn: '1h' }
+                    { expiresIn: '24h' }
                 ),
-                user:{
+                user: {
                     avatar: user.dataValues.avatar,
                     welcome: "true",
                     lastname: user.dataValues.lastname,
@@ -68,7 +67,7 @@ const login = async (req, res, next) => {
                     `${process.env.TOKEN_KEY}`,
                     { expiresIn: '24h' }
                 ),
-                user:{
+                user: {
                     avatar: user.dataValues.avatar,
                     welcome: "true",
                     lastname: user.dataValues.lastname,
@@ -80,22 +79,22 @@ const login = async (req, res, next) => {
         next(error)
     }
 };
-// display user
+
 const getById = (req, res, next) => {
     let id = req.params.id;
     User.findByPk(id)
         .then(user => res.status(200).json(user))
         .catch(error => next(error))
 }
-// update user
+
 const updateUser = async (req, res, next) => {
-    const { id } = req.params;
-    const userObject = req.file ?
-        {
-            ...JSON.parse(req.body.user),
-            avatar: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } : { ...JSON.parse(req.body.user) }
     try {
+        const { id } = req.params;
+        const userObject = req.file ?
+            {
+                ...JSON.parse(req.body.user),
+                avatar: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            } : { ...JSON.parse(req.body.user) }
         if (userObject.password || userObject.newPassword) {
             const { error } = userModifyValidation(userObject);
             if (error) throw new UserError(401, error.details[0].message);
@@ -104,9 +103,8 @@ const updateUser = async (req, res, next) => {
             if (error) throw new UserError(401, error.details[0].message);
         }
         let user = await User.findByPk(id);
-        if (!user) throw new AuthentificationError(404, "L'utilisateur n'existe pas");
+        if (!user) throw new UserError(404, "L'utilisateur n'existe pas");
         if (userObject.avatar) {
-            
             const filename = user.avatar.split('/images/')[1];
             if (filename != "profils.png") {
                 fs.unlink(`images/${filename}`, (error) => {
@@ -130,10 +128,9 @@ const updateUser = async (req, res, next) => {
     }
 }
 
-// delete user
 const deleteUser = async (req, res, next) => {
-    const { id } = req.params;
     try {
+        const { id } = req.params;
         let user = await User.findByPk(id, { include: [Post, Commentaire] });
         if (!user) throw new UserError(404, "L'utilisateur n'existe pas");
         let filename = "";

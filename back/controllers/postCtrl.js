@@ -3,7 +3,7 @@ import User from '../models/user.js';
 import Commentaire from '../models/commentaire.js';
 import LikePost from '../models/likePost.js';
 import fs from "fs"
-import { LikeError, PostError } from '../error/customError.js';
+import { PostError } from '../error/customError.js';
 import { formPostValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 import jwt from 'jsonwebtoken';
 
@@ -54,13 +54,13 @@ const createPost = async (req, res, next) => {
 }
 
 const updatePost = async (req, res, next) => {
-    const { id } = req.params;
-    const postObject = req.file ?
-        {
-            ...JSON.parse(req.body.description),
-            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } : { ...JSON.parse(req.body.description) }
     try {
+        const { id } = req.params;
+        const postObject = req.file ?
+            {
+                ...JSON.parse(req.body.description),
+                image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            } : { ...JSON.parse(req.body.description) }
         if (postObject.description) {
             const { error } = formModifyValidation(postObject);
             if (error) throw new PostError(401, error.details[0].message);
@@ -125,7 +125,7 @@ const like = async (req, res, next) => {
         let post = await Post.findByPk(postId);
         if (!post) throw new PostError(404, "Le post n'existe pas");
 
-        let likepost = await LikePost.findOne({ where: { postId: postId, userId: userId }});
+        let likepost = await LikePost.findOne({ where: { postId: postId, userId: userId } });
         if (likepost) {
             likepost.liked = !likepost.liked;
             await likepost.save();

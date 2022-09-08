@@ -7,7 +7,6 @@ const API_URL = `${process.env.REACT_APP_API_URL}`;
 class AuthService {
 
     async setup() {
-
         const token = window.sessionStorage.getItem('token');
 
         if (token) {

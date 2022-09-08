@@ -1,7 +1,7 @@
 import Commentaire from '../models/commentaire.js';
 import fs from "fs"
 import LikeComment from '../models/likeComment.js';
-import { CommentError, LikeError, PostError } from '../error/customError.js';
+import { CommentError, PostError } from '../error/customError.js';
 import { formCommentValidation, formModifyValidation } from '../middlewares/formValidartion.js';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';

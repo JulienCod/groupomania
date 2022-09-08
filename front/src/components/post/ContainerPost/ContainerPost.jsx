@@ -1,13 +1,12 @@
 import React from "react";
+import Image from "../../image/image";
 import classes from "./containerPost.module.css"
 
 const ContainerPost = (props) => {
     let image = "";
     if(props.image){
         image =(
-            <div className={classes.container__img}>
-                <img className={classes.img} src={props.image} alt="" />
-            </div>
+            <Image cssContainer={classes.container__img} src={props.image} cssImage={classes.img} alt={"image post"}/>
         )
     }
     return(

@@ -9,7 +9,7 @@ const router = Router();
 
 router.get('/:id', auth, getById);
 router.post('/', limiter, auth, multer, createCommentaire);
-router.put('/:id', limiter, auth, multer, idCompareCommentaire, updateCommentaire);
+router.put('/:id', limiter, auth, idCompareCommentaire, multer, updateCommentaire);
 router.delete('/:id', auth, idCompareCommentaire, deleteCommentaire);
 router.put('/:id/like', limiter, auth, like);
 export default router;

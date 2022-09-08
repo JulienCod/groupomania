@@ -8,6 +8,7 @@ import AuthService from '../../../services/authService';
 import CommentService from '../../../services/commentService';
 import Swal from 'sweetalert2';
 import ModifyComment from '../../formulaire/modifyForm/modifyComent/ModifyComment';
+import Image from '../../image/image';
 
 export default function OldComment(props) {
 
@@ -120,9 +121,7 @@ export default function OldComment(props) {
                                     </div>
                                 }
                                 {image &&
-                                    <div className={classes.container__img}>
-                                        <img src={image} className={classes.img} alt="" />
-                                    </div>
+                                    <Image cssContainer={classes.container__img} src={image} alt={"image commentaire"} className={classes.img}/>
                                 }
 
                                 {props.userId === currentUser || admin ?

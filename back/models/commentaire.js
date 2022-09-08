@@ -27,6 +27,7 @@ const Commentaire = Bd.define('commentaire', {
         allowNull: true,
     }
 })
+// association des tables
 Commentaire.hasMany(LikeComment, {foreignKey : 'commentId', onDelete : 'CASCADE'})
 LikeComment.belongsTo(Commentaire, {foreignKey : 'commentId'});
 
