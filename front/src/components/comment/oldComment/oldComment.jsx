@@ -121,7 +121,7 @@ export default function OldComment(props) {
                                     </div>
                                 }
                                 {image &&
-                                    <Image cssContainer={classes.container__img} src={image} alt={"image commentaire"} className={classes.img}/>
+                                    <Image cssContainer={classes.container__img} src={image} alt={"image commentaire"} cssImage={classes.img}/>
                                 }
 
                                 {props.userId === currentUser || admin ?
