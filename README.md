@@ -29,7 +29,7 @@ Ce projet consiste à créer un réseau social d'entreprise.
 
 ### Installation
 
-1. Clonez le depot Github du projet
+1. **Clonez le depot Github du projet**
 
 Ouvrez un nouveau terminal puis executez les commandes suivantes :
 
@@ -38,7 +38,7 @@ git clone https://github.com/JulienCod/groupomania.git
 cd groupomania # Se déplacer dans le dossier que vous venez de cloner
 
 
-2. Initialisez la base de données
+2. **Initialisez la base de données**
 
 Démarrer xampp.
 
@@ -62,10 +62,12 @@ cliquer sur choisir un fichier
 
 rechercher le dossier ou vous avez cloner le dépot git et accéder au dossier base de donnée
 
+accéder au dossier base de données
+
 sélectionner le fichier groupomania.sql et cliquez sur importer en bas de l'écran
 
 
-3. Initialisez le Backend
+3. **Initialisez le Backend**
 
 Dans votre dossier groupomania à l'aide du terminal executez la commande suivante:
 
@@ -73,23 +75,23 @@ cd back # Se déplacer dans le dossier back
 
 créer un fichier .env
 
-copier-coller les lignes suivantes dans le fichier .env
-saisir vos information et en supprimant le text et les étoiles **text**
-NAME_DATABASE = **nom de la base de donnée**
-ID_CONNEXION = **indiquez le identifiant de connexion a votre base de donnée**
-PWD_CONNEXION = **indiquez le mot de passe de connexion a votre base de donnée**
-TYPE_DATABASE = mysql
-HOST_CONNEXION = localhost
-TOKEN_KEY = **indiquez une clé secret pour le token**
-URL= http://localhost:3000/
+copier-coller les lignes suivantes dans le fichier .env  
+saisir vos information et en supprimant le text et les étoiles **text**  
+NAME_DATABASE = **nom de la base de donnée**  
+ID_CONNEXION = **indiquez le identifiant de connexion a votre base de donnée**  
+PWD_CONNEXION = **indiquez le mot de passe de connexion a votre base de donnée**  
+TYPE_DATABASE = mysql  
+HOST_CONNEXION = localhost    
+TOKEN_KEY = **indiquez une clé secret pour le token**  
+URL= http://localhost:3000/  
 
 Dans votre terminal executer les lignes suivantes:
 
-npm install # Installer les packages et dépendances nécessaires
+npm install # Installer les packages et dépendances nécessaires  
 npm start # Démarrer le serveur
 
 
-4. Initialisez le frontend
+4. **Initialisez le frontend**
 
 Ouvrer un nouveau terminal 
 
@@ -109,7 +111,7 @@ npm install # Installer les packages et dépendances nécessaires
 npm start # Démarrer l'application React
 
 
-5. Accédez à l'application en local
+5. **Accédez à l'application en local**
 
 Une fois le serveur backend démarrer sur le port 3000 et le serveur front démarrer vous pouvez y accédez à l'adresse suivante.
 
