@@ -62,6 +62,8 @@ cliquer sur choisir un fichier
 
 rechercher le dossier ou vous avez cloner le dépot git et accéder au dossier base de donnée
 
+accéder au dossier base de données
+
 sélectionner le fichier groupomania.sql et cliquez sur importer en bas de l'écran
 
 
