@@ -82,7 +82,7 @@ class AuthService {
             await axios.post(API_URL + "api/auth/signup", formData)
             await Swal.fire({
                 icon: 'success',
-                title: 'Compte créé avec success !',
+                title: 'Compte créé avec succès !',
                 showConfirmButton: false,
                 timer: 2000,
             });
